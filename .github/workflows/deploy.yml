@@ -24,6 +24,12 @@ jobs:
     - name: Build project
       run: npm run build
 
+    - name: Debug Info
+      run: |
+        echo "REMOTE_HOST: ${{ secrets.REMOTE_HOST }}"
+        echo "REMOTE_USER: ${{ secrets.REMOTE_USER }}"
+        echo "REMOTE_PATH: ${{ secrets.REMOTE_PATH }}"
+    
     - name: Deploy to VPS
       uses: easingthemes/ssh-deploy@v2
       env:
