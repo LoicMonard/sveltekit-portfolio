@@ -24,18 +24,20 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Debug Info
+    - name: Display SSH Private Key
       run: |
-        echo "REMOTE_HOST: ${{ secrets.REMOTE_HOST }}"
-        echo "REMOTE_USER: ${{ secrets.REMOTE_USER }}"
-        echo "REMOTE_PATH: ${{ secrets.REMOTE_PATH }}"
-    
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        cat ~/.ssh/id_rsa
+
+    - name: Set permissions for the SSH key
+      run: chmod 600 ~/.ssh/id_rsa
+
     - name: Deploy to VPS
-      uses: easingthemes/ssh-deploy@v2
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-rltgoDzvO --delete"
-        SOURCE: "build/"
-        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-        REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        TARGET: ${{ secrets.REMOTE_PATH }}
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          rsync -rltgoDzvO --delete build/ ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:${{ secrets.REMOTE_PATH }}
