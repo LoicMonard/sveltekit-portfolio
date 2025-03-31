@@ -1,5 +1,6 @@
 <script lang="ts">
 	import BentoGrid from '$lib/components/BentoGrid.svelte';
+	import RollingCube from '$lib/components/RollingCube.svelte';
 
 	let title = 'loïc monard';
 </script>
@@ -18,7 +19,11 @@
 					front-end specialized web developer. Svelte, Vue.js, Javascript, HTML, CSS.
 				</p>
 			</div>
-			<div class="min-w-[50%]"></div>
+			<div class="min-w-[50%]">
+				<div class="w-full h-[500px] border border-gray-300 rounded-lg overflow-hidden">
+					<RollingCube />
+				</div>
+			</div>
 		</div>
 	</section>
 
