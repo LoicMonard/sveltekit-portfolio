@@ -18,16 +18,16 @@
 	let cubeContainer: THREE.Group;
 	let orbitControls: OrbitControls;
 	let isAnimating = false;
+
 	const tileHistory: Tile[] = [];
-	const LIGHT_INTENSITIES = [1.3, 0.6, 0.3]; // décroissante
+	const LIGHT_INTENSITIES = [1.3, 0.6, 0.3];
 
 	const gridTiles: Tile[] = [];
-	let currentTile: Tile | null = null;
 
 	const CUBE_SIZE = 0.8;
 	const GRID_SIZE = 10;
 	const TILE_HEIGHT = 0.1;
-	const CAMERA_OFFSET = new THREE.Vector3(10, 10, 10);
+	const CAMERA_OFFSET = new THREE.Vector3(5, 6, 5);
 	const ANIMATION_DURATION = 0.3;
 
 	const ROTATION_AXES = {
@@ -36,6 +36,10 @@
 	};
 
 	const CUBE_COLORS = Array(6).fill(0xafc5d0);
+
+	let cameraTarget: THREE.Object3D;
+	const cameraWorldTarget = new THREE.Vector3();
+	const cameraPositionTarget = new THREE.Vector3();
 
 	const createGridTiles = (): void => {
 		const geometry = new THREE.BoxGeometry(0.9, TILE_HEIGHT, 0.9);
@@ -55,25 +59,6 @@
 				gridTiles.push(tile);
 			}
 		}
-	};
-
-	const updateTileHistory = (tile: Tile): void => {
-		if (!tile) return;
-
-		const index = tileHistory.indexOf(tile);
-		if (index !== -1) tileHistory.splice(index, 1);
-
-		tileHistory.unshift(tile);
-
-		if (tileHistory.length > 3) {
-			const removed = tileHistory.pop();
-			if (removed) setTileLight(removed, 0);
-		}
-
-		tileHistory.forEach((t, i) => {
-			const intensity = LIGHT_INTENSITIES[i] ?? 0;
-			setTileLight(t, intensity);
-		});
 	};
 
 	const setTileLight = (tile: Tile, intensity: number): void => {
@@ -112,6 +97,25 @@
 		}
 	};
 
+	const updateTileHistory = (tile: Tile): void => {
+		if (!tile) return;
+
+		const index = tileHistory.indexOf(tile);
+		if (index !== -1) tileHistory.splice(index, 1);
+
+		tileHistory.unshift(tile);
+
+		if (tileHistory.length > 3) {
+			const removed = tileHistory.pop();
+			if (removed) setTileLight(removed, 0);
+		}
+
+		tileHistory.forEach((t, i) => {
+			const intensity = LIGHT_INTENSITIES[i] ?? 0;
+			setTileLight(t, intensity);
+		});
+	};
+
 	const animateTile = (x: number, z: number): void => {
 		const tile = gridTiles.find(
 			(t) => Math.abs(t.position.x - (x + 0.5)) < 0.01 && Math.abs(t.position.z - (z + 0.5)) < 0.01
@@ -141,6 +145,15 @@
 				duration: 0.8,
 				ease: 'power2.out'
 			});
+	};
+
+	const animateCameraTarget = (dx: number, dz: number): void => {
+		gsap.to(cameraTarget.position, {
+			x: cameraTarget.position.x + dx,
+			z: cameraTarget.position.z + dz,
+			duration: ANIMATION_DURATION,
+			ease: 'power2.inOut'
+		});
 	};
 
 	const moveCube = (direction: Direction): void => {
@@ -175,21 +188,17 @@
 
 		switch (direction) {
 			case 'up':
-				console.time('up');
 				animationTimeline.to(cubeContainer.rotation, {
 					duration: ANIMATION_DURATION,
 					x: `-=${Math.PI / 2}`
 				});
 				animateTile(currentX, currentZ - 1);
+				animateCameraTarget(0, -1);
 				animationTimeline.then(() => {
-					console.timeEnd('up');
 					cubeContainer.position.z -= 1;
 					cubeContainer.rotation.x = 0;
 					cube.rotateOnWorldAxis(ROTATION_AXES.x, -Math.PI / 2);
-
 					if (nextTile) updateTileHistory(nextTile);
-					currentTile = nextTile || null;
-
 					isAnimating = false;
 				});
 				break;
@@ -202,14 +211,12 @@
 					x: `+=${Math.PI / 2}`
 				});
 				animateTile(currentX, currentZ + 1);
+				animateCameraTarget(0, 1);
 				animationTimeline.then(() => {
 					cubeContainer.rotation.x = 0;
 					cube.position.z += 1;
 					cube.rotateOnWorldAxis(ROTATION_AXES.x, Math.PI / 2);
-
 					if (nextTile) updateTileHistory(nextTile);
-					currentTile = nextTile || null;
-
 					isAnimating = false;
 				});
 				break;
@@ -220,14 +227,12 @@
 					z: `+=${Math.PI / 2}`
 				});
 				animateTile(currentX - 1, currentZ);
+				animateCameraTarget(-1, 0);
 				animationTimeline.then(() => {
 					cubeContainer.position.x -= 1;
 					cubeContainer.rotation.z = 0;
 					cube.rotateOnWorldAxis(ROTATION_AXES.z, Math.PI / 2);
-
 					if (nextTile) updateTileHistory(nextTile);
-					currentTile = nextTile || null;
-
 					isAnimating = false;
 				});
 				break;
@@ -240,14 +245,12 @@
 					z: `-=${Math.PI / 2}`
 				});
 				animateTile(currentX + 1, currentZ);
+				animateCameraTarget(1, 0);
 				animationTimeline.then(() => {
 					cubeContainer.rotation.z = 0;
 					cube.position.x += 1;
 					cube.rotateOnWorldAxis(ROTATION_AXES.z, -Math.PI / 2);
-
 					if (nextTile) updateTileHistory(nextTile);
-					currentTile = nextTile || null;
-
 					isAnimating = false;
 				});
 				break;
@@ -256,7 +259,6 @@
 
 	const handleKeyDown = (event: KeyboardEvent): void => {
 		if (isAnimating) return;
-
 		switch (event.key) {
 			case 'ArrowUp':
 				moveCube('up');
@@ -284,7 +286,14 @@
 
 	const animate = (): void => {
 		requestAnimationFrame(animate);
-		orbitControls.update();
+		cameraTarget.getWorldPosition(cameraWorldTarget);
+		cameraPositionTarget.set(
+			cameraWorldTarget.x + CAMERA_OFFSET.x,
+			CAMERA_OFFSET.y,
+			cameraWorldTarget.z + CAMERA_OFFSET.z
+		);
+		camera.position.lerp(cameraPositionTarget, 1);
+		camera.lookAt(cameraWorldTarget);
 		renderer.render(scene, camera);
 	};
 
@@ -309,7 +318,6 @@
 		container.appendChild(renderer.domElement);
 
 		scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-
 		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
 		directionalLight.position.set(5, 5, 5);
 		scene.add(directionalLight);
@@ -318,6 +326,9 @@
 
 		cubeContainer = new THREE.Group();
 		scene.add(cubeContainer);
+
+		cameraTarget = new THREE.Object3D();
+		cameraTarget.position.set(0, 0, 0);
 
 		const materials = CUBE_COLORS.map(
 			(color) => new THREE.MeshBasicMaterial({ color, opacity: 0.5, transparent: true })
@@ -328,16 +339,10 @@
 		cubeContainer.add(cube);
 
 		const axesHelper = new THREE.AxesHelper(5);
-		cubeContainer.add(axesHelper);
+		cameraTarget.add(axesHelper);
 
 		orbitControls = new OrbitControls(camera, renderer.domElement);
 		orbitControls.update();
-		orbitControls.keys = {
-			LEFT: 'ArrowLeft',
-			UP: 'ArrowUp',
-			RIGHT: 'ArrowRight',
-			BOTTOM: 'ArrowDown'
-		};
 
 		window.addEventListener('keydown', handleKeyDown);
 		window.addEventListener('resize', handleResize);
