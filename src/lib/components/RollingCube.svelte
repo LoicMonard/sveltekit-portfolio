@@ -18,6 +18,8 @@
 	let cubeContainer: THREE.Group;
 	let orbitControls: OrbitControls;
 	let isAnimating = false;
+	const tileHistory: Tile[] = [];
+	const LIGHT_INTENSITIES = [1.3, 0.6, 0.3]; // décroissante
 
 	const gridTiles: Tile[] = [];
 	let currentTile: Tile | null = null;
@@ -55,28 +57,64 @@
 		}
 	};
 
-	const setTileLight = (tile: Tile, on: boolean): void => {
+	const updateTileHistory = (tile: Tile): void => {
+		if (!tile) return;
+
+		const index = tileHistory.indexOf(tile);
+		if (index !== -1) tileHistory.splice(index, 1);
+
+		tileHistory.unshift(tile);
+
+		if (tileHistory.length > 3) {
+			const removed = tileHistory.pop();
+			if (removed) setTileLight(removed, 0);
+		}
+
+		tileHistory.forEach((t, i) => {
+			const intensity = LIGHT_INTENSITIES[i] ?? 0;
+			setTileLight(t, intensity);
+		});
+	};
+
+	const setTileLight = (tile: Tile, intensity: number): void => {
 		gsap.to(tile.material, {
-			emissiveIntensity: on ? 1 : 0,
-			duration: 0.3,
+			emissiveIntensity: intensity,
+			duration: 1,
 			ease: 'power2.out'
 		});
 
-		if (on && !tile.light) {
-			const light = new THREE.PointLight(0x88ccff, 3, 5);
-			light.position.set(tile.position.x, 1, tile.position.z);
-			scene.add(light);
-			tile.light = light;
-		} else if (!on && tile.light) {
-			scene.remove(tile.light);
-			tile.light.dispose();
-			tile.light = undefined;
+		if (intensity > 0) {
+			if (!tile.light) {
+				const light = new THREE.PointLight(0x88ccff, intensity, 5);
+				light.position.set(tile.position.x, 1, tile.position.z);
+				scene.add(light);
+				tile.light = light;
+			} else {
+				gsap.to(tile.light, {
+					intensity,
+					duration: 1,
+					ease: 'power2.out'
+				});
+			}
+		} else if (tile.light) {
+			gsap.to(tile.light, {
+				intensity: 0,
+				duration: 1,
+				ease: 'power2.out',
+				onComplete: () => {
+					if (tile.light) {
+						scene.remove(tile.light);
+						tile.light.dispose();
+						tile.light = undefined;
+					}
+				}
+			});
 		}
 	};
 
 	const animateTile = (x: number, z: number): void => {
 		const tile = gridTiles.find(
-			t => Math.abs(t.position.x - (x + 0.5)) < 0.01 && Math.abs(t.position.z - (z + 0.5)) < 0.01
+			(t) => Math.abs(t.position.x - (x + 0.5)) < 0.01 && Math.abs(t.position.z - (z + 0.5)) < 0.01
 		);
 
 		if (!tile) {
@@ -87,14 +125,19 @@
 		const startTileY = TILE_HEIGHT / 2;
 		const startCubeY = 0;
 
-		gsap.timeline()
+		gsap
+			.timeline()
+			.to(
+				[tile.position, cubeContainer.position],
+				{
+					y: (index) => (index === 0 ? startTileY - 0.2 : startCubeY - 0.2),
+					duration: 0.2,
+					ease: 'power2.in'
+				},
+				'+=0.1'
+			)
 			.to([tile.position, cubeContainer.position], {
-				y: (index) => index === 0 ? startTileY - 0.2 : startCubeY - 0.2,
-				duration: 0.2,
-				ease: 'power2.in'
-			}, '+=0.1')
-			.to([tile.position, cubeContainer.position], {
-				y: (index) => index === 0 ? startTileY : startCubeY,
+				y: (index) => (index === 0 ? startTileY : startCubeY),
 				duration: 0.8,
 				ease: 'power2.out'
 			});
@@ -110,14 +153,22 @@
 		let nextZ = currentZ;
 
 		switch (direction) {
-			case 'up': nextZ -= 1; break;
-			case 'down': nextZ += 1; break;
-			case 'left': nextX -= 1; break;
-			case 'right': nextX += 1; break;
+			case 'up':
+				nextZ -= 1;
+				break;
+			case 'down':
+				nextZ += 1;
+				break;
+			case 'left':
+				nextX -= 1;
+				break;
+			case 'right':
+				nextX += 1;
+				break;
 		}
 
 		const nextTile = gridTiles.find(
-			t =>
+			(t) =>
 				Math.abs(t.position.x - (nextX + 0.5)) < 0.01 &&
 				Math.abs(t.position.z - (nextZ + 0.5)) < 0.01
 		);
@@ -136,8 +187,7 @@
 					cubeContainer.rotation.x = 0;
 					cube.rotateOnWorldAxis(ROTATION_AXES.x, -Math.PI / 2);
 
-					if (currentTile) setTileLight(currentTile, false);
-					if (nextTile) setTileLight(nextTile, true);
+					if (nextTile) updateTileHistory(nextTile);
 					currentTile = nextTile || null;
 
 					isAnimating = false;
@@ -157,8 +207,7 @@
 					cube.position.z += 1;
 					cube.rotateOnWorldAxis(ROTATION_AXES.x, Math.PI / 2);
 
-					if (currentTile) setTileLight(currentTile, false);
-					if (nextTile) setTileLight(nextTile, true);
+					if (nextTile) updateTileHistory(nextTile);
 					currentTile = nextTile || null;
 
 					isAnimating = false;
@@ -176,8 +225,7 @@
 					cubeContainer.rotation.z = 0;
 					cube.rotateOnWorldAxis(ROTATION_AXES.z, Math.PI / 2);
 
-					if (currentTile) setTileLight(currentTile, false);
-					if (nextTile) setTileLight(nextTile, true);
+					if (nextTile) updateTileHistory(nextTile);
 					currentTile = nextTile || null;
 
 					isAnimating = false;
@@ -197,8 +245,7 @@
 					cube.position.x += 1;
 					cube.rotateOnWorldAxis(ROTATION_AXES.z, -Math.PI / 2);
 
-					if (currentTile) setTileLight(currentTile, false);
-					if (nextTile) setTileLight(nextTile, true);
+					if (nextTile) updateTileHistory(nextTile);
 					currentTile = nextTile || null;
 
 					isAnimating = false;
@@ -211,10 +258,18 @@
 		if (isAnimating) return;
 
 		switch (event.key) {
-			case 'ArrowUp': moveCube('up'); break;
-			case 'ArrowDown': moveCube('down'); break;
-			case 'ArrowLeft': moveCube('left'); break;
-			case 'ArrowRight': moveCube('right'); break;
+			case 'ArrowUp':
+				moveCube('up');
+				break;
+			case 'ArrowDown':
+				moveCube('down');
+				break;
+			case 'ArrowLeft':
+				moveCube('left');
+				break;
+			case 'ArrowRight':
+				moveCube('right');
+				break;
 		}
 	};
 
