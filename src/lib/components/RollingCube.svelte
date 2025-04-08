@@ -25,9 +25,9 @@
 	const gridTiles: Tile[] = [];
 
 	const CUBE_SIZE = 0.8;
-	const GRID_SIZE = 10;
+	const GRID_SIZE = 100;
 	const TILE_HEIGHT = 0.1;
-	const CAMERA_OFFSET = new THREE.Vector3(5, 6, 5);
+	const CAMERA_OFFSET = new THREE.Vector3(8, 6, 8);
 	const ANIMATION_DURATION = 0.3;
 
 	const ROTATION_AXES = {
@@ -44,11 +44,11 @@
 	const createGridTiles = (): void => {
 		const geometry = new THREE.BoxGeometry(0.9, TILE_HEIGHT, 0.9);
 		const material = new THREE.MeshStandardMaterial({
-			color: 0xafc5d0,
+			color: new THREE.Color(0xf0f0f0),
 			emissive: 0x88ccff,
 			emissiveIntensity: 0,
 			transparent: true,
-			opacity: 0.5
+			opacity: 1
 		});
 
 		for (let x = -GRID_SIZE / 2; x < GRID_SIZE / 2; x++) {
@@ -199,6 +199,8 @@
 					cubeContainer.rotation.x = 0;
 					cube.rotateOnWorldAxis(ROTATION_AXES.x, -Math.PI / 2);
 					if (nextTile) updateTileHistory(nextTile);
+					updateTileVisibility(cubeContainer.position);
+
 					isAnimating = false;
 				});
 				break;
@@ -217,6 +219,7 @@
 					cube.position.z += 1;
 					cube.rotateOnWorldAxis(ROTATION_AXES.x, Math.PI / 2);
 					if (nextTile) updateTileHistory(nextTile);
+					updateTileVisibility(cubeContainer.position);
 					isAnimating = false;
 				});
 				break;
@@ -233,6 +236,7 @@
 					cubeContainer.rotation.z = 0;
 					cube.rotateOnWorldAxis(ROTATION_AXES.z, Math.PI / 2);
 					if (nextTile) updateTileHistory(nextTile);
+					updateTileVisibility(cubeContainer.position);
 					isAnimating = false;
 				});
 				break;
@@ -251,6 +255,7 @@
 					cube.position.x += 1;
 					cube.rotateOnWorldAxis(ROTATION_AXES.z, -Math.PI / 2);
 					if (nextTile) updateTileHistory(nextTile);
+					updateTileVisibility(cubeContainer.position);
 					isAnimating = false;
 				});
 				break;
@@ -293,14 +298,43 @@
 			cameraWorldTarget.z + CAMERA_OFFSET.z
 		);
 		camera.position.lerp(cameraPositionTarget, 1);
+		if (cameraTarget) {
+			cameraTarget.getWorldPosition(cameraWorldTarget);
+		}
 		camera.lookAt(cameraWorldTarget);
 		renderer.render(scene, camera);
+	};
+
+	const MAX_VISIBILITY_RADIUS = 4;
+	const FULL_VISIBILITY_RADIUS = 1;
+
+	const updateTileVisibility = (cubePos: THREE.Vector3): void => {
+		gridTiles.forEach((tile) => {
+			const distance = tile.position.distanceTo(
+				new THREE.Vector3(cubePos.x + 0.5, tile.position.y, cubePos.z + 0.5)
+			);
+
+			let targetOpacity = 0;
+
+			if (distance <= FULL_VISIBILITY_RADIUS) {
+				targetOpacity = 1;
+			} else if (distance <= MAX_VISIBILITY_RADIUS) {
+				const t =
+					(distance - FULL_VISIBILITY_RADIUS) / (MAX_VISIBILITY_RADIUS - FULL_VISIBILITY_RADIUS);
+				targetOpacity = THREE.MathUtils.lerp(1, 0, t); // interpolation vers transparent
+			}
+
+			gsap.to(tile.material, {
+				opacity: targetOpacity,
+				duration: 0.6,
+				ease: 'power2.out'
+			});
+		});
 	};
 
 	const init = (): void => {
 		scene = new THREE.Scene();
 		scene.background = new THREE.Color(0xf0f0f0);
-
 		const width = container.clientWidth;
 		const height = container.clientHeight;
 
@@ -326,6 +360,8 @@
 
 		cubeContainer = new THREE.Group();
 		scene.add(cubeContainer);
+
+		updateTileVisibility(cubeContainer.position);
 
 		cameraTarget = new THREE.Object3D();
 		cameraTarget.position.set(0, 0, 0);
