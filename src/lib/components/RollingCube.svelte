@@ -41,6 +41,16 @@
 	const cameraWorldTarget = new THREE.Vector3();
 	const cameraPositionTarget = new THREE.Vector3();
 
+	let lightSoundUp: HTMLAudioElement;
+	let lightSoundRight: HTMLAudioElement;
+
+	onMount(() => {
+		lightSoundUp = new Audio('/swoosh1.mp3');
+		lightSoundUp.volume = 0.5;
+		lightSoundRight = new Audio('/swooshRight.mp3');
+		lightSoundRight.volume = 0.5;
+	});
+
 	const createGridTiles = (): void => {
 		const geometry = new THREE.BoxGeometry(0.9, TILE_HEIGHT, 0.9);
 		const material = new THREE.MeshStandardMaterial({
@@ -112,6 +122,13 @@
 
 		tileHistory.forEach((t, i) => {
 			const intensity = LIGHT_INTENSITIES[i] ?? 0;
+			if (intensity > 0) {
+				lightSoundUp.currentTime = 0;
+				lightSoundUp.play();
+				// lightSoundRight.currentTime = 0;
+				// lightSoundRight.play();
+
+			}
 			setTileLight(t, intensity);
 		});
 	};
@@ -156,6 +173,17 @@
 		});
 	};
 
+	const getTileAt = (x: number, z: number): Tile | undefined => {
+		const tileX = Math.round(x);
+		const tileZ = Math.round(z);
+
+		return gridTiles.find(
+			(t) =>
+				Math.abs(t.position.x - (tileX + 0.5)) < 0.01 &&
+				Math.abs(t.position.z - (tileZ + 0.5)) < 0.01
+		);
+	};
+
 	const moveCube = (direction: Direction): void => {
 		isAnimating = true;
 		const animationTimeline = gsap.timeline();
@@ -180,11 +208,7 @@
 				break;
 		}
 
-		const nextTile = gridTiles.find(
-			(t) =>
-				Math.abs(t.position.x - (nextX + 0.5)) < 0.01 &&
-				Math.abs(t.position.z - (nextZ + 0.5)) < 0.01
-		);
+		const nextTile = getTileAt(nextX, nextZ);
 
 		switch (direction) {
 			case 'up':
@@ -199,8 +223,8 @@
 					cubeContainer.rotation.x = 0;
 					cube.rotateOnWorldAxis(ROTATION_AXES.x, -Math.PI / 2);
 					if (nextTile) updateTileHistory(nextTile);
-					updateTileVisibility(cubeContainer.position);
 
+					updateTileVisibility(cubeContainer.position);
 					isAnimating = false;
 				});
 				break;
@@ -309,10 +333,13 @@
 	const FULL_VISIBILITY_RADIUS = 1;
 
 	const updateTileVisibility = (cubePos: THREE.Vector3): void => {
+		const centerX = Math.round(cubePos.x);
+		const centerZ = Math.round(cubePos.z);
+
 		gridTiles.forEach((tile) => {
-			const distance = tile.position.distanceTo(
-				new THREE.Vector3(cubePos.x + 0.5, tile.position.y, cubePos.z + 0.5)
-			);
+			const dx = Math.abs(tile.position.x - (centerX + 0.5));
+			const dz = Math.abs(tile.position.z - (centerZ + 0.5));
+			const distance = Math.sqrt(dx * dx + dz * dz);
 
 			let targetOpacity = 0;
 
@@ -321,7 +348,7 @@
 			} else if (distance <= MAX_VISIBILITY_RADIUS) {
 				const t =
 					(distance - FULL_VISIBILITY_RADIUS) / (MAX_VISIBILITY_RADIUS - FULL_VISIBILITY_RADIUS);
-				targetOpacity = THREE.MathUtils.lerp(1, 0, t); // interpolation vers transparent
+				targetOpacity = THREE.MathUtils.lerp(1, 0, t);
 			}
 
 			gsap.to(tile.material, {
