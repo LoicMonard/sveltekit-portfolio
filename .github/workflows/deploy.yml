@@ -31,7 +31,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
             cd /home/${{ secrets.REMOTE_USER }}/sveltekit-portfolio
-            pnpm install --frozen-lockfile
-            pnpm run build
+            /home/ubuntu/.nvm/versions/node/v22.3.0/bin/pnpm install --frozen-lockfile
+            /home/ubuntu/.nvm/versions/node/v22.3.0/bin/pnpm run build
             pm2 restart sveltekit-app || pm2 start build/index.js --name sveltekit-app
           EOF
