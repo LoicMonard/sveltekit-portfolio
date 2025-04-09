@@ -127,7 +127,6 @@
 				lightSoundUp.play();
 				// lightSoundRight.currentTime = 0;
 				// lightSoundRight.play();
-
 			}
 			setTileLight(t, intensity);
 		});
@@ -409,6 +408,40 @@
 
 		window.addEventListener('keydown', handleKeyDown);
 		window.addEventListener('resize', handleResize);
+
+		const initialTile = getTileAt(0, 0);
+		const tileY = TILE_HEIGHT / 2;
+		const cubeStartY = 3;
+		const cubeEndY = 0;
+
+		cubeContainer.position.set(0, cubeStartY, 0);
+		if (initialTile) initialTile.position.y = tileY;
+
+		const tl = gsap.timeline();
+
+		tl.to(cubeContainer.position, {
+			y: cubeEndY,
+			duration: 0.6,
+			ease: 'expo.in'
+		})
+			.to(
+				[initialTile?.position, cubeContainer.position],
+				{
+					y: (i) => (i === 0 ? tileY - 0.4 : cubeEndY - 0.4),
+					duration: 0.2,
+					ease: 'expo.out'
+				},
+				'-=0'
+			)
+			.to([initialTile?.position, cubeContainer.position], {
+				y: (i) => (i === 0 ? tileY : cubeEndY),
+				duration: 0.5,
+				ease: 'power2.out'
+			})
+			.add(() => {
+				updateTileVisibility(cubeContainer.position);
+				if (initialTile) updateTileHistory(initialTile);
+			}, '+=0');
 
 		animate();
 	};
