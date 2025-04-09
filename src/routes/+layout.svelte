@@ -1,4 +1,6 @@
 <script>
+	import Header from '$lib/components/Header.svelte';
+
 	import '../app.css';
 </script>
 
@@ -9,4 +11,7 @@
 	/>
 </svelte:head>
 
-<slot />
+<div class="w-screen flex justify-center">
+	<Header />
+	<slot />
+</div>
