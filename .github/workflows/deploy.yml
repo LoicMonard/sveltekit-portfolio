@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up SSH key
+      - name: Set up SSH Key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
@@ -27,11 +27,25 @@ jobs:
             . \
             ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/sveltekit-portfolio/
 
-      - name: SSH into VPS and build + restart
+      - name: Build and restart app on VPS
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-            cd /home/${{ secrets.REMOTE_USER }}/sveltekit-portfolio
-            /home/ubuntu/.nvm/versions/node/v22.3.0/bin/pnpm install --frozen-lockfile
-            /home/ubuntu/.nvm/versions/node/v22.3.0/bin/pnpm run build
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
+            # Forcer la version de Node.js (v22.3.0)
+            export PATH="/home/ubuntu/.nvm/versions/node/v22.3.0/bin:$PATH"
+
+            # Activer PNPM si installé via pnpm setup
+            export PNPM_HOME="/home/ubuntu/.local/share/pnpm"
+            export PATH="$PNPM_HOME:$PATH"
+
+            cd /home/ubuntu/sveltekit-portfolio
+
+            echo "➡️ Node version:"
+            node -v
+            echo "➡️ pnpm version:"
+            pnpm -v
+
+            pnpm install --frozen-lockfile
+            pnpm run build
+
             pm2 restart sveltekit-app || pm2 start build/index.js --name sveltekit-app
           EOF
