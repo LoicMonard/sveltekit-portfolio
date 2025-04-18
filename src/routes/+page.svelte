@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import BentoGrid from '$lib/components/BentoGrid.svelte';
+
 	let title = 'loïc monard';
 </script>
 
@@ -21,15 +23,11 @@
 	</section>
 
 	<section
-		class="w-full flex justify-center bg-[repeating-linear-gradient(90deg,#f9f9f6_0px,#f9f9f6_20px,#fcfcfa_20px,#fcfcfa_40px)] text-black"
+		class="w-full h-screen flex justify-center relative bg-[repeating-linear-gradient(90deg,#f9f9f6_0px,#f9f9f6_20px,#fcfcfa_20px,#fcfcfa_40px)] text-black"
 	>
-		<div class="container h-screen px-4 relative">
-			<div class="absolute w-full top-[-70px]">
-				<div
-					class="text-slate-600 rounded-lg py-4 px-6 border-2 bg-pastel-white border-accent-beige w-[400px] h-[200px]"
-				>
-					This card is a placeholder for the content that will be displayed in this section.
-				</div>
+		<div class="container absolute w-full top-[-70px] px-4">
+			<div class="">
+				<BentoGrid />
 			</div>
 		</div>
 	</section>
