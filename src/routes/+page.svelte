@@ -4,17 +4,17 @@
 	let title = 'loïc monard';
 </script>
 
-<main class="w-full h-full">
+<main class="h-full w-full">
 	<section
-		class="w-full h-[700px] flex border-b-2 border-accent-beige justify-center pt-32 bg-pastel-yellow text-slate-700"
+		class="flex h-[700px] w-full justify-center border-b-2 border-accent-beige bg-pastel-yellow pt-32 text-slate-700"
 	>
-		<div class="container my-16 px-4 flex gap-2 flex-row items-center">
-			<div class="flex flex-col gap-2 items-start">
+		<div class="container my-16 flex flex-row items-center gap-2 px-4">
+			<div class="flex flex-col items-start gap-2">
 				<div class="flex flex-col items-start">
 					<h1 class="text-7xl font-bold">{title}</h1>
 					<h1 class="text-7xl font-semibold">web developper</h1>
 				</div>
-				<p class="text-xl text-wrap">
+				<p class="text-wrap text-xl">
 					front-end specialized web developer. Svelte, Vue.js, Javascript, HTML, CSS.
 				</p>
 			</div>
@@ -23,9 +23,9 @@
 	</section>
 
 	<section
-		class="w-full h-screen flex justify-center relative bg-[repeating-linear-gradient(90deg,#f9f9f6_0px,#f9f9f6_20px,#fcfcfa_20px,#fcfcfa_40px)] text-black"
+		class="relative flex h-screen w-full justify-center bg-[repeating-linear-gradient(90deg,#f9f9f6_0px,#f9f9f6_20px,#fcfcfa_20px,#fcfcfa_40px)] text-black"
 	>
-		<div class="container absolute w-full top-[-70px] px-4">
+		<div class="container absolute top-[-70px] w-full px-4">
 			<div class="">
 				<BentoGrid />
 			</div>

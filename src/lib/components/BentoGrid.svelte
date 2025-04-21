@@ -1,53 +1,53 @@
 <script lang="ts">
 </script>
 
-<div class="flex flex-wrap gap-4 justify-start">
+<div class="flex flex-wrap justify-start gap-4">
 	<div
-		class="text-slate-600 rounded-lg py-4 px-6 border-2 bg-pastel-white border-accent-beige max-w-[50%] flex-1 flex items-center justify-center"
+		class="flex max-w-[50%] flex-1 items-center justify-center rounded-lg border-2 border-accent-beige bg-pastel-white px-6 py-4 text-slate-600"
 	></div>
 	<div
-		class="text-slate-600 rounded-lg aspect-square w-[150px] sm:w-[180px] md:w-[200px] flex items-center justify-center"
+		class="flex aspect-square w-[150px] items-center justify-center rounded-lg text-slate-600 sm:w-[180px] md:w-[200px]"
 	>
-		<div class="grid grid-cols-2 gap-2 w-full h-full">
+		<div class="grid h-full w-full grid-cols-2 gap-2">
 			<div
-				class="transition-transform hover:scale-105 cursor-pointer duration-300 border-2 bg-[#FAE4BD] border-[#f7dcae] rounded-lg flex items-center justify-center"
+				class="flex cursor-pointer items-center justify-center rounded-lg border-2 border-[#f7dcae] bg-[#FAE4BD] transition-transform duration-300 hover:scale-105"
 			>
 				<img
 					src="/svelte_logo_200x200.png"
 					alt="svelte logo"
-					class="filter drop-shadow-[-4px_2px_2px_rgba(171,69,10,0.3)]"
+					class="drop-shadow-[-4px_2px_2px_rgba(171,69,10,0.3)] filter"
 				/>
 			</div>
 			<div
-				class="transition-transform hover:scale-105 cursor-pointer duration-300 border-2 bg-[#DCECCC] border-[#d5e8bc] rounded-lg flex items-center justify-center"
+				class="flex cursor-pointer items-center justify-center rounded-lg border-2 border-[#d5e8bc] bg-[#DCECCC] transition-transform duration-300 hover:scale-105"
 			>
 				<img
 					src="/vuejs_logo_200x200.png"
 					alt="vuejs logo"
-					class="filter drop-shadow-[-4px_2px_2px_rgba(62,99,79,.3)]"
+					class="drop-shadow-[-4px_2px_2px_rgba(62,99,79,.3)] filter"
 				/>
 			</div>
 			<div
-				class="transition-transform hover:scale-105 cursor-pointer duration-300 border-[#f6ed76] bg-pastel-yellow border-2 rounded-lg flex items-center justify-center"
+				class="flex cursor-pointer items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-pastel-yellow transition-transform duration-300 hover:scale-105"
 			>
 				<img
 					src="/js_logo_no_bg_200x200.png"
 					alt="vuejs logo"
-					class="filter drop-shadow-[-4px_2px_2px_rgba(0,0,0,0.3)]"
+					class="drop-shadow-[-4px_2px_2px_rgba(0,0,0,0.3)] filter"
 				/>
 			</div>
 			<div
-				class="transition-transform hover:scale-105 cursor-pointer duration-300 border-2 bg-[#D0E3E1] border-[#c7dedd] rounded-lg flex items-center justify-center"
+				class="flex cursor-pointer items-center justify-center rounded-lg border-2 border-[#c7dedd] bg-[#D0E3E1] transition-transform duration-300 hover:scale-105"
 			>
 				<img
 					src="/css3_logo_200x200.png"
 					alt="vuejs logo"
-					class="filter drop-shadow-[-4px_2px_2px_rgba(0,0,0,0.2)]"
+					class="drop-shadow-[-4px_2px_2px_rgba(0,0,0,0.2)] filter"
 				/>
 			</div>
 		</div>
 	</div>
 	<div
-		class=" text-slate-600 rounded-lg py-4 px-6 border-2 bg-pastel-white border-accent-beige flex-1 flex items-center justify-center"
+		class=" flex flex-1 items-center justify-center rounded-lg border-2 border-accent-beige bg-pastel-white px-6 py-4 text-slate-600"
 	></div>
 </div>

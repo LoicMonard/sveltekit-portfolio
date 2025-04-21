@@ -11,7 +11,7 @@
 	/>
 </svelte:head>
 
-<div class="w-screen flex justify-center">
+<div class="flex w-screen justify-center">
 	<Header />
 	<slot />
 </div>
