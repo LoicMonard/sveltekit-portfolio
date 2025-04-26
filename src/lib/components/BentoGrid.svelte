@@ -40,7 +40,7 @@
 		<p>Sinon</p>
 	</Card>
 
-	<Card id="skills" colSpan={1} rowSpan={1} {containerRef} cardClass="">
+	<Card id="skills" colSpan={1} rowSpan={1} {containerRef} cardClass="" expandable={false}>
 		<span slot="preview">
 			<div class="flex h-full items-center justify-center rounded-lg text-slate-600">
 				<div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">

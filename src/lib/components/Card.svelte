@@ -6,6 +6,7 @@
 	export let title: string;
 	export let containerRef: HTMLDivElement;
 	export let cardClass: string = 'rounded-lg border bg-white p-6';
+	export let expandable: boolean = true;
 	export let colSpan: number = 1;
 	export let rowSpan: number = 1;
 
@@ -17,6 +18,10 @@
 	$: isDimmed = $activeCard !== null && $activeCard !== id;
 
 	const handleClick = async () => {
+		if (!expandable) {
+			return;
+		}
+
 		if (!containerRef) {
 			console.warn('containerRef is not passed to Card');
 			return;
@@ -56,6 +61,8 @@
 	class:invisible={showOverlay}
 	class:opacity-30={isDimmed}
 	class:blur-sm={isDimmed}
+  class:cursor-pointer={expandable}
+  class:cursor-default={!expandable}
 	on:click={handleClick}
 	on:keydown={(e) => e.key === 'Enter' && handleClick()}
 	tabindex="0"
