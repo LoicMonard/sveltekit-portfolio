@@ -23,10 +23,10 @@
 	</div>
 
 	<Card id="test" title="Test" colSpan={2} rowSpan={1} {containerRef}>
-		<span slot="preview"
-			>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum assumenda libero animi
-			illum? Soluta fugiat nam recusandae illo animi provident.</span
-		>
+		<div slot="preview">
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum assumenda libero animi
+			illum? Soluta fugiat nam recusandae illo animi provident.
+		</div>
 		<p>
 			Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo veritatis voluptas mollitia
 			illum possimus totam tempora nostrum officia provident temporibus!
@@ -40,7 +40,7 @@
 		<p>Sinon</p>
 	</Card>
 
-	<Card id="skills" colSpan={1} rowSpan={1} {containerRef}>
+	<Card id="skills" colSpan={1} rowSpan={1} {containerRef} cardClass="">
 		<span slot="preview">
 			<div class="flex h-full items-center justify-center rounded-lg text-slate-600">
 				<div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">

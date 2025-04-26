@@ -5,6 +5,7 @@
 	export let id: string;
 	export let title: string;
 	export let containerRef: HTMLDivElement;
+	export let cardClass: string = 'rounded-lg border bg-white p-6';
 	export let colSpan: number = 1;
 	export let rowSpan: number = 1;
 
@@ -51,7 +52,7 @@
 
 <div
 	bind:this={cardRef}
-	class={`rounded-lg border bg-white p-6 transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan}`}
+	class={`${cardClass} transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan}`}
 	class:invisible={showOverlay}
 	class:opacity-30={isDimmed}
 	class:blur-sm={isDimmed}
@@ -81,7 +82,6 @@
 			<button on:click={closeOverlay} class="absolute right-4 top-4 rounded bg-gray-200 px-3 py-1">
 				⬅ Retour
 			</button>
-			{showOverlay}
 			<h2 class="font-bold">{title}</h2>
 			{#if $$slots.detailed}
 				<slot name="detailed" />
