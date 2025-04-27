@@ -48,9 +48,9 @@
 
 	const closeOverlay = () => {
 		expanded = false;
+		activeCard.set(null);
 		setTimeout(() => {
 			showOverlay = false;
-			activeCard.set(null);
 		}, 500);
 	};
 </script>
@@ -60,9 +60,8 @@
 	class={`${cardClass} transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan}`}
 	class:invisible={showOverlay}
 	class:opacity-30={isDimmed}
-	class:blur-sm={isDimmed}
-  class:cursor-pointer={expandable}
-  class:cursor-default={!expandable}
+	class:cursor-pointer={expandable}
+	class:cursor-default={!expandable}
 	on:click={handleClick}
 	on:keydown={(e) => e.key === 'Enter' && handleClick()}
 	tabindex="0"
@@ -77,7 +76,7 @@
 
 {#if showOverlay}
 	<div
-		class="absolute z-50 overflow-hidden rounded-lg border bg-white transition-all duration-500 ease-in-out lg:col-span-2 lg:row-span-1"
+		class="absolute z-50 overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1"
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};
