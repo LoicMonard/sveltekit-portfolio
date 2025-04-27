@@ -17,11 +17,15 @@
 
 	$: isDimmed = $activeCard !== null && $activeCard !== id;
 
-	const handleClick = async () => {
-		if (!expandable) {
-			return;
-		}
+	$: if ($activeCard !== id && showOverlay) {
+		expanded = false;
+		setTimeout(() => {
+			showOverlay = false;
+		}, 300);
+	}
 
+	const handleClick = async () => {
+		if (!expandable) return;
 		if (!containerRef) {
 			console.warn('containerRef is not passed to Card');
 			return;
@@ -37,12 +41,11 @@
 			height: cardBox.height
 		};
 
-		showOverlay = true;
-
 		await tick();
+		activeCard.set(id);
+		showOverlay = true;
 		requestAnimationFrame(() => {
 			expanded = true;
-			activeCard.set(id);
 		});
 	};
 
@@ -51,7 +54,7 @@
 		activeCard.set(null);
 		setTimeout(() => {
 			showOverlay = false;
-		}, 500);
+		}, 300);
 	};
 </script>
 
@@ -76,13 +79,14 @@
 
 {#if showOverlay}
 	<div
-		class="absolute z-50 overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1"
+		class={`absolute ${expanded ? 'z-50' : 'z-20'} overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};
       width: {expanded ? '90%' : rect.width + 'px'};
       height: {expanded ? '90%' : rect.height + 'px'};
     "
+		class:opacity-30={isDimmed}
 	>
 		<div class="relative h-full overflow-auto p-6">
 			<button on:click={closeOverlay} class="absolute right-4 top-4 rounded bg-gray-200 px-3 py-1">
