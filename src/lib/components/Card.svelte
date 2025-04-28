@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { activeCard } from '$lib/stores';
 	import { tick } from 'svelte';
+	import { Maximize, Minimize } from 'lucide-svelte';
 
 	export let id: string;
 	export let title: string;
@@ -50,6 +51,7 @@
 	};
 
 	const closeOverlay = () => {
+		console.log('click');
 		expanded = false;
 		activeCard.set(null);
 		setTimeout(() => {
@@ -60,21 +62,30 @@
 
 <div
 	bind:this={cardRef}
-	class={`${cardClass} transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan}`}
+	class={`${cardClass} transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
 	class:invisible={showOverlay}
 	class:opacity-50={isDimmed}
 	class:cursor-pointer={expandable}
 	class:cursor-default={!expandable}
-	on:click={handleClick}
-	on:keydown={(e) => e.key === 'Enter' && handleClick()}
-	tabindex="0"
-	aria-label="Ouvrir la carte {title}"
-	role="button"
 >
-	{#if title}
-		<h2 class="font-bold">{title}</h2>
-	{/if}
-	<slot name="preview" />
+	<div class="flex items-center justify-between">
+		{#if title}
+			<h2 class="font-bold">{title}</h2>
+			{#if expandable}
+				<button
+					on:click={handleClick}
+					on:keydown={(e) => e.key === 'Enter' && handleClick()}
+					tabindex="0"
+					aria-label="Ouvrir la carte {title}"
+				>
+					<Maximize class="h-5 w-5 text-gray-500" strokeWidth={2.5} />
+				</button>
+			{/if}
+		{/if}
+	</div>
+	<div class="flex-1">
+		<slot class="flex-1" name="preview" />
+	</div>
 </div>
 
 {#if showOverlay}
@@ -89,12 +100,19 @@
 		class:opacity-30={isDimmed}
 	>
 		<div class="relative h-full overflow-auto p-6">
-			<button on:click={closeOverlay} class="absolute right-4 top-4 rounded bg-gray-200 px-3 py-1">
-				⬅ Retour
-			</button>
-			{#if title}
-				<h2 class="font-bold">{title}</h2>
-			{/if}
+			<div class="flex items-center justify-between">
+				{#if title}
+					<h2 class="font-bold">{title}</h2>
+				{/if}
+				<button on:click={closeOverlay} tabindex="0" aria-label="Fermer la carte {title}">
+					<Minimize
+						on:click={closeOverlay}
+						role="button"
+						class="h-5 w-5 cursor-pointer text-gray-500"
+						strokeWidth={2.5}
+					/>
+				</button>
+			</div>
 			{#if $$slots.detailed}
 				<slot name="detailed" />
 			{:else}
