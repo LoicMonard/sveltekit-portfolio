@@ -62,7 +62,7 @@
 	bind:this={cardRef}
 	class={`${cardClass} transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan}`}
 	class:invisible={showOverlay}
-	class:opacity-30={isDimmed}
+	class:opacity-50={isDimmed}
 	class:cursor-pointer={expandable}
 	class:cursor-default={!expandable}
 	on:click={handleClick}
@@ -79,7 +79,7 @@
 
 {#if showOverlay}
 	<div
-		class={`absolute ${expanded ? 'z-50' : 'z-20'} overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
+		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'} overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};
@@ -92,7 +92,9 @@
 			<button on:click={closeOverlay} class="absolute right-4 top-4 rounded bg-gray-200 px-3 py-1">
 				⬅ Retour
 			</button>
-			<h2 class="font-bold">{title}</h2>
+			{#if title}
+				<h2 class="font-bold">{title}</h2>
+			{/if}
 			{#if $$slots.detailed}
 				<slot name="detailed" />
 			{:else}
