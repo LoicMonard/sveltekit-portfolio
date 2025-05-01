@@ -1,7 +1,76 @@
 <script lang="ts">
 	import Card from '$lib/components/Card.svelte';
+	import ListScroller from './ListScroller.svelte';
+
+	const experiences = [
+		{
+			company: 'TechCorp',
+			dateStart: new Date(2020, 0, 1),
+			dateEnd: new Date(2021, 11, 31),
+			skills: ['JavaScript', 'React', 'Node.js'],
+			icon: '/techcorp_logo.png',
+			shortDescription: 'Developed scalable web applications using React and Node.js.'
+		},
+		{
+			company: 'WebSolutions',
+			dateStart: new Date(2019, 5, 1),
+			dateEnd: new Date(2020, 11, 31),
+			skills: ['HTML', 'CSS', 'Vue.js'],
+			icon: '/websolutions_logo.png',
+			shortDescription: 'Created responsive websites and implemented Vue.js components.'
+		},
+		{
+			company: 'DesignStudio',
+			dateStart: new Date(2018, 2, 1),
+			dateEnd: new Date(2019, 4, 30),
+			skills: ['Photoshop', 'Illustrator', 'UI/UX'],
+			icon: '/designstudio_logo.png',
+			shortDescription: 'Designed user interfaces and graphics for various digital platforms.'
+		},
+		{
+			company: 'AppDev Inc.',
+			dateStart: new Date(2021, 0, 1),
+			dateEnd: new Date(2022, 6, 31),
+			skills: ['Kotlin', 'Swift', 'Mobile Development'],
+			icon: '/appdev_logo.png',
+			shortDescription: 'Developed mobile applications for Android and iOS platforms.'
+		},
+		{
+			company: 'DataAnalytics Co.',
+			dateStart: new Date(2017, 8, 1),
+			dateEnd: new Date(2018, 1, 31),
+			skills: ['Python', 'Pandas', 'Data Visualization'],
+			icon: '/dataanalytics_logo.png',
+			shortDescription: 'Analyzed data and created visualizations to support business decisions.'
+		},
+		{
+			company: 'CloudNet',
+			dateStart: new Date(2016, 0, 1),
+			dateEnd: new Date(2017, 7, 31),
+			skills: ['AWS', 'Docker', 'Kubernetes'],
+			icon: '/cloudnet_logo.png',
+			shortDescription: 'Implemented cloud infrastructure and containerized applications.'
+		},
+		{
+			company: 'GameStudio',
+			dateStart: new Date(2015, 3, 1),
+			dateEnd: new Date(2016, 11, 31),
+			skills: ['Unity', 'C#', 'Game Design'],
+			icon: '/gamestudio_logo.png',
+			shortDescription: 'Developed and designed engaging video games using Unity and C#.'
+		},
+		{
+			company: 'EduTech',
+			dateStart: new Date(2014, 6, 1),
+			dateEnd: new Date(2015, 2, 28),
+			skills: ['Java', 'Spring', 'E-learning Platforms'],
+			icon: '/edutech_logo.png',
+			shortDescription: 'Built and maintained e-learning platforms using Java and Spring.'
+		}
+	];
 
 	let containerRef: HTMLDivElement;
+	let listContainerRef: HTMLDivElement;
 </script>
 
 <div
@@ -15,19 +84,12 @@
 			<p class="mt-2 text-gray-600">
 				I specialize in creating modern, responsive, and user-friendly websites.
 			</p>
-			<a
-				href="/contact"
-				class="mt-4 inline-block rounded bg-blue-500 px-4 py-2 text-white transition-colors duration-300 hover:bg-blue-600"
-			>
-				Contact Me
-			</a>
 		</div>
 	</Card>
 
 	<Card id="test" title="Test" colSpan={2} rowSpan={1} {containerRef}>
-		<div slot="preview">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum assumenda libero animi
-			illum? Soluta fugiat nam recusandae illo animi provident.
+		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
+			<ListScroller items={experiences} parentRef={listContainerRef} />
 		</div>
 		<p>
 			Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo veritatis voluptas mollitia
@@ -35,8 +97,15 @@
 		</p>
 	</Card>
 
-	<Card id="anotherone" title="anotherone" colSpan={1} rowSpan={2} {containerRef}>
-		<span slot="preview">Aperçu rapide ici.</span>
+	<Card
+		id="anotherone"
+		title="anotherone"
+		colSpan={1}
+		rowSpan={2}
+		{containerRef}
+	>
+		<span slot="preview">
+		</span>
 		<p>Sinon</p>
 	</Card>
 
@@ -46,7 +115,7 @@
 	</Card>
 
 	<Card id="skills" colSpan={1} rowSpan={1} {containerRef} cardClass="" expandable={false}>
-		<span slot="preview">
+		<div slot="preview" class="h-full">
 			<div class="flex h-full items-center justify-center rounded-lg text-slate-600">
 				<div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">
 					<div
@@ -87,7 +156,7 @@
 					</div>
 				</div>
 			</div>
-		</span>
+		</div>
 		<p>Sinon</p>
 	</Card>
 </div>

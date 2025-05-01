@@ -62,7 +62,7 @@
 
 <div
 	bind:this={cardRef}
-	class={`${cardClass} transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
+	class={`${cardClass} relative overflow-hidden transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
 	class:invisible={showOverlay}
 	class:opacity-50={isDimmed}
 	class:cursor-pointer={expandable}
@@ -83,9 +83,7 @@
 			{/if}
 		{/if}
 	</div>
-	<div class="flex-1">
-		<slot class="flex-1" name="preview" />
-	</div>
+	<slot class="flex-1" name="preview" />
 </div>
 
 {#if showOverlay}
