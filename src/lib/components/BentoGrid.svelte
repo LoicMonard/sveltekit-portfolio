@@ -77,6 +77,7 @@
 	bind:this={containerRef}
 	class="relative grid auto-rows-[250px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
 >
+	
 	<Card id="yes" colSpan={1} rowSpan={1} {containerRef}>
 		<div slot="preview">
 			<div class="text-center"></div>
@@ -87,7 +88,7 @@
 		</div>
 	</Card>
 
-	<Card id="test" title="Test" colSpan={2} rowSpan={1} {containerRef}>
+	<Card id="test" title="Test" colSpan={2} rowSpan={1} {containerRef} cardClass="">
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
 			<ListScroller items={experiences} parentRef={listContainerRef} />
 		</div>
@@ -97,15 +98,8 @@
 		</p>
 	</Card>
 
-	<Card
-		id="anotherone"
-		title="anotherone"
-		colSpan={1}
-		rowSpan={2}
-		{containerRef}
-	>
-		<span slot="preview">
-		</span>
+	<Card id="anotherone" title="anotherone" colSpan={1} rowSpan={2} {containerRef}>
+		<span slot="preview"> </span>
 		<p>Sinon</p>
 	</Card>
 

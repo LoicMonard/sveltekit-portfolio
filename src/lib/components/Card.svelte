@@ -62,7 +62,7 @@
 
 <div
 	bind:this={cardRef}
-	class={`${cardClass} relative overflow-hidden transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
+	class={`${cardClass} relative transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
 	class:invisible={showOverlay}
 	class:opacity-50={isDimmed}
 	class:cursor-pointer={expandable}
@@ -88,7 +88,7 @@
 
 {#if showOverlay}
 	<div
-		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'} overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
+		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'}  rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};
