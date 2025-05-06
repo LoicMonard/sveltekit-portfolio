@@ -8,14 +8,12 @@ dependencies:
   gsap:
     specifier: ^3.12.7
     version: 3.12.7
-  three:
-    specifier: ^0.175.0
-    version: 0.175.0
-
-dependencies:
   lucide-svelte:
     specifier: ^0.503.0
     version: 0.503.0(svelte@4.2.18)
+  three:
+    specifier: ^0.175.0
+    version: 0.175.0
 
 devDependencies:
   '@sveltejs/adapter-auto':

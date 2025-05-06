@@ -54,8 +54,8 @@
 	const createGridTiles = (): void => {
 		const geometry = new THREE.BoxGeometry(0.9, TILE_HEIGHT, 0.9);
 		const material = new THREE.MeshStandardMaterial({
-			color: new THREE.Color(0xf0f0f0),
-			emissive: 0x88ccff,
+			color: new THREE.Color(0xffffff),
+			emissive: 0xEE7A31,
 			emissiveIntensity: 0,
 			transparent: true,
 			opacity: 1
@@ -80,7 +80,7 @@
 
 		if (intensity > 0) {
 			if (!tile.light) {
-				const light = new THREE.PointLight(0x88ccff, intensity, 5);
+				const light = new THREE.PointLight(0xEE7A31, intensity, 5);
 				light.position.set(tile.position.x, 1, tile.position.z);
 				scene.add(light);
 				tile.light = light;
@@ -360,7 +360,6 @@
 
 	const init = (): void => {
 		scene = new THREE.Scene();
-		scene.background = new THREE.Color(0xf0f0f0);
 		const width = container.clientWidth;
 		const height = container.clientHeight;
 
