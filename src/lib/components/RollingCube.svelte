@@ -18,6 +18,7 @@
 	let cubeContainer: THREE.Group;
 	let orbitControls: OrbitControls;
 	let isAnimating = false;
+	let hasStarted = false;
 
 	const tileHistory: Tile[] = [];
 	const LIGHT_INTENSITIES = [1.3, 0.6, 0.3];
@@ -51,11 +52,22 @@
 		lightSoundRight.volume = 0.5;
 	});
 
+	export const start = (): void => {
+		hasStarted = true;
+		gsap.to(cameraTarget.position, {
+			x: 0,
+			y: 0,
+			z: 0,
+			duration: 1,
+			ease: 'power2.inOut'
+		});
+	};
+
 	const createGridTiles = (): void => {
 		const geometry = new THREE.BoxGeometry(0.9, TILE_HEIGHT, 0.9);
 		const material = new THREE.MeshStandardMaterial({
 			color: new THREE.Color(0xffffff),
-			emissive: 0xEE7A31,
+			emissive: 0xee7a31,
 			emissiveIntensity: 0,
 			transparent: true,
 			opacity: 1
@@ -80,7 +92,7 @@
 
 		if (intensity > 0) {
 			if (!tile.light) {
-				const light = new THREE.PointLight(0xEE7A31, intensity, 5);
+				const light = new THREE.PointLight(0xee7a31, intensity, 5);
 				light.position.set(tile.position.x, 1, tile.position.z);
 				scene.add(light);
 				tile.light = light;
@@ -286,6 +298,11 @@
 	};
 
 	const handleKeyDown = (event: KeyboardEvent): void => {
+		if (!hasStarted) {
+			start();
+			return;
+		}
+
 		if (isAnimating) return;
 		switch (event.key) {
 			case 'ArrowUp':
@@ -363,7 +380,7 @@
 		const width = container.clientWidth;
 		const height = container.clientHeight;
 
-		camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+		camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
 		camera.position.copy(CAMERA_OFFSET);
 		camera.lookAt(0, 0, 0);
 
@@ -377,6 +394,7 @@
 		container.appendChild(renderer.domElement);
 
 		scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
 		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
 		directionalLight.position.set(5, 5, 5);
 		scene.add(directionalLight);
@@ -389,7 +407,7 @@
 		updateTileVisibility(cubeContainer.position);
 
 		cameraTarget = new THREE.Object3D();
-		cameraTarget.position.set(0, 0, 0);
+		cameraTarget.position.set(-2, 0, 2);
 
 		const materials = CUBE_COLORS.map(
 			(color) => new THREE.MeshBasicMaterial({ color, opacity: 0.5, transparent: true })
@@ -399,9 +417,6 @@
 		cube.position.set(0.5, 0.5, 0.5);
 		cubeContainer.add(cube);
 
-		const axesHelper = new THREE.AxesHelper(5);
-		cameraTarget.add(axesHelper);
-
 		orbitControls = new OrbitControls(camera, renderer.domElement);
 		orbitControls.update();
 
@@ -410,7 +425,7 @@
 
 		const initialTile = getTileAt(0, 0);
 		const tileY = TILE_HEIGHT / 2;
-		const cubeStartY = 3;
+		const cubeStartY = 2;
 		const cubeEndY = 0;
 
 		cubeContainer.position.set(0, cubeStartY, 0);
@@ -418,29 +433,29 @@
 
 		const tl = gsap.timeline();
 
-		tl.to(cubeContainer.position, {
-			y: cubeEndY,
-			duration: 0.6,
-			ease: 'expo.in'
-		})
-			.to(
-				[initialTile?.position, cubeContainer.position],
-				{
-					y: (i) => (i === 0 ? tileY - 0.4 : cubeEndY - 0.4),
-					duration: 0.2,
-					ease: 'expo.out'
-				},
-				'-=0'
-			)
-			.to([initialTile?.position, cubeContainer.position], {
-				y: (i) => (i === 0 ? tileY : cubeEndY),
-				duration: 0.5,
-				ease: 'power2.out'
-			})
-			.add(() => {
-				updateTileVisibility(cubeContainer.position);
-				if (initialTile) updateTileHistory(initialTile);
-			}, '+=0');
+		// tl.to(cubeContainer.position, {
+		// 	y: cubeEndY,
+		// 	duration: 0.6,
+		// 	ease: 'expo.in'
+		// })
+		// 	.to(
+		// 		[initialTile?.position, cubeContainer.position],
+		// 		{
+		// 			y: (i) => (i === 0 ? tileY - 0.4 : cubeEndY - 0.4),
+		// 			duration: 0.2,
+		// 			ease: 'expo.out'
+		// 		},
+		// 		'-=0'
+		// 	)
+		// 	.to([initialTile?.position, cubeContainer.position], {
+		// 		y: (i) => (i === 0 ? tileY : cubeEndY),
+		// 		duration: 0.5,
+		// 		ease: 'power2.out'
+		// 	})
+		// 	.add(() => {
+		// 		updateTileVisibility(cubeContainer.position);
+		// 		if (initialTile) updateTileHistory(initialTile);
+		// 	}, '+=0');
 
 		animate();
 	};
@@ -455,7 +470,7 @@
 	});
 </script>
 
-<div bind:this={container} class="w-full h-full" />
+<div bind:this={container} class="flex h-full w-full items-center justify-center" />
 
 <style>
 	div {
