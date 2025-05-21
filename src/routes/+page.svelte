@@ -40,7 +40,7 @@
 			</div>
 			<div class="z-10 h-fit min-w-[50%]">
 				<div
-					class={`${isSceneActive ? 'max-h-[100vh]' : 'max-h-[800px]'} absolute right-0 top-0 h-full w-full overflow-hidden rounded-lg border-gray-300 transition-all duration-500`}
+					class={`${isSceneActive ? 'max-h-[100vh]' : 'max-h-[800px]'} z-0 absolute right-0 top-0 h-full w-full overflow-hidden rounded-lg border-gray-300 transition-all duration-500`}
 				>
 					<RollingCube bind:this={sceneRef} />
 				</div>
