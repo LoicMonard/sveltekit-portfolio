@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { Moon, SunMedium } from 'lucide-svelte';
 	import { tick } from 'svelte';
+	import { theme } from '../stores/theme';
 
 	let animate = false;
 	let phase = 0;
-	let isDark = false;
+
+	$: isDark = $theme === 'dark';
 
 	async function triggerAnimation() {
 		animate = true;
@@ -12,24 +14,20 @@
 		if (!isDark) {
 			phase = 1;
 			await tick();
-
 			await new Promise((r) => setTimeout(r, 150));
 			phase = 2;
-
 			await new Promise((r) => setTimeout(r, 10));
 			phase = 3;
 		} else {
 			phase = 4;
 			await tick();
-
 			await new Promise((r) => setTimeout(r, 150));
 			phase = 5;
-
 			await new Promise((r) => setTimeout(r, 10));
 			phase = 0;
 		}
 
-		isDark = !isDark;
+		theme.set(isDark ? 'light' : 'dark');
 		animate = false;
 	}
 </script>
@@ -44,12 +42,10 @@
 			aria-label="Toggle theme"
 		>
 			<div
-				class="bubble absolute z-0 h-6 rounded-full bg-slate-700 transition-all"
+				class="bubble absolute z-0 h-6 rounded-full bg-slate-700 transition-all dark:bg-slate-600"
 				class:left-[0.25rem]={phase === 0 || phase === 1}
 				class:right-[0.25rem]={phase === 2 || phase === 3 || phase === 4}
-				style="
-					width: {phase === 1 || phase === 2 || phase === 4 ? 'calc(100% - 1rem)' : '1.5rem'};
-				"
+				style="width: {phase === 1 || phase === 2 || phase === 4 ? 'calc(100% - 1rem)' : '1.5rem'};"
 			></div>
 			<SunMedium
 				class={`${isDark ? 'rotate-[75deg] text-slate-400' : 'text-white'} z-10 h-4 w-4 cursor-pointer transition-all duration-500`}
