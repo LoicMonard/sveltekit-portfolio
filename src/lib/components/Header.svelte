@@ -42,7 +42,7 @@
 			aria-label="Toggle theme"
 		>
 			<div
-				class="bubble absolute z-0 h-6 rounded-full bg-slate-700 transition-all dark:bg-slate-600"
+				class="bubble absolute z-0 h-6 rounded-full bg-blue-500 transition-all dark:bg-blue-500"
 				class:left-[0.25rem]={phase === 0 || phase === 1}
 				class:right-[0.25rem]={phase === 2 || phase === 3 || phase === 4}
 				style="width: {phase === 1 || phase === 2 || phase === 4 ? 'calc(100% - 1rem)' : '1.5rem'};"
