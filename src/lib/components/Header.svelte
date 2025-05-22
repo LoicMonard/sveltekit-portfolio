@@ -7,6 +7,7 @@
 	let phase = 0;
 
 	$: isDark = $theme === 'dark';
+	$: phase = isDark ? 3 : 0;
 
 	async function triggerAnimation() {
 		animate = true;
