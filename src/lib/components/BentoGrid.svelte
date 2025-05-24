@@ -131,7 +131,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-pastel-yellow transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-background-light dark:bg-background-dark transition-transform duration-300 hover:scale-105"
 					>
 						<img
 							src="/js_logo_no_bg_200x200.png"

@@ -66,9 +66,9 @@
 		{#if $activeIndex > 0}
 			<button
 				on:click={prev}
-				class="absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full bg-white p-2 shadow transition hover:bg-gray-100"
+				class="bg-surface-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
 			>
-				<ChevronUp class="h-6 w-6 text-gray-800" />
+				<ChevronUp class="h-6 w-6 text-text-dark dark:text-text-light" />
 			</button>
 		{/if}
 
@@ -79,10 +79,17 @@
 			{#each items as item, i (item)}
 				<div
 					bind:this={itemRefs[i]}
-					class="absolute z-30 flex w-[100%] origin-top rounded-lg  bg-gray-50 px-4 py-2 transition-transform"
-					class:border-2={$activeIndex === i}
-					class:!bg-gray-100={$activeIndex === i}
-					style={`transform: ${i < $activeIndex ? getTransform(i, $activeIndex) : `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`};`}
+					class={`border-border-light border dark:border-border-dark absolute z-30 flex w-[100%] origin-top rounded-lg px-4 py-2 transition-transform
+						${
+							$activeIndex === i
+								? 'bg-surface-lighthover dark:bg-surface-darkhover border-2 '
+								: 'bg-surface-light dark:bg-surface-dark'
+						}`}
+					style={`transform: ${
+						i < $activeIndex
+							? getTransform(i, $activeIndex)
+							: `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`
+					};`}
 				>
 					<div class="flex gap-4">
 						<Apple class="h-5 w-5 text-gray-800" />
@@ -112,9 +119,9 @@
 		{#if $activeIndex + itemsPerView < items.length}
 			<button
 				on:click={next}
-				class="absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-white p-2 shadow transition hover:bg-gray-100"
+				class="bg-surface-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
 			>
-				<ChevronDown class="h-6 w-6 text-gray-800" />
+				<ChevronDown class="h-6 w-6 text-text-dark dark:text-text-light" />
 			</button>
 		{/if}
 	</div>

@@ -7,7 +7,7 @@
 	export let id: string;
 	export let title: string;
 	export let containerRef: HTMLDivElement;
-	export let cardClass: string = 'rounded-lg border bg-white p-6';
+	export let cardClass: string = 'rounded-lg border bg-surface-light dark:bg-surface-dark p-6';
 	export let expandable: boolean = true;
 	export let colSpan: number = 1;
 	export let rowSpan: number = 1;
@@ -63,7 +63,7 @@
 
 <div
 	bind:this={cardRef}
-	class={`${cardClass} relative transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
+	class={`${cardClass} dark:border-border-dark border-border-light relative transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
 	class:invisible={showOverlay}
 	class:opacity-50={isDimmed}
 	class:cursor-pointer={expandable}
@@ -89,7 +89,7 @@
 
 {#if showOverlay}
 	<div
-		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'}  rounded-lg border bg-white transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
+		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'}  rounded-lg border bg-surface-light dark:bg-surface-dark transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};

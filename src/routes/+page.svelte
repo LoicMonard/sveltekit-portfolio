@@ -18,7 +18,7 @@
 
 <main class="h-full w-full">
 	<section
-		class={`${isSceneActive ? 'h-[100vh]' : 'h-[700px]'} flex w-full justify-center border-b-2 border-accent-beige bg-pastel-yellow pt-32 text-slate-700 transition-all duration-500`}
+		class={`${isSceneActive ? 'h-[100vh]' : 'h-[800px]'} border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark flex w-full justify-center border-b-2 pt-32 text-slate-700 transition-all duration-500`}
 	>
 		<div class="container mb-20 flex flex-row items-center gap-2 px-4">
 			<div
@@ -33,14 +33,14 @@
 				</p>
 				<button
 					on:click={toggleScene}
-					class="text-md mt-4 rounded-lg border-2 border-slate-800 bg-pastel-yellow px-4 py-2 font-semibold text-slate-800"
+					class="text-md bg-background-light dark:bg-background-dark mt-4 rounded-lg border-2 border-slate-800 px-4 py-2 font-semibold text-slate-800"
 				>
 					See my work
 				</button>
 			</div>
 			<div class="z-10 h-fit min-w-[50%]">
 				<div
-					class={`${isSceneActive ? 'max-h-[100vh]' : 'max-h-[800px]'} z-0 absolute right-0 top-0 h-full w-full overflow-hidden rounded-lg border-gray-300 transition-all duration-500`}
+					class={`${isSceneActive ? 'max-h-[100vh]' : 'max-h-[800px]'} absolute right-0 top-0 z-0 h-full w-full overflow-hidden rounded-lg border-gray-300 transition-all duration-500`}
 				>
 					<RollingCube bind:this={sceneRef} />
 				</div>
@@ -49,7 +49,7 @@
 	</section>
 
 	<section
-		class="relative flex h-screen w-full justify-center bg-[repeating-linear-gradient(90deg,#f9f9f6_0px,#f9f9f6_20px,#fcfcfa_20px,#fcfcfa_40px)] text-black"
+		class="bg-light-pattern relative flex h-screen w-full justify-center text-black dark:bg-background-dark dark:bg-none"
 	>
 		<div
 			class={`container absolute z-20 w-full -translate-y-[70px] px-4 transition-transform duration-500`}
