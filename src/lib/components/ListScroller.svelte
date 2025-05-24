@@ -57,7 +57,7 @@
 	};
 </script>
 
-<div class="absolute h-[calc(100%+2.5rem)] w-full -translate-y-10">
+<div class="absolute h-[calc(100%+2.5rem)] w-full -translate-y-10 text-text-light dark:text-text-dark">
 	<div
 		class="py-O relative h-full w-full pt-10 [-webkit-mask-image:linear-gradient(to_bottom,black_90%,transparent)]
             [mask-image:linear-gradient(to_bottom,black_90%,transparent)]"
@@ -66,9 +66,9 @@
 		{#if $activeIndex > 0}
 			<button
 				on:click={prev}
-				class="absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full bg-white p-2 shadow transition hover:bg-gray-100"
+				class="bg-surface-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
 			>
-				<ChevronUp class="h-6 w-6 text-gray-800" />
+				<ChevronUp class="h-6 w-6 text-text-light dark:text-text-dark" />
 			</button>
 		{/if}
 
@@ -79,17 +79,24 @@
 			{#each items as item, i (item)}
 				<div
 					bind:this={itemRefs[i]}
-					class="absolute z-30 flex w-[100%] origin-top rounded-lg  bg-gray-50 px-4 py-2 transition-transform"
-					class:border-2={$activeIndex === i}
-					class:!bg-gray-100={$activeIndex === i}
-					style={`transform: ${i < $activeIndex ? getTransform(i, $activeIndex) : `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`};`}
+					class={`border-border-light dark:border-border-dark absolute z-30 flex w-[100%] origin-top rounded-lg border px-4 py-2 transition-transform
+						${
+							$activeIndex === i
+								? 'bg-surface-lighthover dark:bg-surface-dark border-2 '
+								: 'bg-surface-light dark:bg-surface-dark'
+						}`}
+					style={`transform: ${
+						i < $activeIndex
+							? getTransform(i, $activeIndex)
+							: `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`
+					};`}
 				>
 					<div class="flex gap-4">
-						<Apple class="h-5 w-5 text-gray-800" />
+						<Apple class="h-5 w-5" />
 						<div class="gap flex flex-col">
 							<div class="flex gap-2">
-								<span class="text-sm font-bold text-text-dark">{item.company}</span>
-								<span class="text-sm font-light text-gray-500">
+								<span class="text-sm font-bold ">{item.company}</span>
+								<span class="text-sm font-light ">
 									{computeTimePassed(item.dateStart, item.dateEnd)}
 								</span>
 							</div>
@@ -100,7 +107,7 @@
 									>
 								{/each}
 							</div>
-							<p class="mt-4 text-sm text-gray-600">
+							<p class="mt-4 text-sm ">
 								{item.shortDescription}
 							</p>
 						</div>
@@ -112,9 +119,9 @@
 		{#if $activeIndex + itemsPerView < items.length}
 			<button
 				on:click={next}
-				class="absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full bg-white p-2 shadow transition hover:bg-gray-100"
+				class="bg-surface-light border-border-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
 			>
-				<ChevronDown class="h-6 w-6 text-gray-800" />
+				<ChevronDown class="h-6 w-6 text-text-light dark:text-text-dark" />
 			</button>
 		{/if}
 	</div>

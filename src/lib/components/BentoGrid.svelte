@@ -77,14 +77,11 @@
 	bind:this={containerRef}
 	class="relative grid auto-rows-[250px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
 >
-	
 	<Card id="yes" colSpan={1} rowSpan={1} {containerRef}>
-		<div slot="preview">
+		<div slot="preview" class="text-text-light dark:text-text-dark">
 			<div class="text-center"></div>
-			<h2 class="text-2xl font-bold text-gray-800">Freelance Web Developer</h2>
-			<p class="mt-2 text-gray-600">
-				I specialize in creating modern, responsive, and user-friendly websites.
-			</p>
+			<h2 class="text-2xl font-bold">Freelance Web Developer</h2>
+			<p class="mt-2">I specialize in creating modern, responsive, and user-friendly websites.</p>
 		</div>
 	</Card>
 
@@ -131,7 +128,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-pastel-yellow transition-transform duration-300 hover:scale-105"
+						class="bg-background-light  flex items-center justify-center rounded-lg border-2 border-[#f6ed76] transition-transform duration-300 hover:scale-105"
 					>
 						<img
 							src="/js_logo_no_bg_200x200.png"
