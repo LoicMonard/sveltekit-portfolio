@@ -57,7 +57,7 @@
 	};
 </script>
 
-<div class="absolute h-[calc(100%+2.5rem)] w-full -translate-y-10">
+<div class="absolute h-[calc(100%+2.5rem)] w-full -translate-y-10 text-text-light dark:text-text-dark">
 	<div
 		class="py-O relative h-full w-full pt-10 [-webkit-mask-image:linear-gradient(to_bottom,black_90%,transparent)]
             [mask-image:linear-gradient(to_bottom,black_90%,transparent)]"
@@ -68,7 +68,7 @@
 				on:click={prev}
 				class="bg-surface-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
 			>
-				<ChevronUp class="h-6 w-6 text-text-dark dark:text-text-light" />
+				<ChevronUp class="h-6 w-6 text-text-light dark:text-text-dark" />
 			</button>
 		{/if}
 
@@ -79,10 +79,10 @@
 			{#each items as item, i (item)}
 				<div
 					bind:this={itemRefs[i]}
-					class={`border-border-light border dark:border-border-dark absolute z-30 flex w-[100%] origin-top rounded-lg px-4 py-2 transition-transform
+					class={`border-border-light dark:border-border-dark absolute z-30 flex w-[100%] origin-top rounded-lg border px-4 py-2 transition-transform
 						${
 							$activeIndex === i
-								? 'bg-surface-lighthover dark:bg-surface-darkhover border-2 '
+								? 'bg-surface-lighthover dark:bg-surface-dark border-2 '
 								: 'bg-surface-light dark:bg-surface-dark'
 						}`}
 					style={`transform: ${
@@ -92,11 +92,11 @@
 					};`}
 				>
 					<div class="flex gap-4">
-						<Apple class="h-5 w-5 text-gray-800" />
+						<Apple class="h-5 w-5" />
 						<div class="gap flex flex-col">
 							<div class="flex gap-2">
-								<span class="text-sm font-bold text-text-dark">{item.company}</span>
-								<span class="text-sm font-light text-gray-500">
+								<span class="text-sm font-bold ">{item.company}</span>
+								<span class="text-sm font-light ">
 									{computeTimePassed(item.dateStart, item.dateEnd)}
 								</span>
 							</div>
@@ -107,7 +107,7 @@
 									>
 								{/each}
 							</div>
-							<p class="mt-4 text-sm text-gray-600">
+							<p class="mt-4 text-sm ">
 								{item.shortDescription}
 							</p>
 						</div>
@@ -119,9 +119,9 @@
 		{#if $activeIndex + itemsPerView < items.length}
 			<button
 				on:click={next}
-				class="bg-surface-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
+				class="bg-surface-light border-border-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
 			>
-				<ChevronDown class="h-6 w-6 text-text-dark dark:text-text-light" />
+				<ChevronDown class="h-6 w-6 text-text-light dark:text-text-dark" />
 			</button>
 		{/if}
 	</div>

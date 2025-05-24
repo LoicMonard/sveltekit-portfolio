@@ -63,7 +63,7 @@
 
 <div
 	bind:this={cardRef}
-	class={`${cardClass} dark:border-border-dark border-border-light relative transition-opacity duration-300 lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
+	class={`${cardClass} dark:border-border-dark border-border-light relative text-text-light transition-opacity duration-300 dark:text-text-dark lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
 	class:invisible={showOverlay}
 	class:opacity-50={isDimmed}
 	class:cursor-pointer={expandable}
@@ -79,7 +79,7 @@
 					tabindex="0"
 					aria-label="Ouvrir la carte {title}"
 				>
-					<Maximize class="h-5 w-5 text-gray-500" strokeWidth={2.5} />
+					<Maximize class="h-5 w-5 text-text-light dark:text-text-dark" strokeWidth={2.5} />
 				</button>
 			{/if}
 		{/if}
@@ -89,7 +89,7 @@
 
 {#if showOverlay}
 	<div
-		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'}  rounded-lg border bg-surface-light dark:bg-surface-dark transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1`}
+		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'} bg-surface-light dark:border-border-dark dark:bg-surface-dark rounded-lg border text-text-light transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1 dark:text-text-dark`}
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};
@@ -107,7 +107,7 @@
 					<Minimize
 						on:click={closeOverlay}
 						role="button"
-						class="h-5 w-5 cursor-pointer text-gray-500"
+						class="h-5 w-5 cursor-pointer text-text-light dark:text-text-dark"
 						strokeWidth={2.5}
 					/>
 				</button>

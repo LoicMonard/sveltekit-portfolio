@@ -11,8 +11,8 @@ export default {
 					white: '#F9F9F6'
 				},
 				text: {
-					light: '#6B6B6B',
-					dark: '#333333'
+					light: '#334155',
+					dark: '#d6d6d6'
 				},
 				// accent: {
 				// 	beige: '#F3EED9',
@@ -31,12 +31,12 @@ export default {
 					green: '#A3D9A5'
 				},
 				border: {
-					light: '#F3EED9',
+					light: '#E3E8F0',
 					dark: '#333333'
 				},
 				surface: {
-					light: '#F9F9F6',
-					lighthover: '#EDEBE6',
+					light: '#fcfdff',
+					lighthover: '#f5f8ff',
 					dark: '#1E1E1E',
 					darkhover: '#333333'
 				}

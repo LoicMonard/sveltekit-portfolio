@@ -18,7 +18,7 @@
 
 <main class="h-full w-full">
 	<section
-		class={`${isSceneActive ? 'h-[100vh]' : 'h-[800px]'} border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark flex w-full justify-center border-b-2 pt-32 text-slate-700 transition-all duration-500`}
+		class={`${isSceneActive ? 'h-[100vh]' : 'h-[800px]'} border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark flex w-full justify-center border-b-2 pt-32 text-text-light transition-all duration-500 dark:text-text-dark`}
 	>
 		<div class="container mb-20 flex flex-row items-center gap-2 px-4">
 			<div
@@ -33,7 +33,7 @@
 				</p>
 				<button
 					on:click={toggleScene}
-					class="text-md bg-background-light dark:bg-background-dark mt-4 rounded-lg border-2 border-slate-800 px-4 py-2 font-semibold text-slate-800"
+					class="text-md bg-background-light dark:bg-background-dark border-border-dark dark:border-border-light mt-4 rounded-lg border-2 px-4 py-2 font-semibold text-text-light dark:text-text-dark"
 				>
 					See my work
 				</button>
@@ -49,7 +49,7 @@
 	</section>
 
 	<section
-		class="bg-light-pattern relative flex h-screen w-full justify-center text-black dark:bg-background-dark dark:bg-none"
+		class="bg-light-pattern dark:bg-background-dark relative flex h-screen w-full justify-center text-black dark:bg-none"
 	>
 		<div
 			class={`container absolute z-20 w-full -translate-y-[70px] px-4 transition-transform duration-500`}
