@@ -77,7 +77,7 @@
 	bind:this={containerRef}
 	class="relative grid auto-rows-[250px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
 >
-	<Card id="yes" colSpan={1} rowSpan={1} {containerRef}>
+	<Card id="yes" title="" colSpan={1} rowSpan={1} {containerRef}>
 		<div slot="preview" class="text-text-light dark:text-text-dark">
 			<div class="text-center"></div>
 			<h2 class="text-2xl font-bold">Freelance Web Developer</h2>
@@ -86,6 +86,7 @@
 	</Card>
 
 	<Card
+		title=""
 		id="test"
 		expandable
 		colSpan={2}
@@ -112,7 +113,7 @@
 		<p>Sinon</p>
 	</Card>
 
-	<Card id="skills" colSpan={1} rowSpan={1} {containerRef} cardClass="" expandable={false}>
+	<Card id="skills" colSpan={1} rowSpan={1} title="" {containerRef} cardClass="" expandable={false}>
 		<div slot="preview" class="h-full">
 			<div class="flex h-full items-center justify-center rounded-lg text-slate-600">
 				<div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">
