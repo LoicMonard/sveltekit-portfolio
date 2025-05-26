@@ -47,14 +47,12 @@
 		await tick();
 		activeCard.set(id);
 		showOverlay = true;
-		console.log('show overlay');
 		requestAnimationFrame(() => {
 			expanded = true;
 		});
 	};
 
 	const closeOverlay = () => {
-		console.log('click');
 		expanded = false;
 		activeCard.set(null);
 		setTimeout(() => {
@@ -104,7 +102,7 @@
     "
 		class:opacity-30={isDimmed}
 	>
-		<div class={`relative h-full overflow-auto p-6 ${expandedCardClass}`} bind:this={containerRef}>
+		<div class={`relative h-full overflow-auto p-6 ${expandedCardClass}`}>
 			<div
 				class="z-50 flex items-center justify-between"
 				class:flex-row-reverse={expandable && !title}
