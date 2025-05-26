@@ -8,6 +8,7 @@
 	export let title: string;
 	export let containerRef: HTMLDivElement;
 	export let cardClass: string = 'rounded-lg border bg-surface-light dark:bg-surface-dark p-6';
+	export let expandedCardClass: string = '';
 	export let expandable: boolean = false;
 	export let colSpan: number = 1;
 	export let rowSpan: number = 1;
@@ -71,10 +72,7 @@
 	class:cursor-default={!expandable}
 >
 	{#if title || expandable}
-		<div
-			class="flex items-center justify-between"
-			class:flex-row-reverse={expandable && !title}
-		>
+		<div class="flex items-center justify-between" class:flex-row-reverse={expandable && !title}>
 			{#if title}
 				<h2 class="font-bold">{title}</h2>
 			{/if}
@@ -106,7 +104,7 @@
     "
 		class:opacity-30={isDimmed}
 	>
-		<div class="relative h-full overflow-auto p-6">
+		<div class={`relative h-full overflow-auto p-6 ${expandedCardClass}`} bind:this={containerRef}>
 			<div
 				class="z-50 flex items-center justify-between"
 				class:flex-row-reverse={expandable && !title}
@@ -114,7 +112,12 @@
 				{#if title}
 					<h2 class="font-bold">{title}</h2>
 				{/if}
-				<button class="z-50" on:click={closeOverlay} tabindex="0" aria-label="Fermer la carte {title}">
+				<button
+					class="z-50"
+					on:click={closeOverlay}
+					tabindex="0"
+					aria-label="Fermer la carte {title}"
+				>
 					<Minimize
 						on:click={closeOverlay}
 						role="button"

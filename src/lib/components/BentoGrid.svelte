@@ -85,7 +85,15 @@
 		</div>
 	</Card>
 
-	<Card id="test" expandable colSpan={2} rowSpan={1} {containerRef} cardClass="p-6">
+	<Card
+		id="test"
+		expandable
+		colSpan={2}
+		rowSpan={1}
+		{containerRef}
+		cardClass="p-6"
+		expandedCardClass="overflow-hidden"
+	>
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
 			<ListScroller items={experiences} parentRef={listContainerRef} />
 		</div>
