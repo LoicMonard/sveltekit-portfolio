@@ -54,6 +54,12 @@
 			return `${diffMonths} month${diffMonths > 1 ? 's' : ''}`;
 		}
 	};
+
+	const selectItem = (index: number) => (event: MouseEvent | KeyboardEvent) => {
+		if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
+			activeIndex.set(index);
+		}
+	};
 </script>
 
 <div
@@ -80,7 +86,11 @@
 			{#each items as item, i (item)}
 				<div
 					bind:this={itemRefs[i]}
-					class={`absolute z-30 flex w-[100%] origin-top rounded-lg border border-border-light px-4 py-2 transition-transform dark:border-border-dark
+					on:click={selectItem(i)}
+					on:keydown={selectItem(i)}
+					role="button"
+					tabindex="0"
+					class={`absolute z-30 flex w-[100%] origin-top rounded-lg border border-border-light px-4 py-2 transition-all duration-300 hover:!border-pink-600 dark:border-border-dark
 						${
 							$activeIndex === i
 								? 'border-2 bg-surface-lighthover dark:bg-surface-dark '
