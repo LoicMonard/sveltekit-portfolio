@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
+	import { activeIndex } from '$lib/stores/listScroller.store';
 	import { ChevronDown, ChevronUp, Apple } from 'lucide-svelte';
 
 	export let items: string[] = [];
-	export let itemsPerView = 4;
-
-	const activeIndex = writable(0);
 
 	let itemRefs: (HTMLDivElement | null)[] = [];
 
@@ -30,12 +28,6 @@
 		const translateY = (-yStep * Math.log(distance + 1)) / Math.log(logBase);
 
 		return `translateY(${translateY.toFixed(2)}px) scale(${scale.toFixed(3)})`;
-	};
-
-	const getContainerYOffset = (activeIndex: number) => {
-		const yStep = 12;
-		const translateY = (yStep * Math.log(activeIndex + 1)) / Math.log(2);
-		return `translateY(${translateY.toFixed(2)}px)`;
 	};
 
 	const computeTimePassed = (startDate: string, endDate: string): string => {
@@ -90,7 +82,7 @@
 					on:keydown={selectItem(i)}
 					role="button"
 					tabindex="0"
-					class={`absolute z-30 flex w-[100%] origin-top rounded-lg border border-border-light px-4 py-2 transition-all duration-300 hover:!border-pink-600 dark:border-border-dark
+					class={`absolute z-30 flex w-[100%] origin-top rounded-lg border border-border-light px-4 py-2 transition duration-300 will-change-transform hover:!border-pink-600 dark:border-border-dark
 						${
 							$activeIndex === i
 								? 'border-2 bg-surface-lighthover dark:bg-surface-dark '
@@ -127,13 +119,13 @@
 			{/each}
 		</div>
 
-		{#if $activeIndex < items.length - 1}
-			<button
-				on:click={next}
-				class="absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full border-border-light bg-surface-light p-2 shadow transition hover:bg-surface-lighthover dark:bg-surface-dark dark:hover:bg-surface-darkhover"
-			>
-				<ChevronDown class="h-6 w-6 text-text-light dark:text-text-dark" />
-			</button>
-		{/if}
 	</div>
+	{#if $activeIndex < items.length - 1}
+		<button
+			on:click={next}
+			class="absolute bottom-0 left-1/2 z-50 -translate-x-1/2 transform rounded-full border-border-light bg-surface-light p-2 shadow transition hover:bg-surface-lighthover dark:bg-surface-dark dark:hover:bg-surface-darkhover"
+		>
+			<ChevronDown class="h-6 w-6 text-text-light dark:text-text-dark" />
+		</button>
+	{/if}
 </div>

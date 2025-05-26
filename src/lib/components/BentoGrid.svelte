@@ -85,22 +85,21 @@
 		</div>
 	</Card>
 
-	<Card id="test" title="Test" colSpan={2} rowSpan={1} {containerRef} cardClass="">
+	<Card id="test" expandable colSpan={2} rowSpan={1} {containerRef} cardClass="p-6">
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
 			<ListScroller items={experiences} parentRef={listContainerRef} />
 		</div>
-		<p>
-			Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo veritatis voluptas mollitia
-			illum possimus totam tempora nostrum officia provident temporibus!
-		</p>
+		<div class="relative h-full bg-none" bind:this={listContainerRef} slot="detailed">
+			<ListScroller items={experiences} parentRef={listContainerRef} />
+		</div>
 	</Card>
 
-	<Card id="anotherone" title="anotherone" colSpan={1} rowSpan={2} {containerRef}>
+	<Card id="anotherone" expandable title="anotherone" colSpan={1} rowSpan={2} {containerRef}>
 		<span slot="preview"> </span>
 		<p>Sinon</p>
 	</Card>
 
-	<Card id="teste" title="Test" colSpan={2} rowSpan={1} {containerRef}>
+	<Card id="teste" title="Test" expandable colSpan={2} rowSpan={1} {containerRef}>
 		<span slot="preview">Aperçu rapide ici.</span>
 		<p>Sinon</p>
 	</Card>
@@ -128,7 +127,7 @@
 						/>
 					</div>
 					<div
-						class="bg-background-light  flex items-center justify-center rounded-lg border-2 border-[#f6ed76] transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-background-light transition-transform duration-300 hover:scale-105"
 					>
 						<img
 							src="/js_logo_no_bg_200x200.png"

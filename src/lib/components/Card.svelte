@@ -8,7 +8,7 @@
 	export let title: string;
 	export let containerRef: HTMLDivElement;
 	export let cardClass: string = 'rounded-lg border bg-surface-light dark:bg-surface-dark p-6';
-	export let expandable: boolean = true;
+	export let expandable: boolean = false;
 	export let colSpan: number = 1;
 	export let rowSpan: number = 1;
 
@@ -46,6 +46,7 @@
 		await tick();
 		activeCard.set(id);
 		showOverlay = true;
+		console.log('show overlay');
 		requestAnimationFrame(() => {
 			expanded = true;
 		});
@@ -63,33 +64,40 @@
 
 <div
 	bind:this={cardRef}
-	class={`${cardClass} dark:border-border-dark border-border-light relative text-text-light transition-opacity duration-300 dark:text-text-dark lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
-	class:invisible={showOverlay}
+	class={`${cardClass} relative border-border-light text-text-light transition-opacity duration-300  dark:border-border-dark dark:text-text-dark lg:col-span-${colSpan} lg:row-span-${rowSpan} flex h-full flex-col`}
+	class:!invisible={showOverlay}
 	class:opacity-50={isDimmed}
 	class:cursor-pointer={expandable}
 	class:cursor-default={!expandable}
 >
-	<div class="flex items-center justify-between">
-		{#if title}
-			<h2 class="font-bold">{title}</h2>
+	{#if title || expandable}
+		<div
+			class="flex items-center justify-between"
+			class:flex-row-reverse={expandable && !title}
+		>
+			{#if title}
+				<h2 class="font-bold">{title}</h2>
+			{/if}
+
 			{#if expandable}
 				<button
 					on:click={handleClick}
 					on:keydown={(e) => e.key === 'Enter' && handleClick()}
 					tabindex="0"
 					aria-label="Ouvrir la carte {title}"
+					class="z-20"
 				>
 					<Maximize class="h-5 w-5 text-text-light dark:text-text-dark" strokeWidth={2.5} />
 				</button>
 			{/if}
-		{/if}
-	</div>
+		</div>
+	{/if}
 	<slot class="flex-1" name="preview" />
 </div>
 
 {#if showOverlay}
 	<div
-		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'} bg-surface-light dark:border-border-dark dark:bg-surface-dark rounded-lg border text-text-light transition-all duration-300 ease-in-out lg:col-span-2 lg:row-span-1 dark:text-text-dark`}
+		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'} rounded-lg border bg-surface-light text-text-light transition-all duration-300 ease-in-out dark:border-border-dark dark:bg-surface-dark dark:text-text-dark lg:col-span-2 lg:row-span-1`}
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};
@@ -99,11 +107,14 @@
 		class:opacity-30={isDimmed}
 	>
 		<div class="relative h-full overflow-auto p-6">
-			<div class="flex items-center justify-between">
+			<div
+				class="z-50 flex items-center justify-between"
+				class:flex-row-reverse={expandable && !title}
+			>
 				{#if title}
 					<h2 class="font-bold">{title}</h2>
 				{/if}
-				<button on:click={closeOverlay} tabindex="0" aria-label="Fermer la carte {title}">
+				<button class="z-50" on:click={closeOverlay} tabindex="0" aria-label="Fermer la carte {title}">
 					<Minimize
 						on:click={closeOverlay}
 						role="button"
@@ -114,6 +125,7 @@
 			</div>
 			{#if $$slots.detailed}
 				<slot name="detailed" />
+				{showOverlay}
 			{:else}
 				<slot name="preview" />
 			{/if}
