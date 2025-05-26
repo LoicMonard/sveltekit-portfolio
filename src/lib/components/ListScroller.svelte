@@ -10,8 +10,7 @@
 	let itemRefs: (HTMLDivElement | null)[] = [];
 
 	const next = () => {
-		activeIndex.update((n) => Math.min(n + 1, items.length - itemsPerView));
-		console.time('observer');
+		activeIndex.update((n) => n + 1);
 	};
 
 	const prev = () => {
@@ -57,7 +56,9 @@
 	};
 </script>
 
-<div class="absolute h-[calc(100%+2.5rem)] w-full -translate-y-10 text-text-light dark:text-text-dark">
+<div
+	class="absolute h-[calc(100%+2.5rem)] w-full -translate-y-10 text-text-light dark:text-text-dark"
+>
 	<div
 		class="py-O relative h-full w-full pt-10 [-webkit-mask-image:linear-gradient(to_bottom,black_90%,transparent)]
             [mask-image:linear-gradient(to_bottom,black_90%,transparent)]"
@@ -66,7 +67,7 @@
 		{#if $activeIndex > 0}
 			<button
 				on:click={prev}
-				class="bg-surface-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
+				class="absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full bg-surface-light p-2 shadow transition hover:bg-surface-lighthover dark:bg-surface-dark dark:hover:bg-surface-darkhover"
 			>
 				<ChevronUp class="h-6 w-6 text-text-light dark:text-text-dark" />
 			</button>
@@ -79,10 +80,10 @@
 			{#each items as item, i (item)}
 				<div
 					bind:this={itemRefs[i]}
-					class={`border-border-light dark:border-border-dark absolute z-30 flex w-[100%] origin-top rounded-lg border px-4 py-2 transition-transform
+					class={`absolute z-30 flex w-[100%] origin-top rounded-lg border border-border-light px-4 py-2 transition-transform dark:border-border-dark
 						${
 							$activeIndex === i
-								? 'bg-surface-lighthover dark:bg-surface-dark border-2 '
+								? 'border-2 bg-surface-lighthover dark:bg-surface-dark '
 								: 'bg-surface-light dark:bg-surface-dark'
 						}`}
 					style={`transform: ${
@@ -95,8 +96,8 @@
 						<Apple class="h-5 w-5" />
 						<div class="gap flex flex-col">
 							<div class="flex gap-2">
-								<span class="text-sm font-bold ">{item.company}</span>
-								<span class="text-sm font-light ">
+								<span class="text-sm font-bold">{item.company}</span>
+								<span class="text-sm font-light">
 									{computeTimePassed(item.dateStart, item.dateEnd)}
 								</span>
 							</div>
@@ -107,7 +108,7 @@
 									>
 								{/each}
 							</div>
-							<p class="mt-4 text-sm ">
+							<p class="mt-4 text-sm">
 								{item.shortDescription}
 							</p>
 						</div>
@@ -116,10 +117,10 @@
 			{/each}
 		</div>
 
-		{#if $activeIndex + itemsPerView < items.length}
+		{#if $activeIndex < items.length - 1}
 			<button
 				on:click={next}
-				class="bg-surface-light border-border-light dark:bg-surface-dark hover:bg-surface-lighthover dark:hover:bg-surface-darkhover absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full p-2 shadow transition"
+				class="absolute bottom-2 left-1/2 z-50 -translate-x-1/2 transform rounded-full border-border-light bg-surface-light p-2 shadow transition hover:bg-surface-lighthover dark:bg-surface-dark dark:hover:bg-surface-darkhover"
 			>
 				<ChevronDown class="h-6 w-6 text-text-light dark:text-text-dark" />
 			</button>
