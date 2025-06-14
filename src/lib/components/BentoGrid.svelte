@@ -93,7 +93,7 @@
 		rowSpan={1}
 		{containerRef}
 		cardClass="p-6"
-		expandedCardClass="overflow-hidden"
+		expandedCardClass="overflow-hidden p-0"
 	>
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
 			<ListScroller items={experiences} parentRef={listContainerRef} />
@@ -104,8 +104,9 @@
 	</Card>
 
 	<Card id="anotherone" expandable title="anotherone" colSpan={1} rowSpan={2} {containerRef}>
-		<span slot="preview"> </span>
-		<p>Sinon</p>
+		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
+			<ListScroller items={experiences} parentRef={listContainerRef} />
+		</div>
 	</Card>
 
 	<Card id="teste" title="Test" expandable colSpan={2} rowSpan={1} {containerRef}>

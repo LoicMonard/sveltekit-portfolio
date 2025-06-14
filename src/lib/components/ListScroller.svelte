@@ -64,7 +64,7 @@
 		{#if $activeIndex > 0}
 			<button
 				on:click={prev}
-				class="absolute left-1/2 top-2 z-50 -translate-x-1/2 transform rounded-full bg-surface-light p-2 shadow transition hover:bg-surface-lighthover dark:bg-surface-dark dark:hover:bg-surface-darkhover"
+				class="absolute left-1/2 top-4 z-50 -translate-x-1/2 transform rounded-full bg-surface-light p-2 shadow transition hover:bg-surface-lighthover dark:bg-surface-dark dark:hover:bg-surface-darkhover"
 			>
 				<ChevronUp class="h-6 w-6 text-text-light dark:text-text-dark" />
 			</button>
