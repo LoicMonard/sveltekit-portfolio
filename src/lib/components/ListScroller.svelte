@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { writable } from 'svelte/store';
 	import { activeIndex } from '$lib/stores/listScroller.store';
 	import { ChevronDown, ChevronUp, Apple } from 'lucide-svelte';
 
@@ -21,7 +20,7 @@
 		if (distance === 0) return 'translateY(0) scale(1)';
 
 		const scaleStep = 0.1;
-		const yStep = 12; // tu peux ajuster
+		const yStep = 12;
 		const logBase = 2;
 
 		const scale = 1 - (scaleStep * Math.log(distance + 1)) / Math.log(logBase);
@@ -118,7 +117,6 @@
 				</div>
 			{/each}
 		</div>
-
 	</div>
 	{#if $activeIndex < items.length - 1}
 		<button
