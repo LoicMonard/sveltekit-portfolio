@@ -1,13 +1,13 @@
 <script lang="ts">
 	// Just a single comment
 	import { activeCard } from '$lib/stores';
-	import { tick } from 'svelte';
+	import { tick, setContext } from 'svelte';
 	import { Maximize, Minimize } from 'lucide-svelte';
 
 	export let id: string;
 	export let title: string;
 	export let containerRef: HTMLDivElement;
-	export let cardClass: string = 'rounded-lg border bg-surface-light dark:bg-surface-dark p-6';
+	export let cardClass: string = 'rounded-xl border bg-surface-light dark:bg-surface-dark p-6';
 	export let expandedCardClass: string = 'p-6';
 	export let expandable: boolean = false;
 	export let colSpan: number = 1;
@@ -28,7 +28,6 @@
 	}
 
 	const handleClick = async () => {
-		if (!expandable) return;
 		if (!containerRef) {
 			console.warn('containerRef is not passed to Card');
 			return;
@@ -51,6 +50,8 @@
 			expanded = true;
 		});
 	};
+
+	setContext('onCardExpand', handleClick);
 
 	const closeOverlay = () => {
 		expanded = false;
@@ -102,7 +103,8 @@
     "
 		class:opacity-30={isDimmed}
 	>
-		<div class={`relative h-full overflow-auto transition-all duration-300 ${expandedCardClass}`}
+		<div
+			class={`relative h-full overflow-auto transition-all duration-300 ${expandedCardClass}`}
 			class:!p-6={expanded}
 		>
 			<div
@@ -121,7 +123,7 @@
 					<Minimize
 						on:click={closeOverlay}
 						role="button"
-						class="absolute top-5 right-5 cursor-pointer text-text-light dark:text-text-dark"
+						class="absolute right-5 top-5 cursor-pointer text-text-light dark:text-text-dark"
 						strokeWidth={2.5}
 					/>
 				</button>

@@ -88,7 +88,6 @@
 	<Card
 		title=""
 		id="test"
-		expandable
 		colSpan={2}
 		rowSpan={1}
 		{containerRef}
@@ -105,12 +104,12 @@
 
 	<Card id="anotherone" expandable title="anotherone" colSpan={1} rowSpan={2} {containerRef}>
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
-			<ListScroller items={experiences} parentRef={listContainerRef} />
+			<!-- <ListScroller items={experiences} parentRef={listContainerRef} /> -->
 		</div>
 	</Card>
 
 	<Card id="teste" title="Test" expandable colSpan={2} rowSpan={1} {containerRef}>
-		<span slot="preview">Aperçu rapide ici.</span>
+		<div slot="preview">Aperçu rapide ici.</div>
 		<p>Sinon</p>
 	</Card>
 
@@ -119,7 +118,7 @@
 			<div class="flex h-full items-center justify-center rounded-lg text-slate-600">
 				<div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#f7dcae] bg-[#FAE4BD] transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#f7dcae] bg-[#FAE4BD] dark:bg-background-dark transition-transform duration-300 hover:scale-105"
 					>
 						<img
 							src="/svelte_logo_200x200.png"
@@ -128,7 +127,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#d5e8bc] bg-[#DCECCC] transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#d5e8bc] bg-[#DCECCC] dark:bg-background-dark  transition-transform duration-300 hover:scale-105"
 					>
 						<img
 							src="/vuejs_logo_200x200.png"
@@ -137,7 +136,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-background-light transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-background-light dark:bg-background-dark  transition-transform duration-300 hover:scale-105"
 					>
 						<img
 							src="/js_logo_no_bg_200x200.png"
@@ -146,7 +145,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#c7dedd] bg-[#D0E3E1] transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#c7dedd] bg-[#D0E3E1] dark:bg-background-dark  transition-transform duration-300 hover:scale-105"
 					>
 						<img
 							src="/css3_logo_200x200.png"

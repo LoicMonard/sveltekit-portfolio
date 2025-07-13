@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { activeIndex } from '$lib/stores/listScroller.store';
+	import { activeIndex, expandedIndex } from '$lib/stores/listScroller.store';
 	import { ChevronDown, ChevronUp, Apple } from 'lucide-svelte';
+	import { get } from 'svelte/store';
+	import { tick, getContext } from 'svelte';
 
 	export let items: string[] = [];
 
@@ -14,7 +16,7 @@
 		activeIndex.update((n) => Math.max(n - 1, 0));
 	};
 
-	const getTransform = (i: number, activeIndex: number) => {
+	const getTransform = (i: number, activeIndex: number): string => {
 		const distance = Math.abs(i - activeIndex);
 
 		if (distance === 0) return 'translateY(0) scale(1)';
@@ -24,7 +26,7 @@
 		const logBase = 2;
 
 		const scale = 1 - (scaleStep * Math.log(distance + 1)) / Math.log(logBase);
-		const translateY = (-yStep * Math.log(distance + 1)) / Math.log(logBase);
+		let translateY = (-yStep * Math.log(distance + 1)) / Math.log(logBase);
 
 		return `translateY(${translateY.toFixed(2)}px) scale(${scale.toFixed(3)})`;
 	};
@@ -49,6 +51,18 @@
 	const selectItem = (index: number) => (event: MouseEvent | KeyboardEvent) => {
 		if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
 			activeIndex.set(index);
+			onCardExpand?.();
+		}
+	};
+
+	const onCardExpand = getContext<() => void>('onCardExpand');
+
+	const expandItem = (index: number) => async (event: MouseEvent | KeyboardEvent) => {
+		if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
+			const current = get(expandedIndex);
+			expandedIndex.set(current === index ? null : index);
+
+			await tick();
 		}
 	};
 </script>
@@ -81,38 +95,46 @@
 					on:keydown={selectItem(i)}
 					role="button"
 					tabindex="0"
-					class={`absolute z-30 flex w-[100%] origin-top rounded-lg border border-border-light px-4 py-2 transition duration-300 will-change-transform hover:!border-pink-600 dark:border-border-dark
-						${
-							$activeIndex === i
-								? 'border-2 bg-surface-lighthover dark:bg-surface-dark '
-								: 'bg-surface-light dark:bg-surface-dark'
-						}`}
+					class={`group absolute z-30 flex h-auto w-full origin-top overflow-hidden rounded-2xl border border-border-light bg-white px-6 py-4 pb-8 transition duration-300 hover:shadow-sm dark:border-border-dark dark:bg-surface-dark`}
 					style={`transform: ${
 						i < $activeIndex
 							? getTransform(i, $activeIndex)
 							: `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`
 					};`}
 				>
-					<div class="flex gap-4">
-						<Apple class="h-5 w-5" />
-						<div class="gap flex flex-col">
-							<div class="flex gap-2">
-								<span class="text-sm font-bold">{item.company}</span>
-								<span class="text-sm font-light">
-									{computeTimePassed(item.dateStart, item.dateEnd)}
-								</span>
-							</div>
-							<div class="flex gap-2">
-								{#each item.skills as skill}
-									<span class="py rounded-full bg-gray-600 px-2 text-xs text-pastel-white"
-										>{skill}</span
-									>
-								{/each}
-							</div>
-							<p class="mt-4 text-sm">
-								{item.shortDescription}
-							</p>
+					<Apple class="text-muted mr-4 mt-1 h-5 w-5" />
+					<div class="flex flex-col gap-2">
+						<div class="flex items-baseline gap-2">
+							<span class="text-base font-semibold text-text-light dark:text-text-dark"
+								>{item.company}</span
+							>
+							<span class="text-muted text-sm">
+								{computeTimePassed(item.dateStart, item.dateEnd)}
+							</span>
 						</div>
+
+						<div class="flex flex-wrap gap-2">
+							{#each item.skills as skill}
+								<span
+									class="rounded-full bg-gray-300 px-2 py-0.5 text-xs text-gray-800 dark:bg-gray-600 dark:text-gray-200"
+								>
+									{skill}
+								</span>
+							{/each}
+						</div>
+
+						<p class="mt-1 text-sm text-text-light dark:text-text-dark">
+							{item.shortDescription}
+						</p>
+					</div>
+					<div
+						on:click={expandItem(i)}
+						on:keydown={expandItem(i)}
+						role="button"
+						tabindex="0"
+						class="absolute -bottom-0 flex h-6 w-full -translate-x-6 -translate-y-2 items-center justify-center whitespace-nowrap text-xs text-black text-text-light underline opacity-0 transition-opacity duration-150 group-hover:opacity-100 dark:text-text-dark"
+					>
+						<p class="">show more</p>
 					</div>
 				</div>
 			{/each}
