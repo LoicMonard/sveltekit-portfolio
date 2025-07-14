@@ -60,6 +60,8 @@
 			showOverlay = false;
 		}, 300);
 	};
+
+	setContext('onCardReduce', closeOverlay);
 </script>
 
 <div
@@ -114,19 +116,21 @@
 				{#if title}
 					<h2 class="font-bold">{title}</h2>
 				{/if}
-				<button
-					class="z-50"
-					on:click={closeOverlay}
-					tabindex="0"
-					aria-label="Fermer la carte {title}"
-				>
-					<Minimize
+				{#if expandable}
+					<button
+						class="z-50"
 						on:click={closeOverlay}
-						role="button"
-						class="absolute right-5 top-5 cursor-pointer text-text-light dark:text-text-dark"
-						strokeWidth={2.5}
-					/>
-				</button>
+						tabindex="0"
+						aria-label="Fermer la carte {title}"
+					>
+						<Minimize
+							on:click={closeOverlay}
+							role="button"
+							class="absolute right-5 top-5 cursor-pointer text-text-light dark:text-text-dark"
+							strokeWidth={2.5}
+						/>
+					</button>
+				{/if}
 			</div>
 			{#if $$slots.detailed}
 				<slot name="detailed" />
