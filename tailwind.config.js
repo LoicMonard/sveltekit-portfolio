@@ -2,14 +2,14 @@
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	safelist: [
-		'bg-light-pattern', 
-		'lg:row-span-1', 
-		'lg:row-span-2', 
-		'lg:row-span-3', 
-		'lg:row-span-4', 
-		'lg:col-span-1', 
-		'lg:col-span-2', 
-		'lg:col-span-3', 
+		'bg-light-pattern',
+		'lg:row-span-1',
+		'lg:row-span-2',
+		'lg:row-span-3',
+		'lg:row-span-4',
+		'lg:col-span-1',
+		'lg:col-span-2',
+		'lg:col-span-3',
 		'lg:col-span-4'
 	],
 	darkMode: 'class',
@@ -22,12 +22,12 @@ export default {
 				},
 				text: {
 					light: '#334155',
-					dark: '#d6d6d6'
+					lightaccent: '#475569',
+					lightgray: '#6B7280',
+					dark: '#d6d6d6',
+					darkaccent: '#9ca3af',
+					darkgray: '#a1a1aa'
 				},
-				// accent: {
-				// 	beige: '#F3EED9',
-				// 	sage: '#DCE5D1'
-				// },
 				background: {
 					light: '#FFF582',
 					dark: '#333333'
@@ -47,8 +47,10 @@ export default {
 				surface: {
 					light: '#fcfdff',
 					lighthover: '#f5f8ff',
+					lightgray: '#E3E8EF',
 					dark: '#1E1E1E',
-					darkhover: '#333333'
+					darkhover: '#252525',
+					darkgray: '#333333'
 				}
 			},
 			backgroundImage: {
