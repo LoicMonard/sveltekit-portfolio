@@ -5,6 +5,7 @@
 	import { tick, getContext } from 'svelte';
 
 	export let items: string[] = [];
+	export let selectedExperience;
 
 	let itemRefs: (HTMLDivElement | null)[] = [];
 
@@ -51,6 +52,7 @@
 	const selectItem = (index: number) => (event: MouseEvent | KeyboardEvent) => {
 		if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
 			activeIndex.set(index);
+			selectedExperience = items[index];
 			onCardExpand?.();
 		}
 	};

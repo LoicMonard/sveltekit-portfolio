@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/Card.svelte';
 	import ListScroller from './ListScroller.svelte';
+	import Elephantastic from './experiences/Elephantastic.svelte';
 
 	const experiences = [
 		{
@@ -9,7 +10,8 @@
 			dateEnd: new Date(2021, 11, 31),
 			skills: ['JavaScript', 'React', 'Node.js'],
 			icon: '/techcorp_logo.png',
-			shortDescription: 'Developed scalable web applications using React and Node.js.'
+			shortDescription: 'Developed scalable web applications using React and Node.js.',
+			component: Elephantastic
 		},
 		{
 			company: 'WebSolutions',
@@ -17,7 +19,8 @@
 			dateEnd: new Date(2020, 11, 31),
 			skills: ['HTML', 'CSS', 'Vue.js'],
 			icon: '/websolutions_logo.png',
-			shortDescription: 'Created responsive websites and implemented Vue.js components.'
+			shortDescription: 'Created responsive websites and implemented Vue.js components.',
+			component: Elephantastic
 		},
 		{
 			company: 'DesignStudio',
@@ -25,7 +28,8 @@
 			dateEnd: new Date(2019, 4, 30),
 			skills: ['Photoshop', 'Illustrator', 'UI/UX'],
 			icon: '/designstudio_logo.png',
-			shortDescription: 'Designed user interfaces and graphics for various digital platforms.'
+			shortDescription: 'Designed user interfaces and graphics for various digital platforms.',
+			component: Elephantastic
 		},
 		{
 			company: 'AppDev Inc.',
@@ -33,7 +37,8 @@
 			dateEnd: new Date(2022, 6, 31),
 			skills: ['Kotlin', 'Swift', 'Mobile Development'],
 			icon: '/appdev_logo.png',
-			shortDescription: 'Developed mobile applications for Android and iOS platforms.'
+			shortDescription: 'Developed mobile applications for Android and iOS platforms.',
+			component: Elephantastic
 		},
 		{
 			company: 'DataAnalytics Co.',
@@ -41,7 +46,8 @@
 			dateEnd: new Date(2018, 1, 31),
 			skills: ['Python', 'Pandas', 'Data Visualization'],
 			icon: '/dataanalytics_logo.png',
-			shortDescription: 'Analyzed data and created visualizations to support business decisions.'
+			shortDescription: 'Analyzed data and created visualizations to support business decisions.',
+			component: Elephantastic
 		},
 		{
 			company: 'CloudNet',
@@ -49,7 +55,8 @@
 			dateEnd: new Date(2017, 7, 31),
 			skills: ['AWS', 'Docker', 'Kubernetes'],
 			icon: '/cloudnet_logo.png',
-			shortDescription: 'Implemented cloud infrastructure and containerized applications.'
+			shortDescription: 'Implemented cloud infrastructure and containerized applications.',
+			component: Elephantastic
 		},
 		{
 			company: 'GameStudio',
@@ -57,7 +64,8 @@
 			dateEnd: new Date(2016, 11, 31),
 			skills: ['Unity', 'C#', 'Game Design'],
 			icon: '/gamestudio_logo.png',
-			shortDescription: 'Developed and designed engaging video games using Unity and C#.'
+			shortDescription: 'Developed and designed engaging video games using Unity and C#.',
+			component: Elephantastic
 		},
 		{
 			company: 'EduTech',
@@ -65,9 +73,12 @@
 			dateEnd: new Date(2015, 2, 28),
 			skills: ['Java', 'Spring', 'E-learning Platforms'],
 			icon: '/edutech_logo.png',
-			shortDescription: 'Built and maintained e-learning platforms using Java and Spring.'
+			shortDescription: 'Built and maintained e-learning platforms using Java and Spring.',
+			component: Elephantastic
 		}
 	];
+
+	let selectedExperience = experiences[0];
 
 	let containerRef: HTMLDivElement;
 	let listContainerRef: HTMLDivElement;
@@ -85,20 +96,12 @@
 		</div>
 	</Card>
 
-	<Card
-		title=""
-		id="test"
-		colSpan={2}
-		rowSpan={1}
-		{containerRef}
-		cardClass="p-6"
-		expandedCardClass="overflow-hidden p-0"
-	>
+	<Card title="" id="test" colSpan={2} rowSpan={1} {containerRef}>
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
-			<ListScroller items={experiences} parentRef={listContainerRef} />
+			<ListScroller items={experiences} parentRef={listContainerRef} {selectedExperience} />
 		</div>
 		<div class="relative h-full bg-none" bind:this={listContainerRef} slot="detailed">
-			<ListScroller items={experiences} parentRef={listContainerRef} />
+			<svelte:component this={selectedExperience.component} />
 		</div>
 	</Card>
 
@@ -118,7 +121,7 @@
 			<div class="flex h-full items-center justify-center rounded-lg text-slate-600">
 				<div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#f7dcae] bg-[#FAE4BD] dark:bg-background-dark transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#f7dcae] bg-[#FAE4BD] transition-transform duration-300 hover:scale-105 dark:bg-background-dark"
 					>
 						<img
 							src="/svelte_logo_200x200.png"
@@ -127,7 +130,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#d5e8bc] bg-[#DCECCC] dark:bg-background-dark  transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#d5e8bc] bg-[#DCECCC] transition-transform duration-300 hover:scale-105 dark:bg-background-dark"
 					>
 						<img
 							src="/vuejs_logo_200x200.png"
@@ -136,7 +139,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-background-light dark:bg-background-dark  transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#f6ed76] bg-background-light transition-transform duration-300 hover:scale-105 dark:bg-background-dark"
 					>
 						<img
 							src="/js_logo_no_bg_200x200.png"
@@ -145,7 +148,7 @@
 						/>
 					</div>
 					<div
-						class="flex items-center justify-center rounded-lg border-2 border-[#c7dedd] bg-[#D0E3E1] dark:bg-background-dark  transition-transform duration-300 hover:scale-105"
+						class="flex items-center justify-center rounded-lg border-2 border-[#c7dedd] bg-[#D0E3E1] transition-transform duration-300 hover:scale-105 dark:bg-background-dark"
 					>
 						<img
 							src="/css3_logo_200x200.png"
