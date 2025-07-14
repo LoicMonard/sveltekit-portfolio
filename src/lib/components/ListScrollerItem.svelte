@@ -50,7 +50,7 @@
 			class="absolute left-0 top-0 h-12 w-12 -translate-y-1/2 translate-x-4 rounded-lg border-2 border-white bg-yellow-200 dark:border-surface-dark"
 		></div>
 		<div class="mt-4 flex items-center gap-2">
-			<h1 class="font-normal dark:text-text-dark">Lorem Ipsum</h1>
+			<h1 class="font-normal dark:text-text-dark">{ experience.company }</h1>
 			<p
 				class="bg-surface-lightgray dark:bg-surface-darkgray dark:text-text-darkaccent px-2 text-xs font-light"
 			>

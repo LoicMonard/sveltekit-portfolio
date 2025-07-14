@@ -1,9 +1,30 @@
 <script lang="ts">
 	import ListScrollerItem from '../ListScrollerItem.svelte';
+
+	export let experience;
 </script>
 
-<ListScrollerItem isExpanded>
-	<p class="overflow-scroll text-text-lightgray dark:text-text-darkgray text-sm font-light">
-    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab veniam molestiae repellat quae blanditiis culpa consequuntur consectetur tempora obcaecati iusto ea, excepturi esse! Dolor quos fuga necessitatibus expedita voluptatibus numquam? Veniam consectetur non ea, accusantium nemo necessitatibus repellat sunt reprehenderit ipsam, culpa dolorem odio inventore. Odit quaerat sunt necessitatibus saepe dolor et nisi aut magnam esse porro molestias recusandae vel soluta consequuntur excepturi, enim, nobis maiores a? Provident, cupiditate quod itaque voluptates excepturi nulla nam. Fugit iste voluptatibus magnam possimus velit molestiae, quos vel blanditiis, adipisci sapiente minus! Itaque sint possimus nesciunt exercitationem dicta facilis veniam minima nemo dolorem incidunt accusamus excepturi repellendus blanditiis non, explicabo, unde, quidem magnam provident tenetur alias necessitatibus! Maxime facilis, sit voluptatem laudantium sed voluptates iusto facere, expedita harum, doloribus labore quas tempore. Officia repudiandae, quis quos labore quasi voluptas? Distinctio vitae doloribus ratione illum sunt veniam temporibus aspernatur quod in eligendi, id inventore maxime tenetur accusantium odit eius aliquid a neque? Itaque libero accusamus iusto iure eligendi excepturi, nobis aperiam neque sit cupiditate quidem, aspernatur pariatur repellendus illum ex natus! Molestiae voluptates provident necessitatibus aperiam est nam. Neque, voluptatibus. Tempore aliquam corrupti neque fugit expedita, libero, laboriosam tempora quos sequi voluptas illum, sapiente iusto culpa? Commodi adipisci, ab exercitationem rem optio delectus quaerat sint est sapiente, odio alias minima tenetur odit iure placeat laudantium aliquam! Veniam animi quam illo, nam impedit ipsam dolorum voluptas facilis itaque vitae! Nemo cupiditate blandit
+<ListScrollerItem isExpanded {experience}>
+	<p class="text-text-lightgray dark:text-text-darkgray overflow-scroll text-sm font-light">
+		Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab veniam molestiae repellat quae
+		blanditiis culpa consequuntur consectetur tempora obcaecati iusto ea, excepturi esse! Dolor quos
+		fuga necessitatibus expedita voluptatibus numquam? Veniam consectetur non ea, accusantium nemo
+		necessitatibus repellat sunt reprehenderit ipsam, culpa dolorem odio inventore. Odit quaerat
+		sunt necessitatibus saepe dolor et nisi aut magnam esse porro molestias recusandae vel soluta
+		consequuntur excepturi, enim, nobis maiores a? Provident, cupiditate quod itaque voluptates
+		excepturi nulla nam. Fugit iste voluptatibus magnam possimus velit molestiae, quos vel
+		blanditiis, adipisci sapiente minus! Itaque sint possimus nesciunt exercitationem dicta facilis
+		veniam minima nemo dolorem incidunt accusamus excepturi repellendus blanditiis non, explicabo,
+		unde, quidem magnam provident tenetur alias necessitatibus! Maxime facilis, sit voluptatem
+		laudantium sed voluptates iusto facere, expedita harum, doloribus labore quas tempore. Officia
+		repudiandae, quis quos labore quasi voluptas? Distinctio vitae doloribus ratione illum sunt
+		veniam temporibus aspernatur quod in eligendi, id inventore maxime tenetur accusantium odit eius
+		aliquid a neque? Itaque libero accusamus iusto iure eligendi excepturi, nobis aperiam neque sit
+		cupiditate quidem, aspernatur pariatur repellendus illum ex natus! Molestiae voluptates
+		provident necessitatibus aperiam est nam. Neque, voluptatibus. Tempore aliquam corrupti neque
+		fugit expedita, libero, laboriosam tempora quos sequi voluptas illum, sapiente iusto culpa?
+		Commodi adipisci, ab exercitationem rem optio delectus quaerat sint est sapiente, odio alias
+		minima tenetur odit iure placeat laudantium aliquam! Veniam animi quam illo, nam impedit ipsam
+		dolorum voluptas facilis itaque vitae! Nemo cupiditate blandit
 	</p>
 </ListScrollerItem>

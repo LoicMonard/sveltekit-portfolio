@@ -111,7 +111,7 @@
 			<ListScroller items={experiences} parentRef={listContainerRef} {selectedExperience} />
 		</div>
 		<div class="relative bg-none p-2" bind:this={listContainerRef} slot="detailed">
-			<svelte:component this={selectedExperience.component} />
+			<svelte:component this={selectedExperience.component} experience={selectedExperience} />
 		</div>
 	</Card>
 

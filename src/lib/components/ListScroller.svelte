@@ -92,7 +92,7 @@
 							: `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`
 					};`}
 				>
-					<ListScrollerItem />
+					<ListScrollerItem experience={item} />
 				</div>
 			{/each}
 		</div>
