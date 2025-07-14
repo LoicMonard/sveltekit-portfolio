@@ -96,7 +96,15 @@
 		</div>
 	</Card>
 
-	<Card title="" id="test" colSpan={2} rowSpan={1} {containerRef}>
+	<Card
+		title=""
+		id="test"
+		colSpan={2}
+		rowSpan={1}
+		{containerRef}
+		cardClass="p-6"
+		expandedCardClass=""
+	>
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
 			<ListScroller items={experiences} parentRef={listContainerRef} {selectedExperience} />
 		</div>
