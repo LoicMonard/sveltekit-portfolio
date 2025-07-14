@@ -2,7 +2,7 @@
 	import { activeIndex, expandedIndex } from '$lib/stores/listScroller.store';
 	import { ChevronDown, ChevronUp, Apple } from 'lucide-svelte';
 	import { get } from 'svelte/store';
-	import { tick, getContext } from 'svelte';
+	import ListScrollerItem from './ListScrollerItem.svelte';
 
 	export let items: string[] = [];
 	export let selectedExperience;
@@ -53,18 +53,6 @@
 		if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
 			activeIndex.set(index);
 			selectedExperience = items[index];
-			onCardExpand?.();
-		}
-	};
-
-	const onCardExpand = getContext<() => void>('onCardExpand');
-
-	const expandItem = (index: number) => async (event: MouseEvent | KeyboardEvent) => {
-		if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
-			const current = get(expandedIndex);
-			expandedIndex.set(current === index ? null : index);
-
-			await tick();
 		}
 	};
 </script>
@@ -88,7 +76,7 @@
 
 		<!-- Items container -->
 		<div
-			class="relative flex h-full w-full flex-col items-center gap-2 transition-transform duration-1000"
+			class="relative flex h-full w-full flex-col items-center transition-transform duration-1000"
 		>
 			{#each items as item, i (item)}
 				<div
@@ -97,47 +85,14 @@
 					on:keydown={selectItem(i)}
 					role="button"
 					tabindex="0"
-					class={`group absolute z-30 flex h-auto w-full origin-top overflow-hidden rounded-2xl border border-border-light bg-white px-6 py-4 pb-8 transition duration-300 hover:shadow-sm dark:border-border-dark dark:bg-surface-dark`}
+					class={`group absolute z-30 flex h-auto w-full origin-top overflow-hidden rounded-xl p-2 transition duration-300 hover:shadow-sm dark:border-border-dark dark:bg-surface-dark`}
 					style={`transform: ${
 						i < $activeIndex
 							? getTransform(i, $activeIndex)
 							: `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`
 					};`}
 				>
-					<Apple class="text-muted mr-4 mt-1 h-5 w-5" />
-					<div class="flex flex-col gap-2">
-						<div class="flex items-baseline gap-2">
-							<span class="text-base font-semibold text-text-light dark:text-text-dark"
-								>{item.company}</span
-							>
-							<span class="text-muted text-sm">
-								{computeTimePassed(item.dateStart, item.dateEnd)}
-							</span>
-						</div>
-
-						<div class="flex flex-wrap gap-2">
-							{#each item.skills as skill}
-								<span
-									class="rounded-full bg-gray-300 px-2 py-0.5 text-xs text-gray-800 dark:bg-gray-600 dark:text-gray-200"
-								>
-									{skill}
-								</span>
-							{/each}
-						</div>
-
-						<p class="mt-1 text-sm text-text-light dark:text-text-dark">
-							{item.shortDescription}
-						</p>
-					</div>
-					<div
-						on:click={expandItem(i)}
-						on:keydown={expandItem(i)}
-						role="button"
-						tabindex="0"
-						class="absolute -bottom-0 flex h-6 w-full -translate-x-6 -translate-y-2 items-center justify-center whitespace-nowrap text-xs text-black text-text-light underline opacity-0 transition-opacity duration-150 group-hover:opacity-100 dark:text-text-dark"
-					>
-						<p class="">show more</p>
-					</div>
+					<ListScrollerItem />
 				</div>
 			{/each}
 		</div>

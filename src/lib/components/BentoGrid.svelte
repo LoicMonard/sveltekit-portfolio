@@ -96,11 +96,13 @@
 		</div>
 	</Card>
 
+	<Card id="anotherone" expandable title="anotherone" colSpan={2} rowSpan={1} {containerRef}></Card>
+
 	<Card
 		title=""
 		id="test"
-		colSpan={2}
-		rowSpan={1}
+		colSpan={1}
+		rowSpan={2}
 		{containerRef}
 		cardClass="p-6"
 		expandedCardClass=""
@@ -110,12 +112,6 @@
 		</div>
 		<div class="relative h-full bg-none" bind:this={listContainerRef} slot="detailed">
 			<svelte:component this={selectedExperience.component} />
-		</div>
-	</Card>
-
-	<Card id="anotherone" expandable title="anotherone" colSpan={1} rowSpan={2} {containerRef}>
-		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
-			<!-- <ListScroller items={experiences} parentRef={listContainerRef} /> -->
 		</div>
 	</Card>
 
