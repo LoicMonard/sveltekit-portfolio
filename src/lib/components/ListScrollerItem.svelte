@@ -17,10 +17,10 @@
 </script>
 
 <article
-	class="flex h-full flex-col rounded-xl border border-border-light bg-white text-text-light outline outline-8 outline-offset-0 outline-white dark:border-border-dark dark:bg-background-dark dark:text-text-dark dark:outline-surface-dark"
+	class="flex h-fit flex-col rounded-xl border border-border-light bg-white text-text-light outline outline-8 outline-offset-0 outline-white dark:border-border-dark dark:bg-background-dark dark:text-text-dark dark:outline-surface-dark"
 >
 	<header
-		class="relative h-[150px] rounded-xl rounded-b-none bg-gray-100 dark:bg-surface-darkhover"
+		class="relative min-h-[150px] rounded-xl rounded-b-none bg-gray-100 dark:bg-surface-darkhover"
 	>
 		<!-- <img placeholder> -->
 		{#if isExpanded}
@@ -44,7 +44,7 @@
 		{/if}
 	</header>
 	<main
-		class="relative flex flex-col border-b border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
+		class="relative flex flex-1 flex-col border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
 	>
 		<div
 			class="absolute left-0 top-0 h-12 w-12 -translate-y-1/2 translate-x-4 rounded-lg border-2 border-white bg-yellow-200 dark:border-surface-dark"
@@ -66,7 +66,7 @@
 		</slot>
 	</main>
 	<footer
-		class="flex items-center justify-between rounded-xl rounded-t-none bg-surface-light p-4 dark:bg-surface-dark"
+		class="flex  border-t items-center justify-between rounded-xl rounded-t-none bg-surface-light p-4 dark:bg-surface-dark"
 	>
 		{#if isExpanded}
 			<button

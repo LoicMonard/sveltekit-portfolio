@@ -110,7 +110,7 @@
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
 			<ListScroller items={experiences} parentRef={listContainerRef} {selectedExperience} />
 		</div>
-		<div class="relative h-full bg-none" bind:this={listContainerRef} slot="detailed">
+		<div class="relative bg-none p-2" bind:this={listContainerRef} slot="detailed">
 			<svelte:component this={selectedExperience.component} />
 		</div>
 	</Card>

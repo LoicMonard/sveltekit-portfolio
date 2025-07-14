@@ -96,7 +96,7 @@
 
 {#if showOverlay}
 	<div
-		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'} rounded-lg border bg-surface-light text-text-light transition-all duration-300 ease-in-out dark:border-border-dark dark:bg-surface-dark dark:text-text-dark lg:col-span-2 lg:row-span-1`}
+		class={`absolute ${expanded ? 'z-50' : 'z-20'} ${expanded ? 'shadow-2xl' : 'shadow-none'} rounded-xl border bg-surface-light text-text-light transition-all duration-300 ease-in-out dark:border-border-dark dark:bg-surface-dark dark:text-text-dark lg:col-span-2 lg:row-span-1`}
 		style="
       top: {expanded ? '5%' : rect.top + 'px'};
       left: {expanded ? '5%' : rect.left + 'px'};
@@ -106,7 +106,7 @@
 		class:opacity-30={isDimmed}
 	>
 		<div
-			class={`relative h-full overflow-auto transition-all duration-300 ${expandedCardClass}`}
+			class={`relative h-full overflow-auto transition-all duration-300 rounded-xl ${expandedCardClass}`}
 			class:!p-6={expanded}
 		>
 			<div
