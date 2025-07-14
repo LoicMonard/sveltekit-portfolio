@@ -17,15 +17,14 @@
 		class="relative h-[150px] rounded-xl rounded-b-none bg-gray-100 dark:bg-surface-darkhover"
 	>
 		<!-- <img placeholder> -->
-		<div
+		<button
 			class="border-border-lign absolute right-4 top-4 cursor-pointer rounded-lg border bg-surface-light p-2 hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
 			on:click={handleMaximize}
 			on:keydown={(e) => e.key === 'Enter' && handleMaximize()}
-			tabindex="0"
 			aria-label="Maximize card"
 		>
 			<Maximize class="h-4 w-4 text-text-light dark:text-text-dark" strokeWidth={1.5} />
-		</div>
+		</button>
 	</header>
 	<main
 		class="relative flex flex-col border-b border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
