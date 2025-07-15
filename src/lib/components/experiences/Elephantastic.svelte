@@ -6,25 +6,16 @@
 
 <ListScrollerItem isExpanded {experience}>
 	<p class="text-text-lightgray dark:text-text-darkgray overflow-scroll text-sm font-light">
-		Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab veniam molestiae repellat quae
-		blanditiis culpa consequuntur consectetur tempora obcaecati iusto ea, excepturi esse! Dolor quos
-		fuga necessitatibus expedita voluptatibus numquam? Veniam consectetur non ea, accusantium nemo
-		necessitatibus repellat sunt reprehenderit ipsam, culpa dolorem odio inventore. Odit quaerat
-		sunt necessitatibus saepe dolor et nisi aut magnam esse porro molestias recusandae vel soluta
-		consequuntur excepturi, enim, nobis maiores a? Provident, cupiditate quod itaque voluptates
-		excepturi nulla nam. Fugit iste voluptatibus magnam possimus velit molestiae, quos vel
-		blanditiis, adipisci sapiente minus! Itaque sint possimus nesciunt exercitationem dicta facilis
-		veniam minima nemo dolorem incidunt accusamus excepturi repellendus blanditiis non, explicabo,
-		unde, quidem magnam provident tenetur alias necessitatibus! Maxime facilis, sit voluptatem
-		laudantium sed voluptates iusto facere, expedita harum, doloribus labore quas tempore. Officia
-		repudiandae, quis quos labore quasi voluptas? Distinctio vitae doloribus ratione illum sunt
-		veniam temporibus aspernatur quod in eligendi, id inventore maxime tenetur accusantium odit eius
-		aliquid a neque? Itaque libero accusamus iusto iure eligendi excepturi, nobis aperiam neque sit
-		cupiditate quidem, aspernatur pariatur repellendus illum ex natus! Molestiae voluptates
-		provident necessitatibus aperiam est nam. Neque, voluptatibus. Tempore aliquam corrupti neque
-		fugit expedita, libero, laboriosam tempora quos sequi voluptas illum, sapiente iusto culpa?
-		Commodi adipisci, ab exercitationem rem optio delectus quaerat sint est sapiente, odio alias
-		minima tenetur odit iure placeat laudantium aliquam! Veniam animi quam illo, nam impedit ipsam
-		dolorum voluptas facilis itaque vitae! Nemo cupiditate blandit
+		Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.
+
+J’ai travaillé en étroite collaboration avec l’équipe backend, ce qui m’a permis de construire une interface parfaitement adaptée aux flux de données complexes du projet, orienté OSINT. Les enjeux étaient forts en termes de lisibilité, de performance et d’accessibilité, notamment pour afficher un grand volume d’informations de manière claire et dynamique.
+
+Aucun framework UI n’a été utilisé : j’ai développé tous les composants sur-mesure, avec une attention particulière portée à l’expérience utilisateur, au responsive design et à l’accessibilité. J’ai aussi pris en main l’aspect design en tant que développeur front avec une forte sensibilité UI/UX, afin de garantir cohérence et ergonomie.
+
+Techniquement, le projet s’appuyait sur Vue.js, pour lequel j’ai géré la migration de Vue 2 vers Vue 3, tout en amorçant une transition vers TypeScript. Côté styling, j’ai supprimé les éléments obsolètes pour introduire TailwindCSS de manière homogène et efficace.
+
+J’ai également manipulé ElasticSearch en rédigeant directement les queries, et mis en place Socket.io pour offrir une expérience fluide et en temps réel. Les tests E2E ont été réalisés avec Playwright, et j’ai maintenu une qualité de code rigoureuse avec ESLint, Prettier et GitLab.
+
+Enfin, lors de mon départ, j’ai formé un nouveau développeur pour assurer la continuité du projet, en partageant les bonnes pratiques et en documentant l’existant.
 	</p>
 </ListScrollerItem>

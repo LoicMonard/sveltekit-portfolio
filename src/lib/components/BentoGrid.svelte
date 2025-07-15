@@ -5,12 +5,13 @@
 
 	const experiences = [
 		{
-			company: 'TechCorp',
-			dateStart: new Date(2020, 0, 1),
-			dateEnd: new Date(2021, 11, 31),
-			skills: ['JavaScript', 'React', 'Node.js'],
-			icon: '/techcorp_logo.png',
-			shortDescription: 'Developed scalable web applications using React and Node.js.',
+			company: 'Elephantastic',
+			dateStart: new Date(2022, 9, 17),
+			dateEnd: new Date(2024, 6, 5),
+			skills: ['Vue.js', 'Typescript', 'JavaScript', 'HTML', 'CSS'],
+			icon: '/elephantastic_logo_128x128.png',
+			iconBgColor: '#DFEAFC',
+			shortDescription: 'Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.',
 			component: Elephantastic
 		},
 		{

@@ -47,26 +47,29 @@
 		class="relative flex flex-1 flex-col border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
 	>
 		<div
-			class="absolute left-0 top-0 h-12 w-12 -translate-y-1/2 translate-x-4 rounded-lg border-2 border-white bg-yellow-200 dark:border-surface-dark"
-		></div>
+			class={`absolute left-0 top-0 p-2 h-12 w-12 -translate-y-1/2 translate-x-4 rounded-lg border-2 border-white  dark:border-surface-dark`}
+			style={`background-color: ${experience.iconBgColor};`}
+		>
+			<img src={experience.icon} alt="Company Logo" class="h-full w-full" />
+		</div>
 		<div class="mt-4 flex items-center gap-2">
-			<h1 class="font-normal dark:text-text-dark">{ experience.company }</h1>
+			<h1 class="font-normal dark:text-text-dark">{experience.company}</h1>
 			<p
 				class="bg-surface-lightgray dark:bg-surface-darkgray dark:text-text-darkaccent px-2 text-xs font-light"
 			>
-				1 year and 10 months
+				{experience.dateStart.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} -
+				{experience.dateEnd.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
 			</p>
 		</div>
 
 		<slot>
 			<p class="text-text-lightgray dark:text-text-darkgray line-clamp-2 text-sm font-light">
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus delectus, rem debitis
-				voluptatem voluptate iure aut fugit cum placeat illo?
+				{experience.shortDescription}
 			</p>
 		</slot>
 	</main>
 	<footer
-		class="flex  border-t items-center justify-between rounded-xl rounded-t-none bg-surface-light p-4 dark:bg-surface-dark"
+		class="flex items-center justify-between rounded-xl rounded-t-none border-t border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
 	>
 		{#if isExpanded}
 			<button
