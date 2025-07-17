@@ -5,7 +5,7 @@
 	import ListScrollerItem from './ListScrollerItem.svelte';
 
 	export let items: string[] = [];
-	export let selectedExperience;
+	export let selectedItem;
 
 	let itemRefs: (HTMLDivElement | null)[] = [];
 
@@ -32,27 +32,10 @@
 		return `translateY(${translateY.toFixed(2)}px) scale(${scale.toFixed(3)})`;
 	};
 
-	const computeTimePassed = (startDate: string, endDate: string): string => {
-		const start = new Date(startDate);
-		const end = new Date(endDate);
-
-		const diffTime = Math.abs(end.getTime() - start.getTime());
-		const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365));
-		const diffMonths = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30)) % 12;
-
-		if (diffYears > 0 && diffMonths > 0) {
-			return `${diffYears} year${diffYears > 1 ? 's' : ''} ${diffMonths} month${diffMonths > 1 ? 's' : ''}`;
-		} else if (diffYears > 0) {
-			return `${diffYears} year${diffYears > 1 ? 's' : ''}`;
-		} else {
-			return `${diffMonths} month${diffMonths > 1 ? 's' : ''}`;
-		}
-	};
-
 	const selectItem = (index: number) => (event: MouseEvent | KeyboardEvent) => {
 		if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
 			activeIndex.set(index);
-			selectedExperience = items[index];
+			selectedItem = items[index];
 		}
 	};
 </script>
@@ -92,7 +75,7 @@
 							: `translateY(calc(${Math.abs(i - $activeIndex)} * (100% + 8px)))`
 					};`}
 				>
-					<ListScrollerItem experience={item} />
+					<ListScrollerItem data={item} />
 				</div>
 			{/each}
 		</div>

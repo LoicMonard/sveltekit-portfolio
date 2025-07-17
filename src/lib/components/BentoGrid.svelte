@@ -79,7 +79,7 @@
 		}
 	];
 
-	let selectedExperience = experiences[0];
+	let selectedItem = experiences[0];
 
 	let containerRef: HTMLDivElement;
 	let listContainerRef: HTMLDivElement;
@@ -101,7 +101,7 @@
 
 	<Card
 		title=""
-		id="test"
+		id="experiences"
 		colSpan={1}
 		rowSpan={2}
 		{containerRef}
@@ -109,10 +109,10 @@
 		expandedCardClass=""
 	>
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
-			<ListScroller items={experiences} parentRef={listContainerRef} {selectedExperience} />
+			<ListScroller items={experiences} parentRef={listContainerRef} {selectedItem} />
 		</div>
 		<div class="relative bg-none p-2" bind:this={listContainerRef} slot="detailed">
-			<svelte:component this={selectedExperience.component} experience={selectedExperience} />
+			<svelte:component this={selectedItem.component} experience={selectedItem} />
 		</div>
 	</Card>
 

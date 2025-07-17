@@ -1,5 +1,4 @@
 <script lang="ts">
-	// Just a single comment
 	import { activeCard } from '$lib/stores';
 	import { tick, setContext } from 'svelte';
 	import { Maximize, Minimize } from 'lucide-svelte';
