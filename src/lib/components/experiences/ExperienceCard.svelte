@@ -4,6 +4,8 @@
 	import { activeCard } from '$lib/stores';
 
 	export let experience;
+	export let hasActionButton = true;
+	export let isInFullPageMode = false;
 
 	$: isExpanded = $activeCard === 'experiences';
 
@@ -44,24 +46,26 @@
 		style={`height: ${isExpanded ? '200px' : '150px'};`}
 	>
 		<slot name="header" />
-		{#if isExpanded}
-			<button
-				class="border-border-lign absolute right-4 top-4 cursor-pointer rounded-lg border bg-surface-light p-2 hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
-				on:click={handleMinimize}
-				on:keydown={(e) => e.key === 'Enter' && handleMinimize()}
-				aria-label="Maximize card"
-			>
-				<Minimize class="h-4 w-4 text-text-light dark:text-text-dark" strokeWidth={1.5} />
-			</button>
-		{:else}
-			<button
-				class="border-border-lign absolute right-4 top-4 cursor-pointer rounded-lg border bg-surface-light p-2 hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
-				on:click={handleMaximize}
-				on:keydown={(e) => e.key === 'Enter' && handleMaximize()}
-				aria-label="Maximize card"
-			>
-				<Maximize class="h-4 w-4 text-text-light dark:text-text-dark" strokeWidth={1.5} />
-			</button>
+		{#if hasActionButton}
+			{#if isExpanded}
+				<button
+					class="border-border-lign absolute right-4 top-4 cursor-pointer rounded-lg border bg-surface-light p-2 hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
+					on:click={handleMinimize}
+					on:keydown={(e) => e.key === 'Enter' && handleMinimize()}
+					aria-label="Maximize card"
+				>
+					<Minimize class="h-4 w-4 text-text-light dark:text-text-dark" strokeWidth={1.5} />
+				</button>
+			{:else}
+				<button
+					class="border-border-lign absolute right-4 top-4 cursor-pointer rounded-lg border bg-surface-light p-2 hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
+					on:click={handleMaximize}
+					on:keydown={(e) => e.key === 'Enter' && handleMaximize()}
+					aria-label="Maximize card"
+				>
+					<Maximize class="h-4 w-4 text-text-light dark:text-text-dark" strokeWidth={1.5} />
+				</button>
+			{/if}
 		{/if}
 	</header>
 	<main
@@ -75,7 +79,7 @@
 		</div>
 		<div class="mt-4 flex items-center gap-2">
 			<h1 class="font-normal dark:text-text-dark">
-				{experience?.company}
+				{experience?.companyName}
 			</h1>
 			<p
 				class="bg-surface-lightgray px-2 text-xs font-light dark:bg-surface-darkgray dark:text-text-darkaccent"
@@ -90,24 +94,26 @@
 			</p>
 		</slot>
 	</main>
-	<footer
-		class="flex items-center justify-between rounded-xl rounded-t-none border-t border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
-	>
-		{#if isExpanded}
-			<button
-				class="rounded-lg border border-border-light bg-surface-light px-4 py-2 text-sm outline-4 outline-offset-0 outline-black hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
-				on:click={handleMinimize}
-			>
-				Hide Details
-			</button>
-		{:else}
-			<button
-				class="rounded-lg border border-border-light bg-surface-light px-4 py-2 text-sm outline-4 outline-offset-0 outline-black hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
-				on:click={handleMaximize}
-			>
-				View Details
-			</button>
-		{/if}
-		<span class="text-sm">Vue.js, TailwindCSS</span>
-	</footer>
+	{#if !isInFullPageMode}
+		<footer
+			class="flex items-center justify-between rounded-xl rounded-t-none border-t border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
+		>
+			{#if isExpanded}
+				<button
+					class="rounded-lg border border-border-light bg-surface-light px-4 py-2 text-sm outline-4 outline-offset-0 outline-black hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
+					on:click={handleMinimize}
+				>
+					Hide Details
+				</button>
+			{:else}
+				<button
+					class="rounded-lg border border-border-light bg-surface-light px-4 py-2 text-sm outline-4 outline-offset-0 outline-black hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
+					on:click={handleMaximize}
+				>
+					View Details
+				</button>
+			{/if}
+			<span class="text-sm">Vue.js, TailwindCSS</span>
+		</footer>
+	{/if}
 </article>

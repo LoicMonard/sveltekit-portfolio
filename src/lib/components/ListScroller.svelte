@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { activeIndex, expandedIndex } from '$lib/stores/listScroller.store';
-	import { ChevronDown, ChevronUp, Apple } from 'lucide-svelte';
-	import { get } from 'svelte/store';
+	import { activeIndex } from '$lib/stores/listScroller.store';
+	import { ChevronDown, ChevronUp } from 'lucide-svelte';
 	import ListScrollerItem from './ListScrollerItem.svelte';
+	import type { Experience } from '$lib/types/experience';
 
-	export let items: string[] = [];
+	export let items: Experience[] = [];
 	export let selectedItem;
 
 	let itemRefs: (HTMLDivElement | null)[] = [];
@@ -47,7 +47,6 @@
 		class="py-O relative h-full w-full pt-10 [-webkit-mask-image:linear-gradient(to_bottom,black_90%,transparent)]
             [mask-image:linear-gradient(to_bottom,black_90%,transparent)]"
 	>
-		<!-- Chevron Up -->
 		{#if $activeIndex > 0}
 			<button
 				on:click={prev}
@@ -57,7 +56,6 @@
 			</button>
 		{/if}
 
-		<!-- Items container -->
 		<div
 			class="relative flex h-full w-full flex-col items-center transition-transform duration-1000"
 		>
@@ -66,8 +64,8 @@
 					bind:this={itemRefs[i]}
 					on:click={selectItem(i)}
 					on:keydown={selectItem(i)}
-					role="button"
 					tabindex="0"
+					role="button"
 					class={`group absolute z-30 flex h-auto w-full origin-top overflow-hidden rounded-xl p-2 transition duration-300 hover:shadow-sm dark:border-border-dark dark:bg-surface-dark`}
 					style={`transform: ${
 						i < $activeIndex

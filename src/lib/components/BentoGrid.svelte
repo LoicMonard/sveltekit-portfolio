@@ -1,85 +1,11 @@
 <script lang="ts">
+	import { get } from 'svelte/store';
+	import { experienceArray } from '$lib/stores/experiences.store';
+	import type { Experience } from '$lib/types/experience.ts';
 	import Card from '$lib/components/Card.svelte';
 	import ListScroller from './ListScroller.svelte';
-	import Elephantastic from './experiences/Elephantastic.svelte';
 
-	const experiences = [
-		{
-			company: 'Elephantastic',
-			dateStart: new Date(2022, 9, 17),
-			dateEnd: new Date(2024, 6, 5),
-			skills: ['Vue.js', 'Typescript', 'JavaScript', 'HTML', 'CSS'],
-			icon: '/elephantastic_logo_128x128.png',
-			iconBgColor: '#DFEAFC',
-			shortDescription: 'Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.',
-			component: Elephantastic
-		},
-		// {
-		// 	company: 'WebSolutions',
-		// 	dateStart: new Date(2019, 5, 1),
-		// 	dateEnd: new Date(2020, 11, 31),
-		// 	skills: ['HTML', 'CSS', 'Vue.js'],
-		// 	icon: '/websolutions_logo.png',
-		// 	shortDescription: 'Created responsive websites and implemented Vue.js components.',
-		// 	component: Elephantastic
-		// },
-		// {
-		// 	company: 'DesignStudio',
-		// 	dateStart: new Date(2018, 2, 1),
-		// 	dateEnd: new Date(2019, 4, 30),
-		// 	skills: ['Photoshop', 'Illustrator', 'UI/UX'],
-		// 	icon: '/designstudio_logo.png',
-		// 	shortDescription: 'Designed user interfaces and graphics for various digital platforms.',
-		// 	component: Elephantastic
-		// },
-		// {
-		// 	company: 'AppDev Inc.',
-		// 	dateStart: new Date(2021, 0, 1),
-		// 	dateEnd: new Date(2022, 6, 31),
-		// 	skills: ['Kotlin', 'Swift', 'Mobile Development'],
-		// 	icon: '/appdev_logo.png',
-		// 	shortDescription: 'Developed mobile applications for Android and iOS platforms.',
-		// 	component: Elephantastic
-		// },
-		// {
-		// 	company: 'DataAnalytics Co.',
-		// 	dateStart: new Date(2017, 8, 1),
-		// 	dateEnd: new Date(2018, 1, 31),
-		// 	skills: ['Python', 'Pandas', 'Data Visualization'],
-		// 	icon: '/dataanalytics_logo.png',
-		// 	shortDescription: 'Analyzed data and created visualizations to support business decisions.',
-		// 	component: Elephantastic
-		// },
-		// {
-		// 	company: 'CloudNet',
-		// 	dateStart: new Date(2016, 0, 1),
-		// 	dateEnd: new Date(2017, 7, 31),
-		// 	skills: ['AWS', 'Docker', 'Kubernetes'],
-		// 	icon: '/cloudnet_logo.png',
-		// 	shortDescription: 'Implemented cloud infrastructure and containerized applications.',
-		// 	component: Elephantastic
-		// },
-		// {
-		// 	company: 'GameStudio',
-		// 	dateStart: new Date(2015, 3, 1),
-		// 	dateEnd: new Date(2016, 11, 31),
-		// 	skills: ['Unity', 'C#', 'Game Design'],
-		// 	icon: '/gamestudio_logo.png',
-		// 	shortDescription: 'Developed and designed engaging video games using Unity and C#.',
-		// 	component: Elephantastic
-		// },
-		// {
-		// 	company: 'EduTech',
-		// 	dateStart: new Date(2014, 6, 1),
-		// 	dateEnd: new Date(2015, 2, 28),
-		// 	skills: ['Java', 'Spring', 'E-learning Platforms'],
-		// 	icon: '/edutech_logo.png',
-		// 	shortDescription: 'Built and maintained e-learning platforms using Java and Spring.',
-		// 	component: Elephantastic
-		// }
-	];
-
-	let selectedItem = experiences[0];
+	let selectedItem: Experience | undefined = get(experienceArray)[0];
 
 	let containerRef: HTMLDivElement;
 	let listContainerRef: HTMLDivElement;
@@ -109,10 +35,10 @@
 		expandedCardClass=""
 	>
 		<div class="absolute left-0 top-0 h-full w-full" bind:this={listContainerRef} slot="preview">
-			<ListScroller items={experiences} parentRef={listContainerRef} {selectedItem} />
+			<ListScroller items={$experienceArray} parentRef={listContainerRef} {selectedItem} />
 		</div>
 		<div class="relative bg-none p-2" bind:this={listContainerRef} slot="detailed">
-			<svelte:component this={selectedItem.component} data={selectedItem} />
+			<svelte:component this={selectedItem?.component} data={selectedItem} />
 		</div>
 	</Card>
 
@@ -164,6 +90,5 @@
 				</div>
 			</div>
 		</div>
-		<p>Sinon</p>
 	</Card>
 </div>

@@ -6,13 +6,15 @@
 	$: isExpanded = $activeCard === 'experiences';
 
 	export let data;
+	export let hasActionButton = true;
+	export let isInFullPageMode = false;
 </script>
 
-<ExperienceCard experience={data}>
+<ExperienceCard experience={data} {hasActionButton} {isInFullPageMode}>
 	<p
 		class="overflow-scroll text-sm font-light text-text-lightgray dark:text-text-darkgray"
 		slot="main"
-		class:line-clamp-3={!isExpanded}
+		class:line-clamp-3={!isExpanded && !isInFullPageMode}
 	>
 		Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end
 		freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de
