@@ -1,14 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import ExperienceCard from './ExperienceCard.svelte';
 	import { activeCard } from '$lib/stores';
-
-	let LottiePlayer: typeof import('@lottiefiles/lottie-player').LottiePlayer | null = null;
-
-	onMount(async () => {
-		const module = await import('@lottiefiles/lottie-player');
-		LottiePlayer = module.LottiePlayer;
-	});
+	import { DotLottieSvelte } from '@lottiefiles/dotlottie-svelte';
 
 	$: isExpanded = $activeCard === 'experiences';
 
@@ -17,7 +10,7 @@
 
 <ExperienceCard experience={data}>
 	<p
-		class="text-text-lightgray dark:text-text-darkgray overflow-scroll text-sm font-light"
+		class="overflow-scroll text-sm font-light text-text-lightgray dark:text-text-darkgray"
 		slot="main"
 		class:line-clamp-3={!isExpanded}
 	>
@@ -41,15 +34,20 @@
 		et GitLab. Enfin, lors de mon départ, j’ai formé un nouveau développeur pour assurer la
 		continuité du projet, en partageant les bonnes pratiques et en documentant l’existant.
 	</p>
-	<div class="w-full" slot="header">
-		{#if LottiePlayer}
-			<lottie-player
-				src="https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json"
-				background="transparent"
-				speed="1"
+	<div class="h-full w-full" slot="header">
+		<div
+			id="lottieContainer"
+			class="relative flex h-full items-center justify-center overflow-hidden"
+		>
+			<DotLottieSvelte
+				src="/lottie_assets/squares_animation.lottie"
+				style="height: 100%; aspect-ratio: 2 / 1"
 				loop
 				autoplay
-			></lottie-player>
-		{/if}
+				renderConfig={{
+					autoResize: true
+				}}
+			/>
+		</div>
 	</div>
 </ExperienceCard>

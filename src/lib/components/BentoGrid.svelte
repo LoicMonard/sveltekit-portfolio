@@ -14,69 +14,69 @@
 			shortDescription: 'Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.',
 			component: Elephantastic
 		},
-		{
-			company: 'WebSolutions',
-			dateStart: new Date(2019, 5, 1),
-			dateEnd: new Date(2020, 11, 31),
-			skills: ['HTML', 'CSS', 'Vue.js'],
-			icon: '/websolutions_logo.png',
-			shortDescription: 'Created responsive websites and implemented Vue.js components.',
-			component: Elephantastic
-		},
-		{
-			company: 'DesignStudio',
-			dateStart: new Date(2018, 2, 1),
-			dateEnd: new Date(2019, 4, 30),
-			skills: ['Photoshop', 'Illustrator', 'UI/UX'],
-			icon: '/designstudio_logo.png',
-			shortDescription: 'Designed user interfaces and graphics for various digital platforms.',
-			component: Elephantastic
-		},
-		{
-			company: 'AppDev Inc.',
-			dateStart: new Date(2021, 0, 1),
-			dateEnd: new Date(2022, 6, 31),
-			skills: ['Kotlin', 'Swift', 'Mobile Development'],
-			icon: '/appdev_logo.png',
-			shortDescription: 'Developed mobile applications for Android and iOS platforms.',
-			component: Elephantastic
-		},
-		{
-			company: 'DataAnalytics Co.',
-			dateStart: new Date(2017, 8, 1),
-			dateEnd: new Date(2018, 1, 31),
-			skills: ['Python', 'Pandas', 'Data Visualization'],
-			icon: '/dataanalytics_logo.png',
-			shortDescription: 'Analyzed data and created visualizations to support business decisions.',
-			component: Elephantastic
-		},
-		{
-			company: 'CloudNet',
-			dateStart: new Date(2016, 0, 1),
-			dateEnd: new Date(2017, 7, 31),
-			skills: ['AWS', 'Docker', 'Kubernetes'],
-			icon: '/cloudnet_logo.png',
-			shortDescription: 'Implemented cloud infrastructure and containerized applications.',
-			component: Elephantastic
-		},
-		{
-			company: 'GameStudio',
-			dateStart: new Date(2015, 3, 1),
-			dateEnd: new Date(2016, 11, 31),
-			skills: ['Unity', 'C#', 'Game Design'],
-			icon: '/gamestudio_logo.png',
-			shortDescription: 'Developed and designed engaging video games using Unity and C#.',
-			component: Elephantastic
-		},
-		{
-			company: 'EduTech',
-			dateStart: new Date(2014, 6, 1),
-			dateEnd: new Date(2015, 2, 28),
-			skills: ['Java', 'Spring', 'E-learning Platforms'],
-			icon: '/edutech_logo.png',
-			shortDescription: 'Built and maintained e-learning platforms using Java and Spring.',
-			component: Elephantastic
-		}
+		// {
+		// 	company: 'WebSolutions',
+		// 	dateStart: new Date(2019, 5, 1),
+		// 	dateEnd: new Date(2020, 11, 31),
+		// 	skills: ['HTML', 'CSS', 'Vue.js'],
+		// 	icon: '/websolutions_logo.png',
+		// 	shortDescription: 'Created responsive websites and implemented Vue.js components.',
+		// 	component: Elephantastic
+		// },
+		// {
+		// 	company: 'DesignStudio',
+		// 	dateStart: new Date(2018, 2, 1),
+		// 	dateEnd: new Date(2019, 4, 30),
+		// 	skills: ['Photoshop', 'Illustrator', 'UI/UX'],
+		// 	icon: '/designstudio_logo.png',
+		// 	shortDescription: 'Designed user interfaces and graphics for various digital platforms.',
+		// 	component: Elephantastic
+		// },
+		// {
+		// 	company: 'AppDev Inc.',
+		// 	dateStart: new Date(2021, 0, 1),
+		// 	dateEnd: new Date(2022, 6, 31),
+		// 	skills: ['Kotlin', 'Swift', 'Mobile Development'],
+		// 	icon: '/appdev_logo.png',
+		// 	shortDescription: 'Developed mobile applications for Android and iOS platforms.',
+		// 	component: Elephantastic
+		// },
+		// {
+		// 	company: 'DataAnalytics Co.',
+		// 	dateStart: new Date(2017, 8, 1),
+		// 	dateEnd: new Date(2018, 1, 31),
+		// 	skills: ['Python', 'Pandas', 'Data Visualization'],
+		// 	icon: '/dataanalytics_logo.png',
+		// 	shortDescription: 'Analyzed data and created visualizations to support business decisions.',
+		// 	component: Elephantastic
+		// },
+		// {
+		// 	company: 'CloudNet',
+		// 	dateStart: new Date(2016, 0, 1),
+		// 	dateEnd: new Date(2017, 7, 31),
+		// 	skills: ['AWS', 'Docker', 'Kubernetes'],
+		// 	icon: '/cloudnet_logo.png',
+		// 	shortDescription: 'Implemented cloud infrastructure and containerized applications.',
+		// 	component: Elephantastic
+		// },
+		// {
+		// 	company: 'GameStudio',
+		// 	dateStart: new Date(2015, 3, 1),
+		// 	dateEnd: new Date(2016, 11, 31),
+		// 	skills: ['Unity', 'C#', 'Game Design'],
+		// 	icon: '/gamestudio_logo.png',
+		// 	shortDescription: 'Developed and designed engaging video games using Unity and C#.',
+		// 	component: Elephantastic
+		// },
+		// {
+		// 	company: 'EduTech',
+		// 	dateStart: new Date(2014, 6, 1),
+		// 	dateEnd: new Date(2015, 2, 28),
+		// 	skills: ['Java', 'Spring', 'E-learning Platforms'],
+		// 	icon: '/edutech_logo.png',
+		// 	shortDescription: 'Built and maintained e-learning platforms using Java and Spring.',
+		// 	component: Elephantastic
+		// }
 	];
 
 	let selectedItem = experiences[0];

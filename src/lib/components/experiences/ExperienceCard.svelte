@@ -40,7 +40,8 @@
 	class="flex h-fit flex-col rounded-xl border border-border-light bg-white text-text-light outline outline-8 outline-offset-0 outline-white dark:border-border-dark dark:bg-background-dark dark:text-text-dark dark:outline-surface-dark"
 >
 	<header
-		class="relative min-h-[150px] rounded-xl rounded-b-none bg-gray-100 p-6 dark:bg-surface-darkhover"
+		class="relative rounded-xl rounded-b-none bg-slate-100 dark:bg-surface-darkhover"
+		style={`height: ${isExpanded ? '200px' : '150px'};`}
 	>
 		<slot name="header" />
 		{#if isExpanded}
@@ -74,17 +75,17 @@
 		</div>
 		<div class="mt-4 flex items-center gap-2">
 			<h1 class="font-normal dark:text-text-dark">
-				{experience?.company} - {activeCard == 'experience'}
+				{experience?.company}
 			</h1>
 			<p
-				class="bg-surface-lightgray dark:bg-surface-darkgray dark:text-text-darkaccent px-2 text-xs font-light"
+				class="bg-surface-lightgray px-2 text-xs font-light dark:bg-surface-darkgray dark:text-text-darkaccent"
 			>
 				{computeTimePassed(experience?.dateStart, experience?.dateEnd)}
 			</p>
 		</div>
 
 		<slot name="main">
-			<p class="text-text-lightgray dark:text-text-darkgray line-clamp-2 text-sm font-light">
+			<p class="line-clamp-2 text-sm font-light text-text-lightgray dark:text-text-darkgray">
 				{experience?.shortDescription}
 			</p>
 		</slot>
