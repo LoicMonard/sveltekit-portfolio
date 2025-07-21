@@ -13,6 +13,17 @@ const experienceList: Experience[] = [
 		description:
 			'Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.',
 		component: Elephantastic
+	},
+	{
+		companyName: 'Simco',
+		dateStart: new Date(2020, 6, 1),
+		dateEnd: new Date(2022, 8, 5),
+		skills: ['Vue.js', 'Angular.js', 'JavaScript', 'HTML', 'CSS'],
+		icon: '/simco_logo_200x200.jpeg',
+		iconBgColor: '#FFF',
+		description:
+			'Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.',
+		component: Elephantastic
 	}
 ];
 
