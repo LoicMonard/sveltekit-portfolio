@@ -39,7 +39,7 @@
 	"type": "module",
 	"dependencies": {
 		"@lottiefiles/dotlottie-svelte": "^0.6.3",
-		"gsap": "^3.12.7",
+		"gsap": "^3.13.0",
 		"lucide-svelte": "^0.503.0",
 		"three": "^0.175.0"
 	}
