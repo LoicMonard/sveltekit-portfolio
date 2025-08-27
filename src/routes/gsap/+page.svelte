@@ -2,9 +2,10 @@
 	import { gsap } from 'gsap';
 	import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
 	import ScrollTrigger from 'gsap/ScrollTrigger';
+	import MotionPathPlugin from 'gsap/MotionPathPlugin';
 	import { onMount } from 'svelte';
 
-	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger);
+	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin);
 
 	let scrollScene: HTMLElement;
 
@@ -91,7 +92,7 @@
 				start: 'top top',
 				end: '+=500',
 				scrub: 1,
-				// markers: true
+				markers: true
 			}
 		});
 
@@ -105,12 +106,38 @@
 				scroller: scrollScene,
 				start: 'top top',
 				end: '+=500',
-				scrub: 1,
+				scrub: 1
 				// markers: true
 			}
 		});
 
-		// gsap.to('#overlay', { autoAlpha:1, scrollTrigger:{ trigger:'#gridScene', start: 'top top+=500', end:'+=700', scrub:1 }});
+		gsap.set('#planeSvg', {
+			scale: 0.5
+		});
+
+		gsap.set('#planeContainer', { top: '20vh', left: '-2rem' });
+
+		gsap.to('#planeSvg', {
+			visibility: 'visible',
+			scale: 1,
+			ease: 'none',
+			motionPath: {
+				path: '#planePathSvg path',
+				align: '#planePathSvg path',
+				autoRotate: true,
+				alignOrigin: [0.5, 0.5],
+				start: 1,
+				end: 0
+			},
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 200,
+				end: 1000,
+				scrub: 1,
+				markers: true
+			}
+		});
 	};
 
 	onMount(() => {
@@ -124,7 +151,6 @@
 	class="h-screen w-screen overflow-scroll overflow-x-hidden bg-slate-50"
 >
 	<div class="h-full w-full flex-col items-center justify-center">
-		<!-- <div id="scrollDownSpacer" class="border -z-10 h-[100px]" /> -->
 		<section id="scrollDownScene" class="h-[100px] w-screen shrink-0 items-center justify-center">
 			<div class="flex h-screen w-full flex-col items-center justify-center gap-4">
 				<div class="w-12">
@@ -291,36 +317,50 @@
 					/>
 				</g>
 			</svg>
+			<div id="planeContainer" class="absolute top-0 w-full">
+				<div id="planeSvgContainer" class="w-36">
+					<svg
+						id="planeSvg"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="-2 -2 91 47"
+						fill="none"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M12.5 21.5V16.5L87 32L12.5 21.5Z" fill="#4F4B45" fill-opacity="0.5" />
+						<path
+							d="M87 32L31.0975 1.32782C30.7101 1.11527 30.2632 1.03699 29.8267 1.10521L15.9455 3.27414C15.0847 3.40864 14.41 4.08492 14.2775 4.94605L12.5 16.5M87 32L12.5 16.5M87 32L15.3082 41.8885C14.7901 41.96 14.2647 41.8257 13.8444 41.5144L2.59311 33.1801C1.71101 32.5267 1.52043 31.2844 2.16609 30.3966L8.29318 21.9719C8.72815 21.3738 9.45766 21.0645 10.1899 21.1678L12.5 21.4936M87 32L12.5 21.4936M12.5 16.5V21.4936"
+							stroke="#54514C"
+							stroke-width="2"
+							fill="none"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<path
+							d="M30.5 1L33.5 20.5M33.5 24.5L14.5 42"
+							stroke="#54514C"
+							stroke-width="0.5"
+							fill="none"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+				</div>
+				<div class="invisible w-1/2">
+					<svg
+						id="planePathSvg"
+						viewBox="0 0 742 213"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M741.5 186C663.5 179.6 551.724 196.301 505.5 205C444.556 216.468 313 223.4 293 131C273 38.6 347.667 19.8334 389.5 22C454.3 33.2 472.66 92.238 462 125.5C447.604 170.419 408.8 194 336 186C263.2 178 188.333 104.333 150 65C111.667 25.6667 72.1 9.8 0.5 1"
+							stroke="black"
+						/>
+					</svg>
+				</div>
+			</div>
 		</section>
-		<!-- <section id="planeScene" class="h-[200px] w-screen shrink-0">
-			Plane Scene
-		</section> -->
 	</div>
 </main>
-
-<!-- <svg
-	xmlns="http://www.w3.org/2000/svg"
-	viewBox="-2 -2 91 47"
-	fill="none"
-	stroke-width="2"
-	stroke-linecap="round"
-	stroke-linejoin="round"
->
-	<path d="M12.5 21.5V16.5L87 32L12.5 21.5Z" fill="#4F4B45" fill-opacity="0.5" />
-	<path
-		d="M87 32L31.0975 1.32782C30.7101 1.11527 30.2632 1.03699 29.8267 1.10521L15.9455 3.27414C15.0847 3.40864 14.41 4.08492 14.2775 4.94605L12.5 16.5M87 32L12.5 16.5M87 32L15.3082 41.8885C14.7901 41.96 14.2647 41.8257 13.8444 41.5144L2.59311 33.1801C1.71101 32.5267 1.52043 31.2844 2.16609 30.3966L8.29318 21.9719C8.72815 21.3738 9.45766 21.0645 10.1899 21.1678L12.5 21.4936M87 32L12.5 21.4936M12.5 16.5V21.4936"
-		stroke="#54514C"
-		stroke-width="2"
-		fill="none"
-		stroke-linecap="round"
-		stroke-linejoin="round"
-	/>
-	<path
-		d="M30.5 1L33.5 20.5M33.5 24.5L14.5 42"
-		stroke="#54514C"
-		stroke-width="0.5"
-		fill="none"
-		stroke-linecap="round"
-		stroke-linejoin="round"
-	/>
-</svg> -->
