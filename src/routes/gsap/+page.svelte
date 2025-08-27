@@ -52,29 +52,65 @@
 			scrollTrigger: {
 				trigger: '#scrollDownScene',
 				scroller: scrollScene,
-				start: 'top top',
-				endTrigger: '#gridScene',
+				start: 0,
+				end: 100,
 				pin: true,
-				markers: true
+				anticipatePin: 1,
+				// markers: true,
+				scrub: 1
 			}
 		});
 	};
 
 	const initGridScrollTrigger = () => {
-		const path = document.querySelector('#gridSvg path');
-		gsap.from(path, {
-			drawSVG: '0% 0%',
-			duration: 5,
-			ease: 'linear',
+		const cols = gsap.utils.toArray<SVGPathElement>('#gridSvg #cols path');
+		const rows = gsap.utils.toArray<SVGPathElement>('#gridSvg #rows path');
+
+		// État initial (pas d’affichage prématuré)
+		gsap.set([...cols, ...rows], { drawSVG: '0% 0%' });
+		gsap.set('#gridScene', { visibility: 'visible' });
+
+		const master = ScrollTrigger.create({
+			trigger: '#gridScene',
+			scroller: scrollScene,
+			start: 'top top',
+			end: '+=5000',
+			pin: true,
+			anticipatePin: 1
+			// markers: true
+		});
+
+		gsap.to(cols, {
+			drawSVG: '0% 100%',
+			stagger: 0.1,
+			immediateRender: false,
+			ease: 'none',
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
 				start: 'top top',
-				end: 'bottom top',
-				pin: true
+				end: '+=500',
+				scrub: 1,
 				// markers: true
 			}
 		});
+
+		gsap.to(rows, {
+			drawSVG: '0% 100%',
+			stagger: 0.1,
+			immediateRender: false,
+			ease: 'none',
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 'top top',
+				end: '+=500',
+				scrub: 1,
+				// markers: true
+			}
+		});
+
+		// gsap.to('#overlay', { autoAlpha:1, scrollTrigger:{ trigger:'#gridScene', start: 'top top+=500', end:'+=700', scrub:1 }});
 	};
 
 	onMount(() => {
@@ -85,11 +121,12 @@
 <main
 	bind:this={scrollScene}
 	id="scrollScene"
-	class="h-screen w-screen overflow-scroll bg-slate-50"
+	class="h-screen w-screen overflow-scroll overflow-x-hidden bg-slate-50"
 >
 	<div class="h-full w-full flex-col items-center justify-center">
-		<div id="scrollDownScene" class="flex items-center justify-center mt-4 h-screen w-screen shrink-0">
-			<div class="flex w-full flex-col items-center justify-center gap-4">
+		<!-- <div id="scrollDownSpacer" class="border -z-10 h-[100px]" /> -->
+		<section id="scrollDownScene" class="h-[100px] w-screen shrink-0 items-center justify-center">
+			<div class="flex h-screen w-full flex-col items-center justify-center gap-4">
 				<div class="w-12">
 					<svg
 						id="scrollDownIcon"
@@ -114,40 +151,150 @@
 					scroll down
 				</p>
 			</div>
-		</div>
-		<div
+		</section>
+		<section
 			id="gridScene"
-			class="absolute top-8 h-screen max-h-[100vh] w-screen shrink-0 overflow-hidden"
+			class="invisible h-screen max-h-[100vh] w-screen shrink-0 overflow-hidden"
 		>
-			<svg id="gridSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-				<path
-					d="
-      M10 0 L10 100   L10 110 L20 110 L20 0
-      L20 -10 L30 -10 L30 100
-      L30 110 L40 110 L40 0
-      L40 -10 L50 -10 L50 100
-      L50 110 L60 110 L60 0
-      L60 -10 L70 -10 L70 100
-      L70 110 L80 110 L80 0
-      L80 -10 L90 -10 L90 100
+			<svg class="" id="gridSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+				<!-- Colonnes -->
+				<g id="cols">
+					<path
+						d="M10 0 L10 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M20 0 L20 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M30 0 L30 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M40 0 L40 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M50 0 L50 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M60 0 L60 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M70 0 L70 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M80 0 L80 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M90 0 L90 100"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+				</g>
 
-      L110 100 L110 -10 L-10 -10 L-10 10 L0 10 L100 10
-      L110 10  L110 20  L0 20   L100 20
-      L110 20  L110 30  L0 30   L100 30
-      L110 30  L110 40  L0 40   L100 40
-      L110 40  L110 50  L0 50   L100 50
-      L110 50  L110 60  L0 60   L100 60
-      L110 60  L110 70  L0 70   L100 70
-      L110 70  L110 80  L0 80   L100 80
-      L110 80  L110 90  L0 90   L100 90
-    "
-					stroke="#5E6B82"
-					stroke-width="0.5"
-					fill="none"
-					vector-effect="non-scaling-stroke"
-				/>
+				<!-- Lignes -->
+				<g id="rows">
+					<path
+						d="M0 10 L100 10"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 20 L100 20"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 30 L100 30"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 40 L100 40"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 50 L100 50"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 60 L100 60"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 70 L100 70"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 80 L100 80"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+					<path
+						d="M0 90 L100 90"
+						stroke="#CCD5E1"
+						stroke-width="0.5"
+						fill="none"
+						vector-effect="non-scaling-stroke"
+					/>
+				</g>
 			</svg>
-		</div>
+		</section>
+		<!-- <section id="planeScene" class="h-[200px] w-screen shrink-0">
+			Plane Scene
+		</section> -->
 	</div>
 </main>
 
