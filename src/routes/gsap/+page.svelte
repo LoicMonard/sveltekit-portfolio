@@ -57,7 +57,6 @@
 				end: 100,
 				pin: true,
 				anticipatePin: 1,
-				// markers: true,
 				scrub: 1
 			}
 		});
@@ -78,7 +77,6 @@
 			end: '+=5000',
 			pin: true,
 			anticipatePin: 1
-			// markers: true
 		});
 
 		gsap.to(cols, {
@@ -91,8 +89,7 @@
 				scroller: scrollScene,
 				start: 'top top',
 				end: '+=500',
-				scrub: 1,
-				markers: true
+				scrub: 1
 			}
 		});
 
@@ -112,31 +109,94 @@
 		});
 
 		gsap.set('#planeSvg', {
-			scale: 0.5
+			scale: 0.5,
+			transformBox: 'fill-box',
+			transformOrigin: '100% 100%'
 		});
 
 		gsap.set('#planeContainer', { top: '20vh', left: '-2rem' });
 
+		const planeSvgPath = '#planePathSvg path';
+
 		gsap.to('#planeSvg', {
 			visibility: 'visible',
 			scale: 1,
-			ease: 'none',
 			motionPath: {
-				path: '#planePathSvg path',
-				align: '#planePathSvg path',
+				path: planeSvgPath,
+				align: planeSvgPath,
 				autoRotate: true,
 				alignOrigin: [0.5, 0.5],
 				start: 1,
 				end: 0
 			},
 			scrollTrigger: {
+				scrub: 2,
 				trigger: '#gridScene',
 				scroller: scrollScene,
-				start: 200,
-				end: 1000,
-				scrub: 1,
-				markers: true
+				start: 400,
+				end: 1000
 			}
+		});
+
+		gsap.set(planeSvgPath, { drawSVG: '100% 100%' });
+
+		gsap.to(planeSvgPath, {
+			ease: 'none',
+			keyframes: [
+				{ drawSVG: '100% 90%', duration: 0.1 },
+				{ drawSVG: '10% 0%', duration: 1.0 },
+				{ drawSVG: '0% 0%', duration: 0.1 }
+			],
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 0,
+				end: 800,
+				scrub: 1
+			}
+		});
+
+		let floatTween: gsap.core.Tween | null = null;
+
+		gsap.to('#planeSvgContainer', {
+			x: '-=200px',
+			ease: 'ease4.inOut',
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1100,
+				end: 1200,
+				scrub: 3
+			}
+		});
+
+		const startFloat = () => {
+			if (!floatTween) {
+				floatTween = gsap.to('#planeSvg', {
+					y: '+=12',
+					rotate: '+=2',
+					duration: 1.6,
+					ease: 'sine.inOut',
+					yoyo: true,
+					repeat: -1
+				});
+			}
+		};
+
+		const stopFloat = () => {
+			if (floatTween) {
+				floatTween.kill();
+				floatTween = null;
+			}
+		};
+
+		ScrollTrigger.create({
+			trigger: '#gridScene',
+			scroller: scrollScene,
+			start: 1000,
+			end: 5000,
+			onEnter: startFloat,
+			onLeaveBack: stopFloat
 		});
 	};
 
@@ -347,7 +407,7 @@
 						/>
 					</svg>
 				</div>
-				<div class="invisible w-1/2">
+				<div class="w-1/2">
 					<svg
 						id="planePathSvg"
 						viewBox="0 0 742 213"
