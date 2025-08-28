@@ -107,7 +107,7 @@
 			}
 		});
 
-		gsap.set('#planeSvg', {
+		gsap.set('#planeWrapper', {
 			scale: 0.5,
 			transformBox: 'fill-box'
 		});
@@ -116,7 +116,7 @@
 
 		const planeSvgPath = '#planePathSvg path';
 
-		gsap.to('#planeSvg', {
+		gsap.to('#planeWrapper', {
 			visibility: 'visible',
 			scale: 1,
 			motionPath: {
@@ -175,8 +175,6 @@
 			}
 		});
 
-		let floatTween: gsap.core.Tween | null = null;
-
 		gsap.to('#planeSvgContainer', {
 			x: '-=200px',
 			ease: 'ease4.inOut',
@@ -188,6 +186,8 @@
 				scrub: 3
 			}
 		});
+
+		let floatTween: gsap.core.Tween | null = null;
 
 		const startFloat = () => {
 			if (!floatTween) {
@@ -231,6 +231,42 @@
 				end: 5000,
 				scrub: 3
 			}
+		});
+
+		const wind2SvgPaths = gsap.utils.toArray<SVGPathElement>('#wind2Svg path');
+		gsap.set(wind2SvgPaths, { drawSVG: '100% 100%' });
+
+		let windTween: gsap.core.Tween | null = null;
+
+		const startWind = () => {
+			if (!windTween) {
+				windTween = gsap.to(wind2SvgPaths, {
+					ease: 'none',
+					stagger: 0.3,
+					keyframes: [
+						{ drawSVG: '100% 60%', duration: 0.2 },
+						{ drawSVG: '40% 0%', duration: 0.2 },
+						{ drawSVG: '0% 0%', duration: 0.2 }
+					],
+					repeat: -1
+				});
+			}
+		};
+
+		const stopWind = () => {
+			if (windTween) {
+				windTween.kill();
+				windTween = null;
+			}
+		};
+
+		ScrollTrigger.create({
+			trigger: '#gridScene',
+			scroller: scrollScene,
+			start: 1300,
+			end: 5000,
+			onEnter: startWind,
+			onLeaveBack: stopWind
 		});
 	};
 
@@ -413,33 +449,63 @@
 			</svg>
 			<div id="planeContainer" class="absolute top-0 w-full">
 				<div id="planeSvgContainer" class="w-36">
-					<svg
-						id="planeSvg"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="-2 -2 91 47"
-						fill="none"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<path d="M12.5 21.5V16.5L87 32L12.5 21.5Z" fill="#4F4B45" fill-opacity="0.5" />
-						<path
-							d="M87 32L31.0975 1.32782C30.7101 1.11527 30.2632 1.03699 29.8267 1.10521L15.9455 3.27414C15.0847 3.40864 14.41 4.08492 14.2775 4.94605L12.5 16.5M87 32L12.5 16.5M87 32L15.3082 41.8885C14.7901 41.96 14.2647 41.8257 13.8444 41.5144L2.59311 33.1801C1.71101 32.5267 1.52043 31.2844 2.16609 30.3966L8.29318 21.9719C8.72815 21.3738 9.45766 21.0645 10.1899 21.1678L12.5 21.4936M87 32L12.5 21.4936M12.5 16.5V21.4936"
-							stroke="#54514C"
-							stroke-width="2"
-							fill="none"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-						<path
-							d="M30.5 1L33.5 20.5M33.5 24.5L14.5 42"
-							stroke="#54514C"
-							stroke-width="0.5"
-							fill="none"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-					</svg>
+					<div id="planeWrapper">
+						<div class="relative">
+							<div class="absolute left-[-400px] top-4 w-96">
+								<svg
+									id="wind2Svg"
+									viewBox="0 0 146 25"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M11 4C25 2.16667 59.4 -0.799997 85 2C110.6 4.8 135 3.16667 144 2"
+										stroke="#CAD5E2"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M12 24C26 22.1667 60.4 19.2 86 22C111.6 24.8 136 23.1667 145 22"
+										stroke="#CAD5E2"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M1 15C15 13.1667 49.4 10.2 75 13C100.6 15.8 125 14.1667 134 13"
+										stroke="#CAD5E2"
+										stroke-linecap="round"
+									/>
+								</svg>
+							</div>
+							<div class="w-36">
+								<svg
+									id="planeSvg"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="-2 -2 91 47"
+									fill="none"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path d="M12.5 21.5V16.5L87 32L12.5 21.5Z" fill="#4F4B45" fill-opacity="0.5" />
+									<path
+										d="M87 32L31.0975 1.32782C30.7101 1.11527 30.2632 1.03699 29.8267 1.10521L15.9455 3.27414C15.0847 3.40864 14.41 4.08492 14.2775 4.94605L12.5 16.5M87 32L12.5 16.5M87 32L15.3082 41.8885C14.7901 41.96 14.2647 41.8257 13.8444 41.5144L2.59311 33.1801C1.71101 32.5267 1.52043 31.2844 2.16609 30.3966L8.29318 21.9719C8.72815 21.3738 9.45766 21.0645 10.1899 21.1678L12.5 21.4936M87 32L12.5 21.4936M12.5 16.5V21.4936"
+										stroke="#54514C"
+										stroke-width="2"
+										fill="none"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+									<path
+										d="M30.5 1L33.5 20.5M33.5 24.5L14.5 42"
+										stroke="#54514C"
+										stroke-width="0.5"
+										fill="none"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="w-1/2">
 					<svg
