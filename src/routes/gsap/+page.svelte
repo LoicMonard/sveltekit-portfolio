@@ -110,8 +110,7 @@
 
 		gsap.set('#planeSvg', {
 			scale: 0.5,
-			transformBox: 'fill-box',
-			transformOrigin: '100% 100%'
+			transformBox: 'fill-box'
 		});
 
 		gsap.set('#planeContainer', { top: '20vh', left: '-2rem' });
@@ -152,6 +151,27 @@
 				scroller: scrollScene,
 				start: 0,
 				end: 800,
+				scrub: 1
+			}
+		});
+
+		const windSvgPaths = gsap.utils.toArray<SVGPathElement>('#windSvg path');
+
+		gsap.set(windSvgPaths, { drawSVG: '100% 100%' });
+
+		gsap.to(windSvgPaths, {
+			ease: 'none',
+			stagger: 0.5,
+			keyframes: [
+				{ drawSVG: '100% 90%', duration: 0.1 },
+				{ drawSVG: '10% 0%', duration: 1.0 },
+				{ drawSVG: '0% 0%', duration: 0.1 }
+			],
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1100,
+				end: 1300,
 				scrub: 1
 			}
 		});
@@ -416,7 +436,31 @@
 					>
 						<path
 							d="M741.5 186C663.5 179.6 551.724 196.301 505.5 205C444.556 216.468 313 223.4 293 131C273 38.6 347.667 19.8334 389.5 22C454.3 33.2 472.66 92.238 462 125.5C447.604 170.419 408.8 194 336 186C263.2 178 188.333 104.333 150 65C111.667 25.6667 72.1 9.8 0.5 1"
-							stroke="black"
+							stroke="#54514C"
+						/>
+					</svg>
+				</div>
+			</div>
+			<div id="fxContainer" class="absolute top-0 h-full w-full">
+				<div class="w-[40%] translate-x-[20vw] translate-y-[30vh]">
+					<svg id="windSvg" viewBox="0 0 789 287" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							vector-effect="non-scaling-stroke"
+							d="M0.5 269C51.1667 256.333 202.3 238.6 401.5 269C600.7 299.4 742.167 281.667 788 269"
+							stroke="#54514C"
+							stroke-linecap="round"
+						/>
+						<path
+							vector-effect="non-scaling-stroke"
+							d="M26 87C80 80 212.4 70.2 310 87C407.6 103.8 503.667 94 539.5 87C560.5 81.8333 604.8 75.9 604 43.5C603.856 37.6861 602.637 32.1931 600.664 27.0863C586.18 -10.3997 529.048 -6.18255 518.888 32.6991C516.342 42.4451 516.491 52.7307 521 62.5C535.4 93.7 591.333 88.5 613.5 87C650.5 84.4962 693.5 63 717 53.5"
+							stroke="#54514C"
+							stroke-linecap="round"
+						/>
+						<path
+							vector-effect="non-scaling-stroke"
+							d="M54.5 162C128.5 165 170 142.5 235 142.5C254.755 142.5 275.712 144.905 294.994 148.428C341.274 156.882 388.229 169.96 435.275 170.273C462.041 170.452 487.66 170.204 500.5 169"
+							stroke="#54514C"
+							stroke-linecap="round"
 						/>
 					</svg>
 				</div>
