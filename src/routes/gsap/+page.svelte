@@ -5,6 +5,7 @@
 	import MotionPathPlugin from 'gsap/MotionPathPlugin';
 	import { onMount } from 'svelte';
 	import CustomEase from 'gsap/CustomEase';
+	import SaintMalo from '$lib/components/gsap/SaintMalo.svelte';
 
 	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin);
 
@@ -233,6 +234,21 @@
 			}
 		});
 
+		const cloud2Svg = '#cloud2Svg';
+		gsap.set(cloud2Svg, { x: '100vw', y: '-10vh' });
+
+		gsap.to(cloud2Svg, {
+			x: '-=120vw',
+			duration: 2,
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1600,
+				end: 3000,
+				scrub: 3
+			}
+		});
+
 		const wind2SvgPaths = gsap.utils.toArray<SVGPathElement>('#wind2Svg path');
 		gsap.set(wind2SvgPaths, { drawSVG: '100% 100%' });
 
@@ -257,6 +273,7 @@
 			if (windTween) {
 				windTween.kill();
 				windTween = null;
+				gsap.set(wind2SvgPaths, { drawSVG: '100% 100%' });
 			}
 		};
 
@@ -266,8 +283,30 @@
 			start: 1300,
 			end: 5000,
 			onEnter: startWind,
-			onLeaveBack: stopWind
+			onLeaveBack: stopWind,
 		});
+
+		
+		const saintMalo = document.querySelector('#saintMaloContainer');
+		gsap.set(saintMalo, { x: '100vw' });
+		gsap.to(saintMalo, {
+			x: '-=100%',
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1300,
+				end: 5000,
+				scrub: 3,
+			}
+		})
+
+		gsap.to('#grandeRouePath', {
+			rotate: 360,
+			transformOrigin: '50% 50%',
+			ease: 'none',
+			duration: 30,
+			repeat: -1,
+		})
 	};
 
 	onMount(() => {
@@ -568,6 +607,31 @@
 						/>
 					</svg>
 				</div>
+				<div class="w-48">
+					<svg id="cloud2Svg" viewBox="0 0 42 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M5 18C5 22.8 7.66667 24.6667 9 25H32.5L34.5 24.5L37 23.5L38.5 22.5L40 20L41 17V14.5L40 12L38 9.5L36 8L33.5 7H30.5L30 6.5L28.5 4.5L26.5 3L23.5 1.5L20 1L16.5 1.5L13.5 3L9 11C7.66667 11.3333 5 13.2 5 18Z"
+							fill="#FFF6F6"
+						/>
+						<path
+							d="M9.73353 11.2509C9.1718 11.1002 8.58896 11.0137 8 11C8.75762 6.47958 12.6475 2.80424 17 1.5C12.5 4.5 10.5 7.52502 10.5 11.5C9.95054 11.188 10.3549 11.4177 9.73353 11.2509Z"
+							fill="#4C4C4C"
+						/>
+						<path
+							d="M9.73353 25H8C4.13401 25 1 21.866 1 18C1 14.134 4.13401 11 8 11C8.58896 11.0137 9.1718 11.1002 9.73353 11.251C8.48902 11.834 6 14 6 18C6 22 8.48902 24.3333 9.73353 25Z"
+							fill="#4C4C4C"
+						/>
+						<path
+							d="M8 11C4.13401 11 1 14.134 1 18C1 21.866 4.13401 25 8 25H9.73353H20H32C36.9706 25 41 20.9706 41 16C41 11.0294 36.9706 7 32 7C31.478 7 30.9663 7.04445 30.4686 7.12976M8 11C8.05535 11 7.94496 10.9987 8 11ZM8 11C8.95136 5.32363 14.0533 1 20 1C24.495 1 28.4128 3.47152 30.4686 7.12976M8 11C8.58896 11.0137 9.1718 11.1002 9.73353 11.251C11.2706 11.6634 12.6496 12.5563 13.5635 13.7512M30.4686 7.12976C29.2024 7.34681 28.0266 7.81283 27 8.5C26.8479 8.60143 26.6772 8.72986 26.5 8.88177"
+							stroke="black"
+							stroke-width="1"
+							stroke-linecap="round"
+						/>
+					</svg>
+				</div>
+			</div>
+			<div id="saintMaloContainer" class="will-change-transform h-[40vh] absolute aspect-[2741/194] bottom-[20vh]">
+				<SaintMalo />
 			</div>
 		</section>
 	</div>
