@@ -188,8 +188,8 @@
 		});
 
 		tl.to('#planeSvgContainer', { x: 200, duration: 1 })
-		.to('#planeSvgContainer', { x: 200, duration: 3})
-		.to('#planeSvgContainer', { x: -200, duration: 1 }); // segment 2
+			.to('#planeSvgContainer', { x: 200, duration: 2 })
+			.to('#planeSvgContainer', { x: 0, duration: 1 }); // segment 2
 
 		let floatTween: gsap.core.Tween | null = null;
 
@@ -351,9 +351,7 @@
 			morphPlaneTl.to(
 				p,
 				{
-					morphSVG: toPlanePaths[i],
-					type: 'rotational',
-					shapeIndex: 'auto'
+					morphSVG: toPlanePaths[i]
 				},
 				0
 			);
@@ -364,25 +362,43 @@
 		});
 
 		gsap.set('#textContainer', { opacity: 0 });
-		gsap.from(welcomeSplit.chars, {
-			opacity: 0,
-			x: 200,
-			stagger: 0.05,
-			ease: 'back.out(1.7)',
+
+		const textTl = gsap.timeline({
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
 				start: 1100,
-				end: 1400,
+				end: 1500,
 				scrub: 2,
 				onEnter: () => {
 					gsap.to('#textContainer', { opacity: 1, duration: 0.5 });
 				},
 				onLeaveBack: () => {
+					console.log('leave');
 					gsap.to('#textContainer', { opacity: 0, duration: 0.5 });
 				}
 			}
 		});
+
+		textTl
+			.from(welcomeSplit.chars, {
+				x: 400,
+				opacity: 0,
+				stagger: 0.03,
+				ease: 'back.out(1.2)',
+				duration: 1
+			})
+			.to(
+				welcomeSplit.chars.reverse(),
+				{
+					opacity: 0,
+					x: 450,
+					stagger: 0.03,
+					ease: 'back.in(1.2)',
+					duration: 1
+				},
+				'+=0.5'
+			); // petit délai avant le "disappear"
 	};
 
 	onMount(() => {
@@ -566,7 +582,11 @@
 				<div id="planeSvgContainer" class="w-36">
 					<div id="planeWrapper">
 						<div class="relative">
-							<div id="textContainer" class="w-screen text-end absolute right-36 -translate-y-1/4">
+							<div
+								id="textContainer"
+								class="absolute right-40 w-screen -translate-y-1/4 overfelow-hidden text-end"
+							>
+								<!-- <div class="absolute h-full w-[2px] bg-gray-700 right-0"></div> -->
 								<h1 class="text-[10vh] font-bold text-gray-700">welcome</h1>
 							</div>
 							<div class="absolute left-[-400px] top-4 w-96">
