@@ -5,11 +5,13 @@
 	import MotionPathPlugin from 'gsap/MotionPathPlugin';
 	import { onMount } from 'svelte';
 	import MorphSVGPlugin from 'gsap/MorphSVGPlugin';
+	import { SplitText } from 'gsap/all';
 	import PaperPlane from '$lib/components/gsap/PaperPlane.svelte';
 	import PaperPlane2 from '$lib/components/gsap/PaperPlane2.svelte';
+	import PaperPlaneMotionPath from '$lib/components/gsap/PaperPlaneMotionPath.svelte';
 	import SaintMalo from '$lib/components/gsap/SaintMalo.svelte';
 
-	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin, MorphSVGPlugin);
+	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin, MorphSVGPlugin, SplitText);
 
 	let scrollScene: HTMLElement;
 
@@ -111,13 +113,10 @@
 		});
 
 		gsap.set('#planeWrapper', {
-			scale: 0.5,
-			transformBox: 'fill-box'
+			scale: 0.5
 		});
 
-		gsap.set('#planeContainer', { top: '20vh', left: '-2rem' });
-
-		const planeSvgPath = '#planePathSvg path';
+		const planeSvgPath = '#paperPlaneMotionPath path';
 
 		gsap.to('#planeWrapper', {
 			visibility: 'visible',
@@ -172,23 +171,25 @@
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
-				start: 1100,
-				end: 1300,
+				start: 2100,
+				end: 2300,
 				scrub: 1
 			}
 		});
 
-		gsap.to('#planeSvgContainer', {
-			x: '-=200px',
-			ease: 'ease4.inOut',
+		const tl = gsap.timeline({
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
 				start: 1100,
-				end: 1200,
-				scrub: 3
+				end: 1500,
+				scrub: 2
 			}
 		});
+
+		tl.to('#planeSvgContainer', { x: 200, duration: 1 })
+		.to('#planeSvgContainer', { x: 200, duration: 3})
+		.to('#planeSvgContainer', { x: -200, duration: 1 }); // segment 2
 
 		let floatTween: gsap.core.Tween | null = null;
 
@@ -230,7 +231,7 @@
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
-				start: 1100,
+				start: 2100,
 				end: 5000,
 				scrub: 3
 			}
@@ -245,7 +246,7 @@
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
-				start: 1600,
+				start: 2600,
 				end: 3000,
 				scrub: 3
 			}
@@ -282,7 +283,7 @@
 		ScrollTrigger.create({
 			trigger: '#gridScene',
 			scroller: scrollScene,
-			start: 1300,
+			start: 2300,
 			end: 5000,
 			onEnter: startWind,
 			onLeaveBack: stopWind
@@ -295,7 +296,7 @@
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
-				start: 1300,
+				start: 2300,
 				end: 5000,
 				scrub: 3
 			}
@@ -325,7 +326,7 @@
 				scrub: 2,
 				trigger: '#gridScene',
 				scroller: scrollScene,
-				start: 1000,
+				start: 2000,
 				end: 5000
 			}
 		});
@@ -340,8 +341,8 @@
 			scrollTrigger: {
 				trigger: '#gridScene',
 				scroller: scrollScene,
-				start: 1000,
-				end: 1200,
+				start: 2000,
+				end: 2200,
 				scrub: 2
 			}
 		});
@@ -356,6 +357,31 @@
 				},
 				0
 			);
+		});
+
+		let welcomeSplit = SplitText.create('#textContainer h1', {
+			type: 'chars, words'
+		});
+
+		gsap.set('#textContainer', { opacity: 0 });
+		gsap.from(welcomeSplit.chars, {
+			opacity: 0,
+			x: 200,
+			stagger: 0.05,
+			ease: 'back.out(1.7)',
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1100,
+				end: 1400,
+				scrub: 2,
+				onEnter: () => {
+					gsap.to('#textContainer', { opacity: 1, duration: 0.5 });
+				},
+				onLeaveBack: () => {
+					gsap.to('#textContainer', { opacity: 0, duration: 0.5 });
+				}
+			}
 		});
 	};
 
@@ -536,10 +562,13 @@
 					/>
 				</g>
 			</svg>
-			<div id="planeContainer" class="absolute top-0 z-20 w-full">
+			<div id="planeContainer" class="absolute top-0 z-20 h-screen w-full">
 				<div id="planeSvgContainer" class="w-36">
 					<div id="planeWrapper">
 						<div class="relative">
+							<div id="textContainer" class="w-screen text-end absolute right-36 -translate-y-1/4">
+								<h1 class="text-[10vh] font-bold text-gray-700">welcome</h1>
+							</div>
 							<div class="absolute left-[-400px] top-4 w-96">
 								<svg
 									id="wind2Svg"
@@ -573,18 +602,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="w-1/2">
-					<svg
-						id="planePathSvg"
-						viewBox="0 0 742 213"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M741.5 186C663.5 179.6 551.724 196.301 505.5 205C444.556 216.468 313 223.4 293 131C273 38.6 347.667 19.8334 389.5 22C454.3 33.2 472.66 92.238 462 125.5C447.604 170.419 408.8 194 336 186C263.2 178 188.333 104.333 150 65C111.667 25.6667 72.1 9.8 0.5 1"
-							stroke="#54514C"
-						/>
-					</svg>
+				<div id="paperPlaneMotionPathContainer" class="absolute bottom-1/2 left-[-5vw] w-[55vw]">
+					<PaperPlaneMotionPath />
 				</div>
 			</div>
 			<div id="fxContainer" class="absolute top-0 h-full w-full">
