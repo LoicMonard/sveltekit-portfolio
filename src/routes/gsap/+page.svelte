@@ -4,10 +4,12 @@
 	import ScrollTrigger from 'gsap/ScrollTrigger';
 	import MotionPathPlugin from 'gsap/MotionPathPlugin';
 	import { onMount } from 'svelte';
-	import CustomEase from 'gsap/CustomEase';
+	import MorphSVGPlugin from 'gsap/MorphSVGPlugin';
+	import PaperPlane from '$lib/components/gsap/PaperPlane.svelte';
+	import PaperPlane2 from '$lib/components/gsap/PaperPlane2.svelte';
 	import SaintMalo from '$lib/components/gsap/SaintMalo.svelte';
 
-	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin);
+	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin, MorphSVGPlugin);
 
 	let scrollScene: HTMLElement;
 
@@ -283,10 +285,9 @@
 			start: 1300,
 			end: 5000,
 			onEnter: startWind,
-			onLeaveBack: stopWind,
+			onLeaveBack: stopWind
 		});
 
-		
 		const saintMalo = document.querySelector('#saintMaloContainer');
 		gsap.set(saintMalo, { x: '100vw' });
 		gsap.to(saintMalo, {
@@ -296,17 +297,66 @@
 				scroller: scrollScene,
 				start: 1300,
 				end: 5000,
-				scrub: 3,
+				scrub: 3
 			}
-		})
+		});
 
 		gsap.to('#grandeRouePath', {
 			rotate: 360,
 			transformOrigin: '50% 50%',
 			ease: 'none',
 			duration: 30,
-			repeat: -1,
-		})
+			repeat: -1
+		});
+
+		const sunPath = '#sunPathSvg path';
+		gsap.set(sunPath, { drawSVG: '0% 0%' });
+		gsap.to('#sunSvgContainer', {
+			zIndex: -1,
+			motionPath: {
+				path: sunPath,
+				align: sunPath,
+				autoRotate: true,
+				alignOrigin: [0.5, 0.5],
+				start: 1,
+				end: 0
+			},
+			scrollTrigger: {
+				scrub: 2,
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1000,
+				end: 5000
+			}
+		});
+
+		const fromPlanePaths = gsap.utils.toArray<SVGPathElement>('#planeSvg path');
+		const toPlanePaths = gsap.utils.toArray<SVGPathElement>('#plane2Svg path');
+
+		const morphPlaneTl = gsap.timeline({
+			defaults: {
+				ease: 'power1.inOut'
+			},
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1000,
+				end: 1200,
+				scrub: 2
+			}
+		});
+
+		fromPlanePaths.forEach((p, i) => {
+			morphPlaneTl.to(
+				p,
+				{
+					morphSVG: toPlanePaths[i],
+					type: 'rotational',
+					shapeIndex: 'auto'
+				},
+				0
+			);
+		});
 	};
 
 	onMount(() => {
@@ -486,7 +536,7 @@
 					/>
 				</g>
 			</svg>
-			<div id="planeContainer" class="absolute top-0 w-full">
+			<div id="planeContainer" class="absolute top-0 z-20 w-full">
 				<div id="planeSvgContainer" class="w-36">
 					<div id="planeWrapper">
 						<div class="relative">
@@ -515,33 +565,10 @@
 								</svg>
 							</div>
 							<div class="w-36">
-								<svg
-									id="planeSvg"
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="-2 -2 91 47"
-									fill="none"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path d="M12.5 21.5V16.5L87 32L12.5 21.5Z" fill="#4F4B45" fill-opacity="0.5" />
-									<path
-										d="M87 32L31.0975 1.32782C30.7101 1.11527 30.2632 1.03699 29.8267 1.10521L15.9455 3.27414C15.0847 3.40864 14.41 4.08492 14.2775 4.94605L12.5 16.5M87 32L12.5 16.5M87 32L15.3082 41.8885C14.7901 41.96 14.2647 41.8257 13.8444 41.5144L2.59311 33.1801C1.71101 32.5267 1.52043 31.2844 2.16609 30.3966L8.29318 21.9719C8.72815 21.3738 9.45766 21.0645 10.1899 21.1678L12.5 21.4936M87 32L12.5 21.4936M12.5 16.5V21.4936"
-										stroke="#54514C"
-										stroke-width="2"
-										fill="none"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-									<path
-										d="M30.5 1L33.5 20.5M33.5 24.5L14.5 42"
-										stroke="#54514C"
-										stroke-width="0.5"
-										fill="none"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
+								<PaperPlane />
+								<div class="hidden">
+									<PaperPlane2 />
+								</div>
 							</div>
 						</div>
 					</div>
@@ -584,12 +611,12 @@
 					</svg>
 				</div>
 			</div>
-			<div id="cloudsContainer" class="absolute top-[15vh] h-[40vh] w-full">
-				<div class="w-36">
+			<div id="cloudsContainer" class="absolute top-[15vh] z-20 h-[40vh] w-full">
+				<div class="z-20 w-36">
 					<svg id="cloud1Svg" viewBox="0 0 42 26" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
 							d="M5 18C5 22.8 7.66667 24.6667 9 25H32.5L34.5 24.5L37 23.5L38.5 22.5L40 20L41 17V14.5L40 12L38 9.5L36 8L33.5 7H30.5L30 6.5L28.5 4.5L26.5 3L23.5 1.5L20 1L16.5 1.5L13.5 3L9 11C7.66667 11.3333 5 13.2 5 18Z"
-							fill="#FFF6F6"
+							fill="#E0E7FF"
 						/>
 						<path
 							d="M9.73353 11.2509C9.1718 11.1002 8.58896 11.0137 8 11C8.75762 6.47958 12.6475 2.80424 17 1.5C12.5 4.5 10.5 7.52502 10.5 11.5C9.95054 11.188 10.3549 11.4177 9.73353 11.2509Z"
@@ -611,7 +638,7 @@
 					<svg id="cloud2Svg" viewBox="0 0 42 26" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
 							d="M5 18C5 22.8 7.66667 24.6667 9 25H32.5L34.5 24.5L37 23.5L38.5 22.5L40 20L41 17V14.5L40 12L38 9.5L36 8L33.5 7H30.5L30 6.5L28.5 4.5L26.5 3L23.5 1.5L20 1L16.5 1.5L13.5 3L9 11C7.66667 11.3333 5 13.2 5 18Z"
-							fill="#FFF6F6"
+							fill="#EEF2FF"
 						/>
 						<path
 							d="M9.73353 11.2509C9.1718 11.1002 8.58896 11.0137 8 11C8.75762 6.47958 12.6475 2.80424 17 1.5C12.5 4.5 10.5 7.52502 10.5 11.5C9.95054 11.188 10.3549 11.4177 9.73353 11.2509Z"
@@ -630,8 +657,33 @@
 					</svg>
 				</div>
 			</div>
-			<div id="saintMaloContainer" class="will-change-transform h-[40vh] absolute aspect-[2741/194] bottom-[20vh]">
+			<div
+				id="saintMaloContainer"
+				class="absolute bottom-[20vh] z-0 aspect-[2741/194] h-[40vh] will-change-transform"
+			>
 				<SaintMalo />
+			</div>
+			<div id="sunContainer" class="absolute top-[10vh] z-10 h-[30vh] w-full will-change-transform">
+				<div class="z-10 w-24" id="sunSvgContainer">
+					<svg id="sunSvg" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M49 25C49 38.2548 38.2548 49 25 49C11.7452 49 1 38.2548 1 25C1 11.7452 11.7452 1 25 1C38.2548 1 49 11.7452 49 25Z"
+							fill="white"
+							stroke="black"
+							stroke-width="2"
+						/>
+					</svg>
+				</div>
+				<div class="z-10 w-[120vw] translate-x-[-10vw]">
+					<svg
+						id="sunPathSvg"
+						viewBox="0 0 1218 185"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path d="M1 184C166.733 45.6667 641.959 -148 1217 184" stroke="black" />
+					</svg>
+				</div>
 			</div>
 		</section>
 	</div>
