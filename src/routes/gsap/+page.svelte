@@ -1,19 +1,30 @@
 <script lang="ts">
-	import { gsap } from 'gsap';
-	import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
-	import ScrollTrigger from 'gsap/ScrollTrigger';
-	import MotionPathPlugin from 'gsap/MotionPathPlugin';
 	import { onMount } from 'svelte';
-	import MorphSVGPlugin from 'gsap/MorphSVGPlugin';
-	import { SplitText } from 'gsap/all';
 	import PaperPlane from '$lib/components/gsap/PaperPlane.svelte';
 	import PaperPlane2 from '$lib/components/gsap/PaperPlane2.svelte';
 	import PaperPlaneMotionPath from '$lib/components/gsap/PaperPlaneMotionPath.svelte';
 	import SaintMalo from '$lib/components/gsap/SaintMalo.svelte';
 
-	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin, MorphSVGPlugin, SplitText);
+  let gsap: any;
+	let ScrollTrigger: any;
+	let SplitText: any;
 
 	let scrollScene: HTMLElement;
+
+	onMount(async () => {
+		
+		const gsapMod = await import('gsap');
+    gsap = gsapMod.default || gsapMod.gsap; // compat
+
+		ScrollTrigger = (await import('gsap/ScrollTrigger')).default;
+		SplitText = (await import('gsap/SplitText')).SplitText;
+		const { default: DrawSVGPlugin } = await import('gsap/DrawSVGPlugin');
+		const { default: MotionPathPlugin } = await import('gsap/MotionPathPlugin');
+		const { default: MorphSVGPlugin } = await import('gsap/MorphSVGPlugin');
+
+		gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger, MotionPathPlugin, MorphSVGPlugin, SplitText);
+		initScene();
+	});
 
 	const initScene = () => {
 		initScrollDownAnimation();
@@ -400,10 +411,6 @@
 				'+=0.5'
 			); // petit délai avant le "disappear"
 	};
-
-	onMount(() => {
-		initScene();
-	});
 </script>
 
 <main
@@ -584,7 +591,7 @@
 						<div class="relative">
 							<div
 								id="textContainer"
-								class="absolute right-40 w-screen -translate-y-1/4 overfelow-hidden text-end"
+								class="overfelow-hidden absolute right-40 w-screen -translate-y-1/4 text-end"
 							>
 								<!-- <div class="absolute h-full w-[2px] bg-gray-700 right-0"></div> -->
 								<h1 class="text-[10vh] font-bold text-gray-700">welcome</h1>
