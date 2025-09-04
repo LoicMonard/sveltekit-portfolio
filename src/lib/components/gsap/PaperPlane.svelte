@@ -1,4 +1,4 @@
-<svg id="planeSvg" viewBox="-2 -2 81 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id="planeSvg" class="z-50" viewBox="-2 -2 81 56" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<path
 		d="M12 30L10.4 25L78 30H12Z"
 		fill="#4F4B45"
