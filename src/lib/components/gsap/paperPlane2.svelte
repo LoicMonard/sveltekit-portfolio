@@ -1,8 +1,8 @@
-<svg id="plane2Svg" viewBox="-2 -2 82 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id="plane2Svg" viewBox="-2 -2 82 31" xmlns="http://www.w3.org/2000/svg">
 	<path
 		d="M11.5 13.5L11 10.5L79 15L11.5 13.5Z"
 		fill="#4F4B45"
-		fill-opacity="0.5"
+		fill-opacity="1"
 		stroke="#54514C"
 		stroke-width="2"
 	/>
