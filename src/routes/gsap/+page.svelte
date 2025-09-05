@@ -12,16 +12,28 @@
 	import Cloud from '$lib/components/gsap/Cloud.svelte';
 	import Sun from '$lib/components/gsap/Sun.svelte';
 	import SunPath from '$lib/components/gsap/SunPath.svelte';
+	import PaperPlane3 from '$lib/components/gsap/PaperPlane3.svelte';
+	import SaintMaloLeft from '$lib/components/gsap/SaintMaloLeft.svelte';
+	import SaintMaloRight from '$lib/components/gsap/SaintMaloRight.svelte';
+	import SaintMaloCenter from '$lib/components/gsap/SaintMaloCenter.svelte';
 
 	let gsap: any;
 	let ScrollTrigger: any;
 	let SplitText: any;
 	let Draggable: any;
 	let timelineDuration: number = 5000;
+	let scrollTop: number = 0;
 
 	let scrollScene: HTMLElement;
 
+	function handleScroll() {
+		scrollTop = scrollScene.scrollTop;
+		// console.log(scrollY);
+	}
+
 	onMount(async () => {
+		scrollScene.addEventListener('scroll', handleScroll);
+
 		const gsapMod = await import('gsap');
 		gsap = gsapMod.default || gsapMod.gsap;
 
@@ -297,7 +309,7 @@
 		const root = '#treeSvg';
 
 		// tout invisible au départ
-		gsap.set(`${root} path`, { drawSVG: 0, fill: 'none' });
+		gsap.set(`${root} path`, { drawSVG: 0 });
 
 		const tlTree = gsap.timeline({
 			defaults: { ease: 'none', duration: 0.8 },
@@ -374,13 +386,66 @@
 		});
 
 		const saintMalo = document.querySelector('#saintMaloContainer');
-		gsap.set(saintMalo, { x: '0vw', force3D: true });
+		const saintMaloLeftSvg = document.querySelector('#saintMaloLeftSvg');
+		const saintMaloRightSvg = document.querySelector('#saintMaloRightSvg');
+		gsap.set(saintMalo, { x: '0vw', force3D: true, transformOrigin: 'left center' });
+
+		let centerOffsetX = 0;
+
+		ScrollTrigger.create({
+			trigger: '#gridScene',
+			scroller: scrollScene,
+			start: 2200,
+			end: 2200.1, // minuscule intervalle juste pour le déclenchement
+			onEnter: () => {
+				const centerEl = document.getElementById('saintMaloCenterSvg');
+				const rect = centerEl.getBoundingClientRect();
+				centerOffsetX = rect.left - window.innerWidth / 2;
+
+				gsap.to(saintMalo, {
+					x: () => -centerOffsetX,
+					ease: 'none',
+					snap: { x: 1 }, // arrondi px pour éviter le jitter
+					scrollTrigger: {
+						trigger: '#gridScene',
+						scroller: scrollScene,
+						start: 2300,
+						end: 3000,
+						scrub: 2
+					}
+				});
+
+				gsap.to(saintMaloLeftSvg, {
+					x: '-50vw',
+					ease: 'none',
+					scrollTrigger: {
+						trigger: '#gridScene',
+						scroller: scrollScene,
+						start: 3000,
+						end: 3200,
+						scrub: 1
+					}
+				});
+
+				gsap.to(saintMaloRightSvg, {
+					x: '50vw',
+					ease: 'none',
+					scrollTrigger: {
+						trigger: '#gridScene',
+						scroller: scrollScene,
+						start: 3000,
+						end: 3200,
+						scrub: 1
+					}
+				});
+			}
+		});
 
 		gsap.fromTo(
 			saintMalo,
 			{
 				bottom: '-40vh',
-				scale: .5,
+				scale: 0.5,
 				transformOrigin: 'left center'
 			},
 			{
@@ -396,19 +461,6 @@
 				}
 			}
 		);
-
-		gsap.to(saintMalo, {
-			right: 0,
-			ease: 'none',
-			snap: { x: 1 }, // arrondi px pour éviter le jitter
-			scrollTrigger: {
-				trigger: '#gridScene',
-				scroller: scrollScene,
-				start: 2300,
-				end: timelineDuration,
-				scrub: 3
-			}
-		});
 
 		gsap.to('#grandeRouePath', {
 			rotate: 360,
@@ -465,6 +517,32 @@
 			);
 		});
 
+		const fromPlanePaths2 = gsap.utils.toArray<SVGPathElement>('#planeSvg path');
+		const toPlanePaths3 = gsap.utils.toArray<SVGPathElement>('#plane3Svg path');
+
+		const morphPlaneTl2 = gsap.timeline({
+			defaults: {
+				ease: 'power1.inOut'
+			},
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 2400,
+				end: 2600,
+				scrub: 2
+			}
+		});
+
+		fromPlanePaths2.forEach((p, i) => {
+			morphPlaneTl2.to(
+				p,
+				{
+					morphSVG: toPlanePaths3[i]
+				},
+				0
+			);
+		});
+
 		let welcomeSplit = SplitText.create('#textContainer h1', {
 			type: 'chars, words'
 		});
@@ -482,7 +560,6 @@
 					gsap.to('#textContainer', { opacity: 1, duration: 0.5 });
 				},
 				onLeaveBack: () => {
-					console.log('leave');
 					gsap.to('#textContainer', { opacity: 0, duration: 0.5 });
 				}
 			}
@@ -508,17 +585,20 @@
 				'+=0.5'
 			); // petit délai avant le "disappear"
 
-		Draggable.create('#planeSvg', {
-			type: 'x, y'
-		});
+		// Draggable.create('#planeSvg', {
+		// 	type: 'x, y'
+		// });
 	};
 </script>
 
 <main
 	bind:this={scrollScene}
 	id="scrollScene"
-	class="h-screen w-screen overflow-auto overflow-x-hidden bg-slate-50"
+	class="transition-duration-[0s] h-screen w-screen overflow-auto overflow-x-hidden bg-slate-50 transition-none"
 >
+	<div id="bluebox" class="border-radius absolute left-[20px] h-12 w-12 text-lg font-bold">
+		{scrollTop}
+	</div>
 	<div class="h-full w-full flex-col items-center justify-center">
 		<section id="scrollDownScene" class="h-[100px] w-screen shrink-0 items-center justify-center">
 			<div class="flex h-screen w-full flex-col items-center justify-center gap-4">
@@ -530,17 +610,18 @@
 				</p>
 			</div>
 		</section>
-		<!-- <div id="treeContainer" class="fixed top-0 flex h-screen w-screen items-center justify-center">
-			<div class="w-96">
+		<div id="treeContainer" class="fixed top-0 flex h-screen w-screen items-center justify-center">
+			<div class="w-12">
 				<Tree />
 			</div>
-		</div> -->
+		</div>
 		<section
 			id="gridScene"
-			class="invisible h-screen max-h-[100vh] w-screen shrink-0 overflow-hidden"
+			style="transition-duration: 0s;"
+			class="transition-duration-[0s] invisible z-50 h-screen max-h-[100vh] w-screen shrink-0 overflow-hidden transition-none"
 		>
 			<Grid />
-			<div id="planeContainer" class="absolute top-0 z-20 h-screen w-full">
+			<div id="planeContainer" class="pointer-events-none absolute top-0 z-20 h-screen w-full">
 				<div id="planeSvgContainer" class="w-36">
 					<div id="planeWrapper">
 						<div class="relative">
@@ -557,6 +638,9 @@
 								<PaperPlane />
 								<div class="hidden">
 									<PaperPlane2 />
+								</div>
+								<div class="hidden">
+									<PaperPlane3 />
 								</div>
 							</div>
 						</div>
@@ -584,9 +668,22 @@
 			</div>
 			<div
 				id="saintMaloContainer"
-				class="absolute bottom-[20vh] z-0 aspect-[2741/194] h-[40vh] transform-gpu will-change-transform"
+				class="absolute bottom-[20vh] z-0 flex h-[60vh] aspect-[2781/194] transform-gpu flex-row items-end will-change-transform"
 			>
-				<SaintMalo />
+				<!-- LEFT -->
+				<div class="aspect-[890/90] basis-[32.41%] w-full">
+					<SaintMaloLeft />
+				</div>
+
+				<!-- CENTER -->
+				<div class="aspect-[42/29] basis-[1.53%] w-full">
+					<SaintMaloCenter />
+				</div>
+
+				<!-- RIGHT -->
+				<div class="aspect-[1814/194] basis-[66.06%] w-full">
+					<SaintMaloRight />
+				</div>
 			</div>
 
 			<div id="sunContainer" class="absolute top-[10vh] z-10 h-[30vh] w-full will-change-transform">
