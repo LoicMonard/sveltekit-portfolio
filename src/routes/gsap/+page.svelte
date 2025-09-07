@@ -390,54 +390,56 @@
 		const saintMaloRightSvg = document.querySelector('#saintMaloRightSvg');
 		gsap.set(saintMalo, { x: '0vw', force3D: true, transformOrigin: 'left center' });
 
-		let centerOffsetX = 0;
-
 		ScrollTrigger.create({
 			trigger: '#gridScene',
 			scroller: scrollScene,
 			start: 2200,
-			end: 2200.1, // minuscule intervalle juste pour le déclenchement
+			end: 2200.1,
 			onEnter: () => {
-				const centerEl = document.getElementById('saintMaloCenterSvg');
-				const rect = centerEl.getBoundingClientRect();
-				centerOffsetX = rect.left - window.innerWidth / 2;
+				const centerRect = document.getElementById('saintMaloCenterSvg')?.getBoundingClientRect();
 
-				gsap.to(saintMalo, {
-					x: () => -centerOffsetX,
-					ease: 'none',
-					snap: { x: 1 }, // arrondi px pour éviter le jitter
-					scrollTrigger: {
-						trigger: '#gridScene',
-						scroller: scrollScene,
-						start: 2300,
-						end: 3000,
-						scrub: 2
-					}
-				});
+				if (centerRect) {
+					const offsetX = centerRect.left + centerRect.width / 2 - window.innerWidth / 2;
 
-				gsap.to(saintMaloLeftSvg, {
-					x: '-50vw',
-					ease: 'none',
-					scrollTrigger: {
-						trigger: '#gridScene',
-						scroller: scrollScene,
-						start: 3000,
-						end: 3200,
-						scrub: 1
-					}
-				});
+					gsap.to(saintMalo, {
+						x: -offsetX,
+						ease: 'none',
+						snap: { x: 1 },
+						scrollTrigger: {
+							trigger: '#gridScene',
+							scroller: scrollScene,
+							start: 2300,
+							end: 3000,
+							scrub: 2
+						}
+					});
 
-				gsap.to(saintMaloRightSvg, {
-					x: '50vw',
-					ease: 'none',
-					scrollTrigger: {
-						trigger: '#gridScene',
-						scroller: scrollScene,
-						start: 3000,
-						end: 3200,
-						scrub: 1
-					}
-				});
+					const movementX = (window.innerWidth - centerRect.width) / 2;
+
+					gsap.to(saintMaloLeftSvg, {
+						x: -movementX,
+						ease: 'none',
+						scrollTrigger: {
+							trigger: '#gridScene',
+							scroller: scrollScene,
+							start: 3000,
+							end: 3200,
+							scrub: 1
+						}
+					});
+
+					gsap.to(saintMaloRightSvg, {
+						x: movementX,
+						ease: 'none',
+						scrollTrigger: {
+							trigger: '#gridScene',
+							scroller: scrollScene,
+							start: 3000,
+							end: 3200,
+							scrub: 1
+						}
+					});
+				}
 			}
 		});
 
@@ -668,20 +670,20 @@
 			</div>
 			<div
 				id="saintMaloContainer"
-				class="absolute bottom-[20vh] z-0 flex h-[60vh] aspect-[2781/194] transform-gpu flex-row items-end will-change-transform"
+				class="absolute bottom-[20vh] z-0 flex aspect-[2781/194] h-[60vh] transform-gpu flex-row items-end will-change-transform"
 			>
 				<!-- LEFT -->
-				<div class="aspect-[890/90] basis-[32.41%] w-full">
+				<div class="aspect-[890/90] w-full basis-[32.41%]">
 					<SaintMaloLeft />
 				</div>
 
 				<!-- CENTER -->
-				<div class="aspect-[42/29] basis-[1.53%] w-full">
+				<div class="aspect-[42/29] w-full basis-[1.53%]">
 					<SaintMaloCenter />
 				</div>
 
 				<!-- RIGHT -->
-				<div class="aspect-[1814/194] basis-[66.06%] w-full">
+				<div class="aspect-[1814/194] w-full basis-[66.06%]">
 					<SaintMaloRight />
 				</div>
 			</div>
