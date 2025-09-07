@@ -115,13 +115,16 @@
 		gsap.set([...cols, ...rows], { drawSVG: '0% 0%' });
 		gsap.set('#gridScene', { visibility: 'visible' });
 
-		const master = ScrollTrigger.create({
-			trigger: '#gridScene',
-			scroller: scrollScene,
-			start: 'top top',
-			end: timelineDuration,
-			pin: true,
-			anticipatePin: 1
+		const master = gsap.timeline({
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 'top top',
+				end: timelineDuration,
+				pin: true,
+				anticipatePin: 1,
+				scrub: 1
+			}
 		});
 
 		gsap.to(cols, {
@@ -386,38 +389,45 @@
 		});
 
 		const saintMalo = document.querySelector('#saintMaloContainer');
-		const saintMaloLeftSvg = document.querySelector('#saintMaloLeftSvg');
+		const saintMaloLeftSvg = document.querySelector('#saintMaloLeftContainer');
 		const saintMaloRightSvg = document.querySelector('#saintMaloRightSvg');
 		gsap.set(saintMalo, { x: '0vw', force3D: true, transformOrigin: 'left center' });
 
 		ScrollTrigger.create({
 			trigger: '#gridScene',
 			scroller: scrollScene,
-			start: 2200,
-			end: 2200.1,
+			start: 2298,
+			end: 2299,
 			onEnter: () => {
-				const centerRect = document.getElementById('saintMaloCenterSvg')?.getBoundingClientRect();
+				const centerRect = document
+					.getElementById('saintMaloCenterContainer')
+					?.getBoundingClientRect();
 
 				if (centerRect) {
-					const offsetX = centerRect.left + centerRect.width / 2 - window.innerWidth / 2;
+					// const offsetX = centerRect.left + centerRect.width / 2 - window.innerWidth / 2;
+					const offsetX = window.innerWidth / 2 - centerRect.left - centerRect.width / 2;
 
 					gsap.to(saintMalo, {
-						x: -offsetX,
+						x: offsetX,
 						ease: 'none',
 						snap: { x: 1 },
 						scrollTrigger: {
 							trigger: '#gridScene',
 							scroller: scrollScene,
 							start: 2300,
-							end: 3000,
-							scrub: 2
+							end: 2800,
+							scrub: 3
 						}
 					});
 
 					const movementX = (window.innerWidth - centerRect.width) / 2;
 
+					gsap.set(saintMaloLeftSvg, { transformOrigin: 'right bottom' });
+					gsap.set(saintMaloRightSvg, { transformOrigin: 'left bottom' });
+
 					gsap.to(saintMaloLeftSvg, {
 						x: -movementX,
+						scale: 3,
 						ease: 'none',
 						scrollTrigger: {
 							trigger: '#gridScene',
@@ -430,6 +440,7 @@
 
 					gsap.to(saintMaloRightSvg, {
 						x: movementX,
+						scale: 3,
 						ease: 'none',
 						scrollTrigger: {
 							trigger: '#gridScene',
@@ -459,7 +470,7 @@
 					scroller: scrollScene,
 					start: 300,
 					end: 1000,
-					scrub: 3
+					scrub: 1
 				}
 			}
 		);
@@ -598,8 +609,12 @@
 	id="scrollScene"
 	class="transition-duration-[0s] h-screen w-screen overflow-auto overflow-x-hidden bg-slate-50 transition-none"
 >
-	<div id="bluebox" class="border-radius absolute left-[20px] h-12 w-12 text-lg font-bold">
-		{scrollTop}
+	<!-- Helpers -->
+	<div class="pointer-events-none fixed top-0 h-screen w-screen">
+		<div id="bluebox" class="border-radius absolute left-[20px] h-12 w-12 text-lg font-bold">
+			{scrollTop}
+		</div>
+		<div class="h-full w-[1px] translate-x-[50vw] bg-slate-200"></div>
 	</div>
 	<div class="h-full w-full flex-col items-center justify-center">
 		<section id="scrollDownScene" class="h-[100px] w-screen shrink-0 items-center justify-center">
@@ -670,20 +685,20 @@
 			</div>
 			<div
 				id="saintMaloContainer"
-				class="absolute bottom-[20vh] z-0 flex aspect-[2781/194] h-[60vh] transform-gpu flex-row items-end will-change-transform"
+				class="fixed bottom-[20vh] z-0 flex aspect-[2779/194] h-[60vh] transform-gpu flex-row items-end will-change-transform"
 			>
 				<!-- LEFT -->
-				<div class="aspect-[890/90] w-full basis-[32.41%]">
+				<div id="saintMaloLeftContainer" class="aspect-[890/90] w-full shrink-0 basis-[32.44%] origin-center-bottom">
 					<SaintMaloLeft />
 				</div>
 
 				<!-- CENTER -->
-				<div class="aspect-[42/29] w-full basis-[1.53%]">
+				<div id="saintMaloCenterContainer" class="aspect-[40/29] basis-[1.46%] w-full">
 					<SaintMaloCenter />
 				</div>
 
 				<!-- RIGHT -->
-				<div class="aspect-[1814/194] w-full basis-[66.06%]">
+				<div id="saintMaloRightContainer" class="aspect-[1814/194] w-full shrink-0 basis-[66.10%]">
 					<SaintMaloRight />
 				</div>
 			</div>
