@@ -309,48 +309,6 @@
 			}
 		});
 
-		const root = '#treeSvg';
-
-		// tout invisible au départ
-		gsap.set(`${root} path`, { drawSVG: 0 });
-
-		const tlTree = gsap.timeline({
-			defaults: { ease: 'none', duration: 0.8 },
-			scrollTrigger: {
-				trigger: '#gridScene',
-				scroller: scrollScene,
-				start: 200,
-				end: 800, // augmente si tu veux plus d'espace de scroll
-				scrub: 2
-				// markers: true
-			}
-		});
-
-		// 🌳 troncs (attention à .tronc4 : on ne veut QUE ses enfants directs)
-		tlTree
-			.to(`${root} .tronc1 path`, { drawSVG: '0% 100%' })
-			.to(`${root} .tronc2 path`, { drawSVG: '0% 100%' }, '>')
-			.to(`${root} .tronc3 path`, { drawSVG: '0% 100%' }, '>')
-			.to(`${root} .tronc4 > path`, { drawSVG: '0% 100%' }, '>'); // <-- clé ici
-
-		// 🍃 feuilles : un vrai stagger par groupe (chaque g.feuille4-* contient 2 paths)
-		const leafGroups = gsap.utils.toArray(`${root} g[class^="feuille4-"]`);
-		gsap.utils.shuffle(leafGroups); // optionnel: ordre aléatoire
-
-		// réglages de chevauchement
-		const LEAF_DUR = 0.6; // durée d'une feuille
-		const OVERLAP = 0.5; // 50% de chevauchement
-		const STEP = LEAF_DUR * (1 - OVERLAP); // temps entre démarrages
-
-		leafGroups.forEach((g, i) => {
-			const paths = g.querySelectorAll('path'); // 2 paths par feuille → en même temps
-			tlTree.to(
-				paths,
-				{ drawSVG: '0% 100%', duration: LEAF_DUR, ease: 'none' },
-				i === 0 ? '>+0.1' : `<+${STEP}` // chevauchement: démarre avant que la précédente finisse
-			);
-		});
-
 		const wind2SvgPaths = gsap.utils.toArray<SVGPathElement>('#wind2Svg path');
 		gsap.set(wind2SvgPaths, { drawSVG: '100% 100%' });
 
@@ -627,11 +585,6 @@
 				</p>
 			</div>
 		</section>
-		<div id="treeContainer" class="fixed top-0 flex h-screen w-screen items-center justify-center">
-			<div class="w-12">
-				<Tree />
-			</div>
-		</div>
 		<section
 			id="gridScene"
 			style="transition-duration: 0s;"
