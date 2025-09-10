@@ -641,17 +641,17 @@
 				class="fixed bottom-[20vh] z-0 flex aspect-[2779/194] h-[60vh] transform-gpu flex-row items-end will-change-transform"
 			>
 				<!-- LEFT -->
-				<div id="saintMaloLeftContainer" class="aspect-[890/90] w-full shrink-0 basis-[32.44%] origin-center-bottom">
+				<div id="saintMaloLeftContainer" class="aspect-[890/90] flex items-end w-full shrink-0 basis-[32.44%] origin-center-bottom">
 					<SaintMaloLeft />
 				</div>
 
 				<!-- CENTER -->
-				<div id="saintMaloCenterContainer" class="aspect-[40/29] basis-[1.46%] w-full">
+				<div id="saintMaloCenterContainer" class="aspect-[800 792] flex items-end basis-[1.46%] w-full">
 					<SaintMaloCenter />
 				</div>
 
 				<!-- RIGHT -->
-				<div id="saintMaloRightContainer" class="aspect-[1814/194] w-full shrink-0 basis-[66.10%]">
+				<div id="saintMaloRightContainer" class="aspect-[1814/194]flex items-end w-full shrink-0 basis-[66.10%]">
 					<SaintMaloRight />
 				</div>
 			</div>

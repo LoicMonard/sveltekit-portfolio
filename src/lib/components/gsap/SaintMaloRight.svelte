@@ -1,4 +1,4 @@
-<svg id="saintMaloRightSvg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1814 194">
+<svg id="saintMaloRightSvg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1814 193">
 	<path
 		stroke="#000"
 		vector-effect="non-scaling-stroke"
