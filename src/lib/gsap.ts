@@ -1,6 +1,11 @@
+import type { gsap } from 'gsap';
+
+export type GsapType = typeof gsap;
+
 import { browser } from '$app/environment';
 
-let gsapCached: typeof import('gsap').gsap | null = null;
+let cached: GsapType | null = null;
+
 const registered = {
 	ScrollTrigger: false,
 	DrawSVGPlugin: false,
@@ -11,15 +16,15 @@ const registered = {
 };
 
 export const getGsap = async () => {
-	if (gsapCached) return gsapCached;
-	if (!browser) return {} as unknown as typeof import('gsap').gsap;
+	if (cached) return cached;
+	if (!browser) return {} as GsapType;
 	const { gsap } = await import('gsap');
-	gsapCached = gsap;
+	cached = gsap;
 	return gsap;
 };
 
 const registerOnce = (plugin: any) => {
-	const gsap = gsapCached!;
+	const gsap = cached!;
 	if (plugin && typeof plugin.name === 'string' && !(plugin.name in gsap.plugins)) {
 		gsap.registerPlugin(plugin);
 	}
