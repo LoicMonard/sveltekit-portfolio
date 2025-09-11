@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { loadGsapAll, type GsapType } from '$lib/gsap';
 	import Grid from '$lib/components/gsap/Grid.svelte';
 	import PaperPlane from '$lib/components/gsap/PaperPlane.svelte';
 	import PaperPlane2 from '$lib/components/gsap/PaperPlane2.svelte';
 	import PaperPlaneMotionPath from '$lib/components/gsap/PaperPlaneMotionPath.svelte';
-	import SaintMalo from '$lib/components/gsap/SaintMalo.svelte';
-	import Tree from '$lib/components/gsap/Tree.svelte';
 	import ScrollDown from '$lib/components/gsap/ScrollDown.svelte';
 	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
 	import SingleWind from '$lib/components/gsap/SingleWind.svelte';
@@ -17,9 +16,8 @@
 	import SaintMaloRight from '$lib/components/gsap/SaintMaloRight.svelte';
 	import SaintMaloCenter from '$lib/components/gsap/SaintMaloCenter.svelte';
 
-	let gsap: any;
-	let ScrollTrigger: any;
-	let SplitText: any;
+	// let ScrollTrigger: any;
+	// let SplitText: any;
 	let Draggable: any;
 	let timelineDuration: number = 5000;
 	let scrollTop: number = 0;
@@ -33,35 +31,18 @@
 
 	onMount(async () => {
 		scrollScene.addEventListener('scroll', handleScroll);
-
-		const gsapMod = await import('gsap');
-		gsap = gsapMod.default || gsapMod.gsap;
-
-		ScrollTrigger = (await import('gsap/ScrollTrigger')).default;
-		SplitText = (await import('gsap/SplitText')).SplitText;
-		Draggable = (await import('gsap/Draggable')).default;
-		const { default: DrawSVGPlugin } = await import('gsap/DrawSVGPlugin');
-		const { default: MotionPathPlugin } = await import('gsap/MotionPathPlugin');
-		const { default: MorphSVGPlugin } = await import('gsap/MorphSVGPlugin');
-
-		gsap.registerPlugin(
-			DrawSVGPlugin,
-			ScrollTrigger,
-			MotionPathPlugin,
-			MorphSVGPlugin,
-			SplitText,
-			Draggable
-		);
-		initScene();
+		const { gsap, SplitText } = await loadGsapAll();
+		// ScrollTrigger = await import('gsap/ScrollTrigger');
+		initScene(gsap, SplitText);
 	});
 
-	const initScene = () => {
-		initScrollDownAnimation();
-		initScrollDownScrollTrigger();
-		initGridScrollTrigger();
+	const initScene = (gsap: GsapType, SplitText: any) => {
+		initScrollDownAnimation(gsap);
+		initScrollDownScrollTrigger(gsap);
+		initGridScrollTrigger(gsap, SplitText);
 	};
 
-	const initScrollDownAnimation = () => {
+	const initScrollDownAnimation = (gsap: GsapType) => {
 		gsap.set('#scrollDownIcon .path1', { drawSVG: '0% 10%', y: 0 });
 		gsap.set('#scrollDownIcon .path2', { drawSVG: '50% 50%', y: -0.5 });
 
@@ -90,7 +71,7 @@
 		});
 	};
 
-	const initScrollDownScrollTrigger = () => {
+	const initScrollDownScrollTrigger = (gsap: GsapType) => {
 		gsap.to('#scrollDownScene > div', {
 			scale: 1.6,
 			opacity: 0,
@@ -108,7 +89,7 @@
 		});
 	};
 
-	const initGridScrollTrigger = () => {
+	const initGridScrollTrigger = (gsap: GsapType, SplitText: any) => {
 		const cols = gsap.utils.toArray('#gridSvg #cols path');
 		const rows = gsap.utils.toArray('#gridSvg #rows path');
 
@@ -236,33 +217,25 @@
 
 		let floatTween: gsap.core.Tween | null = null;
 
-		const startFloat = () => {
-			if (!floatTween) {
-				floatTween = gsap.to('#planeSvg', {
-					y: '+=12',
-					rotate: '+=2',
-					duration: 1.6,
-					ease: 'sine.inOut',
-					yoyo: true,
-					repeat: -1
-				});
+		gsap.to('#planeSvg', {
+			y: '+=12',
+			rotate: '+=2',
+			duration: 1.6,
+			ease: 'sine.inOut',
+			yoyo: true,
+			repeat: -1,
+			paused: true, // 👈 au départ on stoppe l’anim
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 1000,
+				end: timelineDuration,
+				onEnter: () => floatTween?.play(),
+				onLeaveBack: () => floatTween?.pause()
+			},
+			onStart: function (this: gsap.core.Tween) {
+				floatTween = this;
 			}
-		};
-
-		const stopFloat = () => {
-			if (floatTween) {
-				floatTween.kill();
-				floatTween = null;
-			}
-		};
-
-		ScrollTrigger.create({
-			trigger: '#gridScene',
-			scroller: scrollScene,
-			start: 1000,
-			end: timelineDuration,
-			onEnter: startFloat,
-			onLeaveBack: stopFloat
 		});
 
 		const cloud1Svg = '#cloud1Svg';
@@ -314,36 +287,29 @@
 
 		let windTween: gsap.core.Tween | null = null;
 
-		const startWind = () => {
-			if (!windTween) {
-				windTween = gsap.to(wind2SvgPaths, {
-					ease: 'none',
-					stagger: 0.3,
-					keyframes: [
-						{ drawSVG: '100% 60%', duration: 0.2 },
-						{ drawSVG: '40% 0%', duration: 0.2 },
-						{ drawSVG: '0% 0%', duration: 0.2 }
-					],
-					repeat: -1
-				});
+		gsap.to(wind2SvgPaths, {
+			ease: 'none',
+			stagger: 0.3,
+			repeat: -1,
+			keyframes: [
+				{ drawSVG: '100% 60%', duration: 0.2 },
+				{ drawSVG: '40% 0%', duration: 0.2 },
+				{ drawSVG: '0% 0%', duration: 0.2 }
+			],
+			scrollTrigger: {
+				trigger: '#gridScene',
+				scroller: scrollScene,
+				start: 2300,
+				end: timelineDuration,
+				onEnter: () => windTween?.play(),
+				onLeaveBack: () => {
+					gsap.set(wind2SvgPaths, { drawSVG: '100% 100%' });
+					windTween?.pause();
+				}
+			},
+			onStart: function (this: gsap.core.Tween) {
+				windTween = this;
 			}
-		};
-
-		const stopWind = () => {
-			if (windTween) {
-				windTween.kill();
-				windTween = null;
-				gsap.set(wind2SvgPaths, { drawSVG: '100% 100%' });
-			}
-		};
-
-		ScrollTrigger.create({
-			trigger: '#gridScene',
-			scroller: scrollScene,
-			start: 2300,
-			end: timelineDuration,
-			onEnter: startWind,
-			onLeaveBack: stopWind
 		});
 
 		const saintMalo = document.querySelector('#saintMaloContainer');
@@ -351,66 +317,79 @@
 		const saintMaloRightSvg = document.querySelector('#saintMaloRightSvg');
 		gsap.set(saintMalo, { x: '0vw', force3D: true, transformOrigin: 'left center' });
 
-		ScrollTrigger.create({
-			trigger: '#gridScene',
-			scroller: scrollScene,
-			start: 2298,
-			end: 2299,
-			onEnter: () => {
-				const centerRect = document
-					.getElementById('saintMaloCenterContainer')
-					?.getBoundingClientRect();
+		// cache local mis à jour pile au bon moment
+		let offsetX = 0;
+		let movementX = 0;
 
-				if (centerRect) {
-					// const offsetX = centerRect.left + centerRect.width / 2 - window.innerWidth / 2;
-					const offsetX = window.innerWidth / 2 - centerRect.left - centerRect.width / 2;
+		const computeMetrics = (): void => {
+			const el = document.getElementById('saintMaloCenterContainer');
+			if (!el) return;
+			const r = el.getBoundingClientRect();
+			offsetX = window.innerWidth / 2 - (r.left + r.width / 2);
+			movementX = (window.innerWidth - r.width) / 2;
+		};
 
-					gsap.to(saintMalo, {
-						x: offsetX,
-						ease: 'none',
-						snap: { x: 1 },
-						scrollTrigger: {
-							trigger: '#gridScene',
-							scroller: scrollScene,
-							start: 2300,
-							end: 2800,
-							scrub: 3
-						}
-					});
+		gsap.to(
+			{},
+			{
+				scrollTrigger: {
+					trigger: '#gridScene',
+					scroller: scrollScene,
+					start: 2298,
+					end: 2299,
+					onEnter: () => {
+						computeMetrics();
 
-					const movementX = (window.innerWidth - centerRect.width) / 2;
+						// origins après scale
+						gsap.set(saintMaloLeftSvg, { transformOrigin: 'right bottom' });
+						gsap.set(saintMaloRightSvg, { transformOrigin: 'left bottom' });
 
-					gsap.set(saintMaloLeftSvg, { transformOrigin: 'right bottom' });
-					gsap.set(saintMaloRightSvg, { transformOrigin: 'left bottom' });
+						gsap.to(saintMalo, {
+							x: () => offsetX,
+							ease: 'none',
+							snap: { x: 1 },
+							scrollTrigger: {
+								trigger: '#gridScene',
+								scroller: scrollScene,
+								start: 2300,
+								end: 2800,
+								scrub: 3,
+								invalidateOnRefresh: true
+							}
+						});
 
-					gsap.to(saintMaloLeftSvg, {
-						x: -movementX,
-						scale: 3,
-						ease: 'none',
-						scrollTrigger: {
-							trigger: '#gridScene',
-							scroller: scrollScene,
-							start: 3000,
-							end: 3200,
-							scrub: 1
-						}
-					});
+						gsap.to(saintMaloLeftSvg, {
+							x: () => -movementX,
+							scale: 3,
+							ease: 'none',
+							scrollTrigger: {
+								trigger: '#gridScene',
+								scroller: scrollScene,
+								start: 3000,
+								end: 3200,
+								scrub: 1,
+								invalidateOnRefresh: true
+							}
+						});
 
-					gsap.to(saintMaloRightSvg, {
-						x: movementX,
-						scale: 3,
-						ease: 'none',
-						scrollTrigger: {
-							trigger: '#gridScene',
-							scroller: scrollScene,
-							start: 3000,
-							end: 3200,
-							scrub: 1
-						}
-					});
+						gsap.to(saintMaloRightSvg, {
+							x: () => movementX,
+							scale: 3,
+							ease: 'none',
+							scrollTrigger: {
+								trigger: '#gridScene',
+								scroller: scrollScene,
+								start: 3000,
+								end: 3200,
+								scrub: 1,
+								invalidateOnRefresh: true
+							}
+						});
+					},
+					onRefresh: computeMetrics
 				}
 			}
-		});
+		);
 
 		gsap.fromTo(
 			saintMalo,
@@ -514,7 +493,7 @@
 			);
 		});
 
-		let welcomeSplit = SplitText.create('#textContainer h1', {
+		const welcomeSplit = new SplitText('#textContainer h1', {
 			type: 'chars, words'
 		});
 
@@ -554,11 +533,7 @@
 					duration: 1
 				},
 				'+=0.5'
-			); // petit délai avant le "disappear"
-
-		// Draggable.create('#planeSvg', {
-		// 	type: 'x, y'
-		// });
+			);
 	};
 </script>
 
@@ -641,17 +616,26 @@
 				class="fixed bottom-[20vh] z-0 flex aspect-[2779/194] h-[60vh] transform-gpu flex-row items-end will-change-transform"
 			>
 				<!-- LEFT -->
-				<div id="saintMaloLeftContainer" class="aspect-[890/90] flex items-end w-full shrink-0 basis-[32.44%] origin-center-bottom">
+				<div
+					id="saintMaloLeftContainer"
+					class="origin-center-bottom flex aspect-[890/90] w-full shrink-0 basis-[32.44%] items-end"
+				>
 					<SaintMaloLeft />
 				</div>
 
 				<!-- CENTER -->
-				<div id="saintMaloCenterContainer" class="aspect-[800 792] flex items-end basis-[1.46%] w-full">
+				<div
+					id="saintMaloCenterContainer"
+					class="aspect-[800 792] flex w-full basis-[1.46%] items-end"
+				>
 					<SaintMaloCenter />
 				</div>
 
 				<!-- RIGHT -->
-				<div id="saintMaloRightContainer" class="aspect-[1814/194]flex items-end w-full shrink-0 basis-[66.10%]">
+				<div
+					id="saintMaloRightContainer"
+					class="aspect-[1814/194]flex w-full shrink-0 basis-[66.10%] items-end"
+				>
 					<SaintMaloRight />
 				</div>
 			</div>

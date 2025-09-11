@@ -1,21 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-
-	let gsap: any;
-	let ScrollTrigger: any;
+	import { loadGsapAll, type GsapType } from '$lib/gsap';
 
 	onMount(async () => {
-		const gsapMod = await import('gsap');
-		gsap = gsapMod.default || gsapMod.gsap;
-		const drawSvg = (await import('gsap/DrawSVGPlugin')).default;
-		ScrollTrigger = (await import('gsap/ScrollTrigger')).default;
+		const { gsap } = await loadGsapAll()
 
-		gsap.registerPlugin(ScrollTrigger, drawSvg);
-
-		initScene();
+		initScene(gsap);
 	});
 
-	const initScene = () => {
+	const initScene = (gsap: typeof import('gsap').gsap) => {
 		const scrollScene = document.getElementById('scrollScene');
 		const root = '#treeSvg';
 
