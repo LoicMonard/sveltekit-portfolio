@@ -16,9 +16,6 @@
 	import SaintMaloRight from '$lib/components/gsap/SaintMaloRight.svelte';
 	import SaintMaloCenter from '$lib/components/gsap/SaintMaloCenter.svelte';
 
-	// let ScrollTrigger: any;
-	// let SplitText: any;
-	let Draggable: any;
 	let timelineDuration: number = 5000;
 	let scrollTop: number = 0;
 
@@ -26,13 +23,11 @@
 
 	function handleScroll() {
 		scrollTop = scrollScene.scrollTop;
-		// console.log(scrollY);
 	}
 
 	onMount(async () => {
 		scrollScene.addEventListener('scroll', handleScroll);
 		const { gsap, SplitText } = await loadGsapAll();
-		// ScrollTrigger = await import('gsap/ScrollTrigger');
 		initScene(gsap, SplitText);
 	});
 
