@@ -1,103 +1,84 @@
-import type { gsap } from 'gsap';
-
-export type GsapType = typeof gsap;
-
 import { browser } from '$app/environment';
+import type { gsap as GsapNS } from 'gsap';
 
-let cached: GsapType | null = null;
+export type GsapType = typeof GsapNS;
 
-const registered = {
-	ScrollTrigger: false,
-	DrawSVGPlugin: false,
-	MotionPathPlugin: false,
-	MorphSVGPlugin: false,
-	Flip: false,
-	SplitText: false,
-	Draggable: false
+export type GsapAll = {
+	gsap: GsapType;
+	ScrollTrigger: any;
+	SplitText: any;
+	Draggable: any;
+	DrawSVGPlugin: any;
+	MotionPathPlugin: any;
+	MorphSVGPlugin: any;
+	Flip: any;
 };
 
-export const getGsap = async () => {
-	if (cached) return cached;
-	if (!browser) return {} as GsapType;
-	const { gsap } = await import('gsap');
-	cached = gsap;
-	return gsap;
-};
+let cachedAll: GsapAll | null = null;
+let loadingAll: Promise<GsapAll> | null = null;
 
-const registerOnce = (plugin: any) => {
-	const gsap = cached!;
-	if (plugin && typeof plugin.name === 'string' && !(plugin.name in gsap.plugins)) {
-		gsap.registerPlugin(plugin);
-	}
-};
+const makeSsrStub = (): GsapAll => ({
+	gsap: {} as GsapType,
+	ScrollTrigger: undefined,
+	SplitText: undefined,
+	Draggable: undefined,
+	DrawSVGPlugin: undefined,
+	MotionPathPlugin: undefined,
+	MorphSVGPlugin: undefined,
+	Flip: undefined
+});
 
-export const useScrollTrigger = async () => {
-	const gsap = await getGsap();
-	if (!registered.ScrollTrigger && browser) {
-		const { default: ScrollTrigger } = await import('gsap/ScrollTrigger');
-		registerOnce(ScrollTrigger);
-		registered.ScrollTrigger = true;
-	}
-	// @ts-expect-error:
-	return { gsap, ScrollTrigger: gsap.plugins.ScrollTrigger };
-};
+export const loadGsapAll = async (): Promise<GsapAll> => {
+	if (cachedAll) return cachedAll;
+	if (loadingAll) return loadingAll;
 
-export const useDrawSVG = async () => {
-	const { gsap } = await useScrollTrigger();
-	if (!registered.DrawSVGPlugin && browser) {
-		const { default: DrawSVGPlugin } = await import('gsap/DrawSVGPlugin');
-		registerOnce(DrawSVGPlugin);
-		registered.DrawSVGPlugin = true;
-	}
-	return { gsap };
-};
+	loadingAll = (async () => {
+		if (!browser) return (cachedAll = makeSsrStub());
 
-export const useMotionPath = async () => {
-	const gsap = await getGsap();
-	if (!registered.MotionPathPlugin && browser) {
-		const { default: MotionPathPlugin } = await import('gsap/MotionPathPlugin');
-		registerOnce(MotionPathPlugin);
-		registered.MotionPathPlugin = true;
-	}
-	return { gsap };
-};
+		const { gsap } = await import('gsap');
 
-export const useMorphSVG = async () => {
-	const gsap = await getGsap();
-	if (!registered.MorphSVGPlugin && browser) {
-		const { default: MorphSVGPlugin } = await import('gsap/MorphSVGPlugin');
-		registerOnce(MorphSVGPlugin);
-		registered.MorphSVGPlugin = true;
-	}
-	return { gsap };
-};
+		const [
+			{ default: ScrollTrigger },
+			{ SplitText },
+			{ default: Draggable },
+			{ default: DrawSVGPlugin },
+			{ default: MotionPathPlugin },
+			{ default: MorphSVGPlugin },
+			{ default: Flip }
+		] = await Promise.all([
+			import('gsap/ScrollTrigger'),
+			import('gsap/SplitText'),
+			import('gsap/Draggable'),
+			import('gsap/DrawSVGPlugin'),
+			import('gsap/MotionPathPlugin'),
+			import('gsap/MorphSVGPlugin'),
+			import('gsap/Flip')
+		]);
 
-export const useFlip = async () => {
-	const gsap = await getGsap();
-	if (!registered.Flip && browser) {
-		const { default: Flip } = await import('gsap/Flip');
-		registerOnce(Flip);
-		registered.Flip = true;
-	}
-	return { gsap };
-};
+		gsap.registerPlugin(
+			ScrollTrigger,
+			SplitText,
+			Draggable,
+			DrawSVGPlugin,
+			MotionPathPlugin,
+			MorphSVGPlugin,
+			Flip
+		);
 
-export const useSplitText = async () => {
-	const gsap = await getGsap();
-	if (!registered.SplitText && browser) {
-		const { SplitText } = await import('gsap/SplitText');
-		registerOnce(SplitText);
-		registered.SplitText = true;
-	}
-	return { gsap };
-};
+		cachedAll = {
+			gsap,
+			ScrollTrigger,
+			SplitText,
+			Draggable,
+			DrawSVGPlugin,
+			MotionPathPlugin,
+			MorphSVGPlugin,
+			Flip
+		};
+		return cachedAll;
+	})().finally(() => {
+		if (!cachedAll) loadingAll = null;
+	});
 
-export const useDraggable = async () => {
-	const gsap = await getGsap();
-	if (!registered.Draggable && browser) {
-		const { Draggable } = await import('gsap/Draggable');
-		registerOnce(Draggable);
-		registered.Draggable = true;
-	}
-	return { gsap };
+	return loadingAll;
 };
