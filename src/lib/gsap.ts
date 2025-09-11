@@ -12,7 +12,8 @@ const registered = {
 	MotionPathPlugin: false,
 	MorphSVGPlugin: false,
 	Flip: false,
-	SplitText: false
+	SplitText: false,
+	Draggable: false
 };
 
 export const getGsap = async () => {
@@ -87,6 +88,16 @@ export const useSplitText = async () => {
 		const { SplitText } = await import('gsap/SplitText');
 		registerOnce(SplitText);
 		registered.SplitText = true;
+	}
+	return { gsap };
+};
+
+export const useDraggable = async () => {
+	const gsap = await getGsap();
+	if (!registered.Draggable && browser) {
+		const { Draggable } = await import('gsap/Draggable');
+		registerOnce(Draggable);
+		registered.Draggable = true;
 	}
 	return { gsap };
 };
