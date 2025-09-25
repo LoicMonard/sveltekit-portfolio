@@ -7,9 +7,10 @@
 	import ScrollDown from '$lib/components/gsap/ScrollDown.svelte';
 	import Grid2 from '$lib/components/gsap/Grid2.svelte';
 	import { buildPlaneFeature } from '$lib/anim/features/plane';
-	import PaperPlaneMotionPath from '$lib/components/gsap/paperPlaneMotionPath.svelte';
-	import PaperPlane2 from '$lib/components/gsap/paperPlane2.svelte';
-	import PaperPlane from '$lib/components/gsap/paperPlane.svelte';
+	import PaperPlaneMotionPath from '$lib/components/gsap/PaperPlaneMotionPath.svelte';
+	import PaperPlane2 from '$lib/components/gsap/PaperPlane2.svelte';
+	import PaperPlane from '$lib/components/gsap/PaperPlane.svelte';
+	import { buildWelcomeText } from '$lib/anim/features/welcomeText';
 
 	let scrollTop: number = 0;
 
@@ -17,6 +18,15 @@
 		buildScrollDown(ctx, RANGES.intro, { fadeUnits: 100 });
 		buildIntroGrid(ctx, RANGES.intro, { debug: false });
 		buildPlaneFeature(ctx, RANGES.plane);
+		buildWelcomeText(
+			ctx,
+			{ start: 200, end: 0 + 1000 },
+			{
+				text: 'WELCOME', // ou n’importe quel texte
+				iterations: (i) => 6 + i, // plus loin, plus ça flippe
+				charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789· '
+			}
+		);
 	};
 
 	onMount(async () => {
@@ -29,7 +39,7 @@
 </script>
 
 <!-- Helpers -->
-<div class="pointer-events-none fixed top-0 h-screen w-screen">
+<div class="pointer-events-none fixed top-0 h-screen w-screen bg-slate-50">
 	<div id="bluebox" class="border-radius absolute left-[20px] h-12 w-12 text-lg font-bold">
 		{scrollTop}
 	</div>
@@ -45,13 +55,17 @@
 			<Grid2 />
 		</div>
 		<div id="planeSceneContainer" class="absolute top-0 h-full w-full">
-			<div id="paperPlaneMotionPathContainer" class="invisible absolute bottom-1/2 left-[-5vw] w-[55vw]">
+			<div
+				id="paperPlaneMotionPathContainer"
+				class="invisible absolute bottom-1/2 left-[-5vw] w-[55vw]"
+			>
 				<PaperPlaneMotionPath />
 			</div>
 			<div id="planeContainer" class="w-36 -translate-x-full overflow-visible">
 				<PaperPlane2 />
 			</div>
 		</div>
+		<div id="welcomeFlaps" class="min-h-16"></div>
 	</div>
 	<div id="hiddenElements" class="hidden">
 		<PaperPlane />
