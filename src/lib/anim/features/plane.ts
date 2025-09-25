@@ -92,6 +92,22 @@ const makePlaneFollowPath = (ctx: FeatureCtx, range: Range) => {
 	});
 };
 
+const rotatePlane = (ctx: FeatureCtx, range: Range) => {
+  const { gsap, tl } = ctx;
+  const { planeEl } = { ...DEFAULTS };
+  const planeNode = document.querySelector<SVGElement>(planeEl);
+  
+  const start = range.start + 800;
+  const end = range.start + 1400;
+
+  if (!planeNode) {
+    console.warn('[plane] no element found with id #paperPlane');
+    return;
+  }
+  
+  const planePaths = gsap.utils.toArray<SVGPathElement>('#planeSvg path');
+  const plane2Paths = gsap.utils.toArray<SVGPathElement>('#plane2Svg path');
+}
 
 export const buildPlaneFeature = (ctx: FeatureCtx, range: Range) => {
 	const windPath = drawWindPath(ctx, range, DEFAULTS);
