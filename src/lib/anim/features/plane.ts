@@ -1,25 +1,20 @@
 import type { FeatureCtx } from '$lib/anim/master';
 import type { Range } from '$lib/anim/ranges';
 
-/*
- - Draw motion path with drawSVG
- - Move plane along path with motionPath
- - Add the welcome text 
- - Rotate the plane 
-*/
-
 export type PlaneOpts = {
 	windPathEl?: string;
 	planeEl?: string;
-  plane2El?: string;
-  plane3El?: string;
+	plane1El?: string;
+	plane2El?: string;
+	plane3El?: string;
 };
 
 const DEFAULTS: Required<PlaneOpts> = {
 	windPathEl: '#paperPlaneMotionPath path',
 	planeEl: '#planeContainer',
-  plane2El: '#plane2Svg',
-  plane3El: '#plane3Svg'
+	plane1El: '#plane1Svg',
+	plane2El: '#plane2Svg',
+	plane3El: '#plane3Svg'
 } as const;
 
 const drawWindPath = (ctx: FeatureCtx, range: Range, opts: PlaneOpts) => {
@@ -92,27 +87,75 @@ const makePlaneFollowPath = (ctx: FeatureCtx, range: Range) => {
 	});
 };
 
-const rotatePlane = (ctx: FeatureCtx, range: Range) => {
-  const { gsap, tl } = ctx;
-  const { planeEl } = { ...DEFAULTS };
-  const planeNode = document.querySelector<SVGElement>(planeEl);
-  
-  const start = range.start + 800;
-  const end = range.start + 1400;
+type MorphParams = {
+	from: number;
+	to: number;
+	startOffset?: number;
+	endOffset?: number;
+	triggerEl?: string;
+};
 
-  if (!planeNode) {
-    console.warn('[plane] no element found with id #paperPlane');
-    return;
-  }
-  
-  const planePaths = gsap.utils.toArray<SVGPathElement>('#planeSvg path');
-  const plane2Paths = gsap.utils.toArray<SVGPathElement>('#plane2Svg path');
-}
+export const morphPlaneBetween = (ctx: FeatureCtx, range: Range, params: MorphParams) => {
+	const { gsap, tl } = ctx;
+	const { planeEl } = { ...DEFAULTS };
+
+	const { from, to, startOffset = 800, endOffset = 1200, triggerEl = planeEl } = params;
+
+	const triggerNode = document.querySelector<SVGElement>(triggerEl);
+	if (!triggerNode) {
+		console.warn('[plane] trigger not found for selector:', triggerEl);
+		return;
+	}
+
+	const start = range.start + startOffset;
+	const end = range.start + endOffset;
+
+	const fromSel = `#plane${from}Svg path`;
+	const toSel = `#plane${to}Svg path`;
+
+	const fromPaths = gsap.utils.toArray<SVGPathElement>(fromSel);
+	const toPaths = gsap.utils.toArray<SVGPathElement>(toSel);
+
+	if (!fromPaths.length || !toPaths.length) {
+		console.warn('[plane] missing paths', {
+			fromSel,
+			fromLen: fromPaths.length,
+			toSel,
+			toLen: toPaths.length
+		});
+		return;
+	}
+
+	const len = Math.min(fromPaths.length, toPaths.length);
+	if (fromPaths.length !== toPaths.length) {
+		console.warn('[plane] path count mismatch, using min length', {
+			from: fromPaths.length,
+			to: toPaths.length,
+			used: len
+		});
+	}
+
+	const tlMorph = gsap.timeline({
+		defaults: { ease: 'power1.inOut' },
+		scrollTrigger: {
+			containerAnimation: tl,
+			trigger: triggerNode,
+			start,
+			end,
+			scrub: 1,
+			invalidateOnRefresh: true
+		}
+	});
+
+	for (let i = 0; i < len; i++) {
+		tlMorph.to(fromPaths[i], { morphSVG: toPaths[i] }, 0);
+	}
+
+	return tlMorph;
+};
 
 export const buildPlaneFeature = (ctx: FeatureCtx, range: Range) => {
-	const windPath = drawWindPath(ctx, range, DEFAULTS);
-
-  const planeMotion = makePlaneFollowPath(ctx, range);
-
-	return { windPath };
+	drawWindPath(ctx, range, DEFAULTS);
+	makePlaneFollowPath(ctx, range);
+	morphPlaneBetween(ctx, range, { from: 2, to: 1, startOffset: 900, endOffset: 1300 });
 };

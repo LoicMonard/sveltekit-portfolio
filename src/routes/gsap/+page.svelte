@@ -212,7 +212,7 @@
 
 		let floatTween: gsap.core.Tween | null = null;
 
-		gsap.to('#planeSvg', {
+		gsap.to('#plane1Svg', {
 			y: '+=12',
 			rotate: '+=2',
 			duration: 1.6,
@@ -436,7 +436,7 @@
 			}
 		});
 
-		const fromPlanePaths = gsap.utils.toArray<SVGPathElement>('#planeSvg path');
+		const fromPlanePaths = gsap.utils.toArray<SVGPathElement>('#plane1Svg path');
 		const toPlanePaths = gsap.utils.toArray<SVGPathElement>('#plane2Svg path');
 
 		const morphPlaneTl = gsap.timeline({
@@ -462,7 +462,7 @@
 			);
 		});
 
-		const fromPlanePaths2 = gsap.utils.toArray<SVGPathElement>('#planeSvg path');
+		const fromPlanePaths2 = gsap.utils.toArray<SVGPathElement>('#plane1Svg path');
 		const toPlanePaths3 = gsap.utils.toArray<SVGPathElement>('#plane3Svg path');
 
 		const morphPlaneTl2 = gsap.timeline({
