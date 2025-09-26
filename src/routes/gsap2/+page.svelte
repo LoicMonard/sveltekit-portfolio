@@ -67,7 +67,7 @@
 		</div>
 		<div
 			id="welcomeFlaps"
-			class="z-20 flex min-h-[100svh] w-full max-w-[1280px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
+			class="z-50 flex min-h-[100svh] w-full max-w-[1280px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
 		></div>
 		<div
 			id="cityContainer"
