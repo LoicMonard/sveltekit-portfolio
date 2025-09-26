@@ -38,32 +38,35 @@
 </script>
 
 <!-- Helpers -->
-<div class="pointer-events-none fixed top-0 h-screen w-full bg-slate-50">
+<div class="pointer-events-none fixed top-0 min-h-[100svh] w-full bg-slate-50">
 	<div id="bluebox" class="border-radius absolute left-[20px] h-12 w-12 text-lg font-bold">
 		{scrollTop}
 	</div>
 </div>
 
 <div id="gridScene" class="flex h-[100svh] w-screen items-center justify-center">
-	<div class="flex h-screen w-full flex-col items-center justify-center gap-4">
+	<div class="flex min-h-[100svh] w-full flex-col items-center justify-center gap-4">
 		<!-- <div id="scrollDownContainer" class="w-12">
 			<ScrollDown />
 		</div> -->
 		<div id="gridContainer" class="fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
-		<div id="planeSceneContainer" class="absolute z-30 top-0 h-screen w-screen">
+		<div id="planeSceneContainer" class="absolute top-0 z-30 min-h-[100svh] w-screen">
 			<div
 				id="paperPlaneMotionPathContainer"
 				class="invisible absolute bottom-1/2 left-[-5vw] w-[55vw]"
 			>
 				<PaperPlaneMotionPath />
 			</div>
-			<div id="planeContainer" class="w-16 md:w-24 lg:w-36 -translate-x-full overflow-visible">
+			<div id="planeContainer" class="w-16 -translate-x-full overflow-visible md:w-24 lg:w-36">
 				<PaperPlane2 />
 			</div>
 		</div>
-		<div id="welcomeFlaps" class="text-3xl z-20 lg:text-7xl max-w-[1280px] flex gap-1 sm:gap-2 w-full px-2 items-center justify-center"></div>
+		<div
+			id="welcomeFlaps"
+			class="z-20 flex min-h-[100svh] w-full max-w-[1280px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
+		></div>
 	</div>
 	<div id="hiddenElements" class="hidden">
 		<PaperPlane />
