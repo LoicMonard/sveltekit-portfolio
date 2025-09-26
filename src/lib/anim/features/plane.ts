@@ -157,5 +157,6 @@ export const morphPlaneBetween = (ctx: FeatureCtx, range: Range, params: MorphPa
 export const buildPlaneFeature = (ctx: FeatureCtx, range: Range) => {
 	drawWindPath(ctx, range, DEFAULTS);
 	makePlaneFollowPath(ctx, range);
-	morphPlaneBetween(ctx, range, { from: 2, to: 1, startOffset: 900, endOffset: 1300 });
+	morphPlaneBetween(ctx, range, { from: 2, to: 1, startOffset: 700, endOffset: 1100 });
+	morphPlaneBetween(ctx, range, { from: 2, to: 2, startOffset: 1300, endOffset: 1600 });
 };

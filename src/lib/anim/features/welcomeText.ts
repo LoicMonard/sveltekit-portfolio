@@ -4,10 +4,10 @@ import type { Range } from '$lib/anim/ranges';
 
 export type WelcomeFlapsOpts = {
 	target?: string;
-	fromText?: string; // texte au chargement
-	toText?: string; // texte final
-	charset?: string | string[]; // alphabet (graphemes)
-	iterations?: number | ((i: number) => number); // nb de flips par tuile (>=2)
+	fromText?: string;
+	toText?: string;
+	charset?: string | string[];
+	iterations?: number | ((i: number) => number);
 	stagger?: number;
 	tileClass?: string;
 };
@@ -22,11 +22,10 @@ const DEFAULTS: Required<WelcomeFlapsOpts> = {
 	tileClass:
 		'relative grid place-items-center w-full h-full rounded-[10px] bg-slate-50 text-zinc-600 ' +
 		'font-mono [transform-style:preserve-3d] [backface-visibility:hidden] ' +
-		'border-2 border-slate-200 after:content-[""] after:absolute after:left-0 ' +
+		'ring-1 ring-slate-200 after:content-[""] after:absolute after:left-0 ' +
 		'after:right-0 after:top-1/2 after:h-px after:bg-slate-200'
 };
 
-// --- utils ---
 const segmentGraphemes = (s: string): string[] => {
 	if (Intl?.Segmenter) {
 		const seg = new Intl.Segmenter('en', { granularity: 'grapheme' });
@@ -37,7 +36,6 @@ const segmentGraphemes = (s: string): string[] => {
 const normalizeCharset = (cs: string | string[]) => (Array.isArray(cs) ? cs : segmentGraphemes(cs));
 const randFrom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)] ?? ' ';
 
-// séquence aléatoire FIGÉE: [init, rand..., final] (scrub-safe)
 const buildSequence = (init: string, fin: string, loops: number, charsetArr: string[]) => {
 	const n = Math.max(2, loops);
 	const seq = new Array<string>(n);
@@ -47,14 +45,12 @@ const buildSequence = (init: string, fin: string, loops: number, charsetArr: str
 	return seq;
 };
 
-// --- timeline par tuile, pilotée par le temps (pas de .call directionnel) ---
 const makeFlipTl = (gsap: GSAP, el: HTMLElement, seq: string[], flipDur = 0.16) => {
 	const tl = gsap.timeline();
-	const flips = seq.length - 1; // nombre de transitions
+	const flips = seq.length - 1;
 	const half = flipDur / 2;
 	const total = flips * flipDur;
 
-	// 1) Keyframes rotation pour chaque flip (0->-90 -> 0)
 	for (let i = 0; i < flips; i++) {
 		const base = i * flipDur;
 		tl.to(el, { rotationX: -90, duration: half, ease: 'power2.in' }, base).to(
@@ -64,8 +60,6 @@ const makeFlipTl = (gsap: GSAP, el: HTMLElement, seq: string[], flipDur = 0.16) 
 		);
 	}
 
-	// 2) Mise à jour du caractère en fonction du temps local de la timeline
-	//    Changement au milieu de chaque flip (base + half)
 	const tracker = { t: 0 };
 	tl.to(
 		tracker,
@@ -74,8 +68,7 @@ const makeFlipTl = (gsap: GSAP, el: HTMLElement, seq: string[], flipDur = 0.16) 
 			duration: total,
 			ease: 'linear',
 			onUpdate: () => {
-				const t = tl.time(); // temps local
-				// index = floor(t / flipDur + 0.5) → bascule au milieu du flip
+				const t = tl.time();
 				const idx = Math.max(0, Math.min(seq.length - 1, Math.floor(t / flipDur + 0.5)));
 				const ch = seq[idx];
 				if (el.textContent !== ch) el.textContent = ch;
@@ -87,7 +80,6 @@ const makeFlipTl = (gsap: GSAP, el: HTMLElement, seq: string[], flipDur = 0.16) 
 	return tl;
 };
 
-// wrapper noir (trou) + face — style inchangé
 const makeTile = (faceClass: string) => {
 	const wrap = document.createElement('span');
 	wrap.className = 'w-full aspect-square rounded-[12px] bg-zinc-600 [perspective:900px]';
@@ -97,20 +89,31 @@ const makeTile = (faceClass: string) => {
 	return { wrap, face };
 };
 
-const moveWelcomeText = (ctx: FeatureCtx, range: Range, dy: string | number) => {
+let lastYPercent = 0;
+
+export const moveWelcomeText = (ctx: FeatureCtx, range: Range, toYPercent: number) => {
 	const { gsap, tl } = ctx;
 	const start = range.start;
-	const end = range.end ?? range.start + 500;
-	const span = Math.max(end - start, 1);
-	const moveTl = gsap.timeline();
-	moveTl.to('#welcomeFlaps', { y: dy, ease: 'power1.outIn' }, 0);
-	moveTl.totalDuration(1);
-	const stretched = gsap.timeline().add(moveTl, 0);
+	const end = range.end ?? start + 500;
+	const span = Math.max(end - start, 0.0001);
+
+	const sub = gsap
+		.timeline()
+		.fromTo(
+			'#welcomeFlaps',
+			{ yPercent: lastYPercent },
+			{ yPercent: toYPercent, ease: 'power1.inOut', immediateRender: false },
+			0
+		);
+
+	sub.totalDuration(1);
+	const stretched = gsap.timeline().add(sub, 0);
 	stretched.totalDuration(span);
 	tl.add(stretched, start);
+
+	lastYPercent = toYPercent;
 };
 
-// === Builder principal (insère dans ta TL maîtresse) ==========================
 export const buildWelcomeText = (ctx: FeatureCtx, range: Range, opts: WelcomeFlapsOpts = {}) => {
 	const { gsap, tl } = ctx;
 	const { target, fromText, toText, charset, iterations, stagger, tileClass } = {
@@ -128,7 +131,6 @@ export const buildWelcomeText = (ctx: FeatureCtx, range: Range, opts: WelcomeFla
 		return;
 	}
 
-	// Reset + rendu initial (SCROLL⬇️)
 	container.innerHTML = '';
 
 	const fromArr = segmentGraphemes(fromText.toUpperCase());
@@ -143,7 +145,7 @@ export const buildWelcomeText = (ctx: FeatureCtx, range: Range, opts: WelcomeFla
 		const { wrap, face } = makeTile(tileClass);
 		const initCh = fromArr[i] ?? ' ';
 		const finCh = toArr[i] ?? ' ';
-		face.textContent = initCh; // visible au load
+		face.textContent = initCh;
 		container.appendChild(wrap);
 		faces.push(face);
 
@@ -153,14 +155,13 @@ export const buildWelcomeText = (ctx: FeatureCtx, range: Range, opts: WelcomeFla
 		sub.add(makeFlipTl(gsap, face, seq), i * stagger);
 	}
 
-	// Setup 3D
 	sub.set(faces, { transformPerspective: 900, transformOrigin: '50% 50% -1px', rotationX: 0 }, 0);
 
-	// Étire le sous-timeline sur [start, end] de la TL maîtresse
 	sub.totalDuration(1);
 	const stretched = gsap.timeline().add(sub, 0);
 	stretched.totalDuration(span);
 
 	tl.add(stretched, start);
-	moveWelcomeText(ctx, { start: 1200, end: 1500 }, '-200%');
+	moveWelcomeText(ctx, { start: 1200, end: 1500 }, -15);
+	moveWelcomeText(ctx, { start: 1800, end: 2100 }, -100);
 };
