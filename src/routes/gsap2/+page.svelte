@@ -11,6 +11,9 @@
 	import PaperPlane2 from '$lib/components/gsap/PaperPlane2.svelte';
 	import PaperPlane from '$lib/components/gsap/PaperPlane.svelte';
 	import { buildWelcomeText } from '$lib/anim/features/welcomeText';
+	import SaintMaloLeft from '$lib/components/gsap/SaintMaloLeft.svelte';
+	import SaintMaloRight from '$lib/components/gsap/SaintMaloRight.svelte';
+	import SaintMaloCenter from '$lib/components/gsap/SaintMaloCenter.svelte';
 
 	let scrollTop: number = 0;
 
@@ -45,10 +48,9 @@
 </div>
 
 <div id="gridScene" class="flex h-[100svh] w-screen items-center justify-center">
-	<div class="flex min-h-[100svh] w-full flex-col items-center justify-center gap-4">
-		<!-- <div id="scrollDownContainer" class="w-12">
-			<ScrollDown />
-		</div> -->
+	<div
+		class="flex min-h-[100svh] w-full flex-col items-center justify-center gap-4 overflow-x-hidden"
+	>
 		<div id="gridContainer" class="fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
@@ -67,7 +69,24 @@
 			id="welcomeFlaps"
 			class="z-20 flex min-h-[100svh] w-full max-w-[1280px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
 		></div>
+		<div
+			id="cityContainer"
+			class="fixed bottom-[10vh] left-0 z-40 flex aspect-[2779/194] h-[30vh] transform-gpu flex-row items-end text-[148px] will-change-transform"
+		>
+			<div class="aspect-[890/89] basis-[32.44%]">
+				<SaintMaloLeft />
+			</div>
+			<div
+				class="aspect-[800 792] flex w-full basis-[1.46%] items-end"
+			>
+				<SaintMaloCenter />
+			</div>
+			<div class="aspect-[1814/193] basis-[66.10%]">
+				<SaintMaloRight />
+			</div>
+		</div>
 	</div>
+
 	<div id="hiddenElements" class="hidden">
 		<PaperPlane />
 	</div>
