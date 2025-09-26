@@ -15,16 +15,15 @@
 	let scrollTop: number = 0;
 
 	const buildFeatures = (ctx: any) => {
-		buildScrollDown(ctx, RANGES.intro, { fadeUnits: 100 });
+		// buildScrollDown(ctx, RANGES.intro, { fadeUnits: 100 });
 		buildIntroGrid(ctx, RANGES.intro, { debug: false });
 		buildPlaneFeature(ctx, RANGES.plane);
 		buildWelcomeText(
 			ctx,
-			{ start: 200, end: 0 + 1000 },
+			{ start: 0, end: 500 },
 			{
-				text: 'WELCOME', // ou n’importe quel texte
-				iterations: (i) => 6 + i, // plus loin, plus ça flippe
-				charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789· '
+				fromText: 'SCROLL⬇️',
+				toText: 'WELCOME'
 			}
 		);
 	};
@@ -48,9 +47,9 @@
 
 <div id="gridScene" class="flex h-[100svh] w-screen items-center justify-center">
 	<div class="flex h-screen w-full flex-col items-center justify-center gap-4">
-		<div id="scrollDownContainer" class="w-12">
+		<!-- <div id="scrollDownContainer" class="w-12">
 			<ScrollDown />
-		</div>
+		</div> -->
 		<div id="gridContainer" class="fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
@@ -65,7 +64,7 @@
 				<PaperPlane2 />
 			</div>
 		</div>
-		<div id="welcomeFlaps" class="min-h-16"></div>
+		<div id="welcomeFlaps" class="min-h-16 flex gap-2"></div>
 	</div>
 	<div id="hiddenElements" class="hidden">
 		<PaperPlane />

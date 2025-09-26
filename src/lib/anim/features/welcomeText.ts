@@ -3,114 +3,153 @@ import type { FeatureCtx } from '$lib/anim/master';
 import type { Range } from '$lib/anim/ranges';
 
 export type WelcomeFlapsOpts = {
-  target?: string;
-  text?: string;
-  charset?: string;
-  iterations?: number | ((i: number) => number);
-  stagger?: number;
-  tileClass?: string;
+	target?: string;
+	fromText?: string; // texte au chargement
+	toText?: string; // texte final
+	charset?: string | string[]; // alphabet (graphemes)
+	iterations?: number | ((i: number) => number); // nb de flips par tuile (>=2)
+	stagger?: number;
+	tileClass?: string;
 };
 
 const DEFAULTS: Required<WelcomeFlapsOpts> = {
-  target: '#welcomeFlaps',
-  text: 'WELCOME',
-  charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.- ',
-  iterations: 8,
-  stagger: 0.06,
-  // ⬇️ La face occupe 100% du wrapper
-  tileClass:
-    'relative grid place-items-center w-full h-full rounded-[10px] bg-slate-50 text-zinc-600 ' +
-    'text-7xl font-mono [transform-style:preserve-3d] [backface-visibility:hidden] ' +
-    'border border-slate-200 ' +
-    'after:content-[""] after:absolute after:left-0 after:right-0 after:top-1/2 ' +
-    'after:h-px after:bg-slate-200'
-} as const;
-
-const nextChar = (charset: string, current: string) => {
-  const i = charset.indexOf(current.toUpperCase());
-  return charset[(i + 1 + Math.floor(Math.random() * 3)) % charset.length] || ' ';
+	target: '#welcomeFlaps',
+	fromText: 'SCROLL⬇️',
+	toText: 'WELCOME',
+	charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-⬇️🫰💡',
+	iterations: 18,
+	stagger: 0.06,
+	tileClass:
+		'relative grid place-items-center w-full h-full rounded-[10px] bg-slate-50 text-zinc-600 ' +
+		'text-7xl font-mono [transform-style:preserve-3d] [backface-visibility:hidden] ' +
+		'border border-slate-200 ' +
+		'after:content-[""] after:absolute after:left-0 after:right-0 after:top-1/2 ' +
+		'after:h-px after:bg-slate-200'
 };
 
-const makeFlipTl = (
-  gsap: GSAP,
-  el: HTMLElement,
-  finalChar: string,
-  charset: string,
-  loops: number
-) => {
-  const tl = gsap.timeline();
-  let curr = charset[Math.floor(Math.random() * charset.length)] || ' ';
-  el.textContent = curr;
+// --- utils ---
+const segmentGraphemes = (s: string): string[] => {
+	if (Intl?.Segmenter) {
+		const seg = new Intl.Segmenter('en', { granularity: 'grapheme' });
+		return Array.from(seg.segment(s), (x) => x.segment);
+	}
+	return [...s];
+};
+const normalizeCharset = (cs: string | string[]) => (Array.isArray(cs) ? cs : segmentGraphemes(cs));
+const randFrom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)] ?? ' ';
 
-  for (let k = 0; k < loops; k++) {
-    tl.to(el, {
-      rotationX: -90,
-      duration: 0.08,
-      ease: 'power2.in',
-      onComplete: () => {
-        curr = k === loops - 1 ? finalChar.toUpperCase() : nextChar(charset, curr);
-        el.textContent = curr;
-        gsap.set(el, { rotationX: 90 });
-      }
-    }).to(el, { rotationX: 0, duration: 0.08, ease: 'power2.out' });
-  }
-  return tl;
+// séquence aléatoire FIGÉE: [init, rand..., final] (scrub-safe)
+const buildSequence = (init: string, fin: string, loops: number, charsetArr: string[]) => {
+	const n = Math.max(2, loops);
+	const seq = new Array<string>(n);
+	seq[0] = init;
+	for (let i = 1; i < n - 1; i++) seq[i] = randFrom(charsetArr);
+	seq[n - 1] = fin;
+	return seq;
 };
 
-// ⬇️ fabrique une tuile: wrapper noir (trou) + face qui flippe
+// --- timeline par tuile, pilotée par le temps (pas de .call directionnel) ---
+const makeFlipTl = (gsap: GSAP, el: HTMLElement, seq: string[], flipDur = 0.16) => {
+	const tl = gsap.timeline();
+	const flips = seq.length - 1; // nombre de transitions
+	const half = flipDur / 2;
+	const total = flips * flipDur;
+
+	// 1) Keyframes rotation pour chaque flip (0->-90 -> 0)
+	for (let i = 0; i < flips; i++) {
+		const base = i * flipDur;
+		tl.to(el, { rotationX: -90, duration: half, ease: 'power2.in' }, base).to(
+			el,
+			{ rotationX: 0, duration: half, ease: 'power2.out' },
+			base + half
+		);
+	}
+
+	// 2) Mise à jour du caractère en fonction du temps local de la timeline
+	//    Changement au milieu de chaque flip (base + half)
+	const tracker = { t: 0 };
+	tl.to(
+		tracker,
+		{
+			t: total,
+			duration: total,
+			ease: 'linear',
+			onUpdate: () => {
+				const t = tl.time(); // temps local
+				// index = floor(t / flipDur + 0.5) → bascule au milieu du flip
+				const idx = Math.max(0, Math.min(seq.length - 1, Math.floor(t / flipDur + 0.5)));
+				const ch = seq[idx];
+				if (el.textContent !== ch) el.textContent = ch;
+			}
+		},
+		0
+	);
+
+	return tl;
+};
+
+// wrapper noir (trou) + face — style inchangé
 const makeTile = (faceClass: string) => {
-  const wrap = document.createElement('span');
-  wrap.className =
-    // fond noir = “trou”, léger padding pour laisser voir le noir
-    'relative grid place-items-center w-24 h-36 rounded-[12px] bg-zinc-600 ' +
-    'shadow-inner [perspective:900px]';
-
-  const face = document.createElement('span');
-  face.className = faceClass;
-  wrap.appendChild(face);
-  return { wrap, face };
+	const wrap = document.createElement('span');
+	wrap.className =
+		'relative grid place-items-center w-24 h-36 rounded-[12px] bg-zinc-600 ' +
+		'shadow-inner [perspective:900px]';
+	const face = document.createElement('span');
+	face.className = faceClass;
+	wrap.appendChild(face);
+	return { wrap, face };
 };
 
+// === Builder principal (insère dans ta TL maîtresse) ==========================
 export const buildWelcomeText = (ctx: FeatureCtx, range: Range, opts: WelcomeFlapsOpts = {}) => {
-  const { gsap, tl } = ctx;
-  const { target, text, charset, iterations, stagger, tileClass } = { ...DEFAULTS, ...opts };
+	const { gsap, tl } = ctx;
+	const { target, fromText, toText, charset, iterations, stagger, tileClass } = {
+		...DEFAULTS,
+		...opts
+	};
 
-  const start = range.start + 100;
-  const end = range.end ?? range.start + 500;
-  const span = Math.max(end - start, 1);
+	const start = range.start;
+	const end = range.end ?? range.start + 500;
+	const span = Math.max(end - start, 1);
 
-  const container = document.querySelector<HTMLElement>(target);
-  if (!container) {
-    console.warn('[welcome] target not found:', target);
-    return;
-  }
+	const container = document.querySelector<HTMLElement>(target);
+	if (!container) {
+		console.warn('[welcome] target not found:', target);
+		return;
+	}
 
-  container.innerHTML = '';
-  container.className = 'flex gap-2'; // pas de perspective globale
+	// Reset + rendu initial (SCROLL⬇️)
+	container.innerHTML = '';
 
-  const letters = [...text.toUpperCase()];
+	const fromArr = segmentGraphemes(fromText.toUpperCase());
+	const toArr = segmentGraphemes(toText.toUpperCase());
+	const len = Math.max(fromArr.length, toArr.length);
+	const charsetArr = normalizeCharset(charset);
 
-  // ⬇️ crée les tiles (on animera uniquement la “face”)
-  const faces: HTMLElement[] = [];
-  letters.forEach(() => {
-    const { wrap, face } = makeTile(tileClass);
-    container.appendChild(wrap);
-    faces.push(face);
-  });
+	const sub = gsap.timeline();
+	const faces: HTMLElement[] = [];
 
-  const getLoops = (i: number) => (typeof iterations === 'function' ? iterations(i) : iterations);
+	for (let i = 0; i < len; i++) {
+		const { wrap, face } = makeTile(tileClass);
+		const initCh = fromArr[i] ?? ' ';
+		const finCh = toArr[i] ?? ' ';
+		face.textContent = initCh; // visible au load
+		container.appendChild(wrap);
+		faces.push(face);
 
-  const sub = gsap.timeline();
-  // perspective locale: sur la face via GSAP ou déjà fournie par le wrapper
-  sub.set(faces, { transformPerspective: 900, transformOrigin: '50% 50% -1px', rotationX: 0 });
+		const loops = Math.max(2, typeof iterations === 'function' ? iterations(i) : iterations);
+		const seq = buildSequence(initCh, finCh, loops, charsetArr);
 
-  faces.forEach((el, i) => {
-    sub.add(makeFlipTl(gsap, el, letters[i], charset, getLoops(i)), i * stagger);
-  });
+		sub.add(makeFlipTl(gsap, face, seq), i * stagger);
+	}
 
-  sub.totalDuration(1);
-  const stretched = gsap.timeline().add(sub, 0);
-  stretched.totalDuration(span);
+	// Setup 3D
+	sub.set(faces, { transformPerspective: 900, transformOrigin: '50% 50% -1px', rotationX: 0 }, 0);
 
-  tl.add(stretched, start);
+	// Étire le sous-timeline sur [start, end] de la TL maîtresse
+	sub.totalDuration(1);
+	const stretched = gsap.timeline().add(sub, 0);
+	stretched.totalDuration(span);
+
+	tl.add(stretched, start);
 };
