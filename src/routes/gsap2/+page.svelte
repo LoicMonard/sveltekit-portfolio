@@ -52,18 +52,18 @@
 		<div id="gridContainer" class="fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
-		<div id="planFeSceneContainer" class="absolute top-0 h-screen w-screen">
+		<div id="planeSceneContainer" class="absolute z-30 top-0 h-screen w-screen">
 			<div
 				id="paperPlaneMotionPathContainer"
 				class="invisible absolute bottom-1/2 left-[-5vw] w-[55vw]"
 			>
 				<PaperPlaneMotionPath />
 			</div>
-			<div id="planeContainer" class="w-36 -translate-x-full overflow-visible">
+			<div id="planeContainer" class="w-16 md:w-24 lg:w-36 -translate-x-full overflow-visible">
 				<PaperPlane2 />
 			</div>
 		</div>
-		<div id="welcomeFlaps" class="text-3xl lg:text-7xl max-w-[1280px] flex gap-1 sm:gap-2 w-full px-2 items-center justify-center"></div>
+		<div id="welcomeFlaps" class="text-3xl z-20 lg:text-7xl max-w-[1280px] flex gap-1 sm:gap-2 w-full px-2 items-center justify-center"></div>
 	</div>
 	<div id="hiddenElements" class="hidden">
 		<PaperPlane />
