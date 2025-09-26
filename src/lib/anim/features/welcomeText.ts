@@ -21,10 +21,9 @@ const DEFAULTS: Required<WelcomeFlapsOpts> = {
 	stagger: 0.06,
 	tileClass:
 		'relative grid place-items-center w-full h-full rounded-[10px] bg-slate-50 text-zinc-600 ' +
-		'text-7xl font-mono [transform-style:preserve-3d] [backface-visibility:hidden] ' +
-		'border border-slate-200 ' +
-		'after:content-[""] after:absolute after:left-0 after:right-0 after:top-1/2 ' +
-		'after:h-px after:bg-slate-200'
+		'font-mono [transform-style:preserve-3d] [backface-visibility:hidden] ' +
+		'border-2 border-slate-200 after:content-[""] after:absolute after:left-0 ' +
+		'after:right-0 after:top-1/2 after:h-px after:bg-slate-200'
 };
 
 // --- utils ---
@@ -91,13 +90,24 @@ const makeFlipTl = (gsap: GSAP, el: HTMLElement, seq: string[], flipDur = 0.16) 
 // wrapper noir (trou) + face — style inchangé
 const makeTile = (faceClass: string) => {
 	const wrap = document.createElement('span');
-	wrap.className =
-		'relative grid place-items-center w-24 h-36 rounded-[12px] bg-zinc-600 ' +
-		'shadow-inner [perspective:900px]';
+	wrap.className = 'w-full aspect-square rounded-[12px] bg-zinc-600 [perspective:900px]';
 	const face = document.createElement('span');
 	face.className = faceClass;
 	wrap.appendChild(face);
 	return { wrap, face };
+};
+
+const moveWelcomeText = (ctx: FeatureCtx, range: Range, dy: string | number) => {
+	const { gsap, tl } = ctx;
+	const start = range.start;
+	const end = range.end ?? range.start + 500;
+	const span = Math.max(end - start, 1);
+	const moveTl = gsap.timeline();
+	moveTl.to('#welcomeFlaps', { y: dy, ease: 'power1.outIn' }, 0);
+	moveTl.totalDuration(1);
+	const stretched = gsap.timeline().add(moveTl, 0);
+	stretched.totalDuration(span);
+	tl.add(stretched, start);
 };
 
 // === Builder principal (insère dans ta TL maîtresse) ==========================
@@ -152,4 +162,5 @@ export const buildWelcomeText = (ctx: FeatureCtx, range: Range, opts: WelcomeFla
 	stretched.totalDuration(span);
 
 	tl.add(stretched, start);
+	moveWelcomeText(ctx, { start: 1200, end: 1500 }, '-200%');
 };

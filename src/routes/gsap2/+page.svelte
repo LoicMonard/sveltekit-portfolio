@@ -38,11 +38,10 @@
 </script>
 
 <!-- Helpers -->
-<div class="pointer-events-none fixed top-0 h-screen w-screen bg-slate-50">
+<div class="pointer-events-none fixed top-0 h-screen w-full bg-slate-50">
 	<div id="bluebox" class="border-radius absolute left-[20px] h-12 w-12 text-lg font-bold">
 		{scrollTop}
 	</div>
-	<!-- <div class="h-full w-[1px] translate-x-[50vw] bg-slate-200"></div> -->
 </div>
 
 <div id="gridScene" class="flex h-[100svh] w-screen items-center justify-center">
@@ -53,7 +52,7 @@
 		<div id="gridContainer" class="fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
-		<div id="planeSceneContainer" class="absolute top-0 h-full w-full">
+		<div id="planFeSceneContainer" class="absolute top-0 h-screen w-screen">
 			<div
 				id="paperPlaneMotionPathContainer"
 				class="invisible absolute bottom-1/2 left-[-5vw] w-[55vw]"
@@ -64,7 +63,7 @@
 				<PaperPlane2 />
 			</div>
 		</div>
-		<div id="welcomeFlaps" class="min-h-16 flex gap-2"></div>
+		<div id="welcomeFlaps" class="text-3xl lg:text-7xl max-w-[1280px] flex gap-1 sm:gap-2 w-full px-2 items-center justify-center"></div>
 	</div>
 	<div id="hiddenElements" class="hidden">
 		<PaperPlane />
