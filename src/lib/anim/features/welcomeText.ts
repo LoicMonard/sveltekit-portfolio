@@ -19,7 +19,7 @@ const DEFAULTS: Omit<Required<WelcomeFlapsOpts>, 'onJackpot'> & {
 	target: '#welcomeFlaps',
 	fromText: 'SCROLL⬇️',
 	toText: 'WELCOME',
-	charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-⬇️🫰💡🪙',
+	charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ⬇️🫰💡🪙',
 	iterations: 18,
 	stagger: 0.06,
 	tileClass:
