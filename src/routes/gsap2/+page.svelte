@@ -67,7 +67,9 @@
 				<PaperPlaneMotionPath />
 			</div>
 			<div id="planeContainer" class="z-50 w-16 -translate-x-full overflow-visible md:w-24 lg:w-36">
-				<PaperPlane2 />
+				<div id="planeFloat" class="inline-block h-full w-full origin-center will-change-transform">
+					<PaperPlane2 />
+				</div>
 			</div>
 		</div>
 		<div
@@ -76,7 +78,7 @@
 		></div>
 		<div
 			id="cityContainer"
-			class="scale-75 origin-bottom-left fixed bottom-[5vh] left-0 z-40 flex aspect-[2779/194] h-[40vh] transform-gpu flex-row items-end will-change-transform"
+			class="fixed bottom-[5vh] left-0 z-40 flex aspect-[2779/194] h-[40vh] origin-bottom-left scale-75 transform-gpu flex-row items-end will-change-transform"
 		>
 			<div id="saintMaloLeft" class="aspect-[890/89] basis-[32.44%]">
 				<SaintMaloLeft />

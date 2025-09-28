@@ -4,6 +4,7 @@ import type { Range } from '$lib/anim/ranges';
 export type PlaneOpts = {
 	windPathEl?: string;
 	planeEl?: string;
+	planeFloatEl?: string;
 	plane1El?: string;
 	plane2El?: string;
 	plane3El?: string;
@@ -12,6 +13,7 @@ export type PlaneOpts = {
 const DEFAULTS: Required<PlaneOpts> = {
 	windPathEl: '#paperPlaneMotionPath path',
 	planeEl: '#planeContainer',
+	planeFloatEl: '#planeFloat',
 	plane1El: '#plane1Svg',
 	plane2El: '#plane2Svg',
 	plane3El: '#plane3Svg'
@@ -48,6 +50,48 @@ const drawWindPath = (ctx: FeatureCtx, range: Range, opts: PlaneOpts) => {
 			scrub: 1
 		}
 	});
+};
+
+export const makePlaneFloat = (ctx: FeatureCtx, range: Range) => {
+	const { gsap, tl } = ctx;
+	const { planeFloatEl } = { ...DEFAULTS };
+
+	const planeFloatNode = document.querySelector<HTMLElement | SVGElement>(planeFloatEl);
+	if (!planeFloatNode) {
+		console.warn('[plane] no element found for', planeFloatEl);
+		return;
+	}
+
+	const start = range.start + 1000;
+	const end = range.end;
+
+	if (planeFloatNode instanceof SVGElement) {
+		gsap.set(planeFloatNode, { transformBox: 'fill-box' });
+	}
+
+	let t: gsap.core.Tween;
+	t = gsap.to(planeFloatNode, {
+		y: '+=12',
+		rotate: '+=2',
+		duration: 1.6,
+		ease: 'sine.inOut',
+		yoyo: true,
+		repeat: -1,
+		paused: true,
+		force3D: true,
+		scrollTrigger: {
+			containerAnimation: tl,
+			start,
+			end,
+			onEnter: () => t.play(),
+			onEnterBack: () => t.play(),
+			onLeave: () => t.pause(),
+			onLeaveBack: () => t.pause(),
+			invalidateOnRefresh: true
+		}
+	});
+
+	return t;
 };
 
 const makePlaneFollowPath = (ctx: FeatureCtx, range: Range) => {
@@ -159,4 +203,5 @@ export const buildPlaneFeature = (ctx: FeatureCtx, range: Range) => {
 	makePlaneFollowPath(ctx, range);
 	morphPlaneBetween(ctx, range, { from: 2, to: 1, startOffset: 700, endOffset: 1100 });
 	morphPlaneBetween(ctx, range, { from: 2, to: 2, startOffset: 1300, endOffset: 1600 });
+	makePlaneFloat(ctx, range);
 };
