@@ -41,33 +41,33 @@
 </script>
 
 <!-- Helpers -->
-<div class="pointer-events-none fixed top-0 min-h-[100dvh] w-full bg-slate-50">
+<div class="pointer-events-none fixed top-0 min-h-[100svh] w-full bg-slate-50">
 	<div id="bluebox" class="border-radius absolute left-[20px] h-12 w-12 text-lg font-bold">
 		{scrollTop}
 	</div>
 </div>
 
-<div id="gridScene" class="flex h-[100dvh] w-screen items-center justify-center">
+<div id="gridScene" class="flex h-[100svh] w-screen items-center justify-center">
 	<div
-		class="flex min-h-[100dvh] w-full flex-col items-center justify-center gap-4 overflow-x-hidden"
+		class="flex min-h-[100svh] w-full flex-col items-center justify-center gap-4 overflow-x-hidden"
 	>
 		<div id="gridContainer" class="fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
-		<div id="planeSceneContainer" class="absolute top-0 z-30 min-h-[100dvh] w-screen">
+		<div id="planeSceneContainer" class="absolute z-50 pointer-events-none top-0 min-h-[100svh] w-screen">
 			<div
 				id="paperPlaneMotionPathContainer"
 				class="invisible absolute bottom-1/2 left-[-5vw] w-[55vw]"
 			>
 				<PaperPlaneMotionPath />
 			</div>
-			<div id="planeContainer" class="w-16 -translate-x-full overflow-visible md:w-24 lg:w-36">
+			<div id="planeContainer" class="z-50 w-16 -translate-x-full overflow-visible md:w-24 lg:w-36">
 				<PaperPlane2 />
 			</div>
 		</div>
 		<div
 			id="welcomeFlaps"
-			class="z-50 flex min-h-[100dvh] w-full max-w-[1280px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
+			class="z-40 flex min-h-[100svh] w-full max-w-[1280px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
 		></div>
 		<div
 			id="cityContainer"
@@ -76,9 +76,7 @@
 			<div class="aspect-[890/89] basis-[32.44%]">
 				<SaintMaloLeft />
 			</div>
-			<div
-				class="aspect-[800 792] flex w-full basis-[1.46%] items-end"
-			>
+			<div class="aspect-[800 792] flex w-full basis-[1.46%] items-end">
 				<SaintMaloCenter />
 			</div>
 			<div class="aspect-[1814/193] basis-[66.10%]">
