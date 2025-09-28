@@ -3,6 +3,7 @@ import type { Range } from '$lib/anim/ranges';
 
 export type PlaneOpts = {
 	windPathEl?: string;
+	threeWindEl?: string;
 	planeEl?: string;
 	planeFloatEl?: string;
 	plane1El?: string;
@@ -12,6 +13,7 @@ export type PlaneOpts = {
 
 const DEFAULTS: Required<PlaneOpts> = {
 	windPathEl: '#paperPlaneMotionPath path',
+	threeWindEl: '#threeWind',
 	planeEl: '#planeContainer',
 	planeFloatEl: '#planeFloat',
 	plane1El: '#plane1Svg',
@@ -48,6 +50,45 @@ const drawWindPath = (ctx: FeatureCtx, range: Range, opts: PlaneOpts) => {
 			start,
 			end,
 			scrub: 1
+		}
+	});
+};
+
+export const drawThreeWindPath = (ctx: FeatureCtx, range: Range, opts: PlaneOpts) => {
+	const { gsap, tl } = ctx;
+	const { threeWindEl } = { ...DEFAULTS, ...opts };
+
+	const threeWindPathNodes = gsap.utils.toArray<SVGPathElement>(`${threeWindEl} path`);
+
+	gsap.set(threeWindPathNodes, { drawSVG: '100% 100%', visibility: 'visible', opacity: 0 });
+
+	const start = range.start + 1500;
+	const end = range.end;
+
+	let t: gsap.core.Tween;
+
+	t = gsap.to(threeWindPathNodes, {
+		keyframes: [
+			{ drawSVG: '100% 60%', opacity: 1, duration: 0.2 },
+			{ drawSVG: '40% 0%', opacity: 1, duration: 0.2 },
+			{ drawSVG: '0% 0%', opacity: 1, duration: 0.2 }
+		],
+		ease: 'none',
+		stagger: 0.3,
+		repeat: -1,
+		immediateRender: false,
+		scrollTrigger: {
+			containerAnimation: tl,
+			start,
+			end,
+			onEnter: () => t.play(),
+			onEnterBack: () => t.play(),
+			onLeave: () => t.pause(),
+			onLeaveBack: () => {
+				t.pause();
+				t.progress(0);
+			},
+			invalidateOnRefresh: true
 		}
 	});
 };
@@ -186,7 +227,7 @@ export const morphPlaneBetween = (ctx: FeatureCtx, range: Range, params: MorphPa
 			trigger: triggerNode,
 			start,
 			end,
-			scrub: 1,
+			scrub: 0,
 			invalidateOnRefresh: true
 		}
 	});
@@ -204,4 +245,5 @@ export const buildPlaneFeature = (ctx: FeatureCtx, range: Range) => {
 	morphPlaneBetween(ctx, range, { from: 2, to: 1, startOffset: 700, endOffset: 1100 });
 	morphPlaneBetween(ctx, range, { from: 2, to: 2, startOffset: 1300, endOffset: 1600 });
 	makePlaneFloat(ctx, range);
+	drawThreeWindPath(ctx, range, DEFAULTS);
 };

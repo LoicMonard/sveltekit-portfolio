@@ -15,6 +15,7 @@
 	import SaintMaloRight from '$lib/components/gsap/SaintMaloRight.svelte';
 	import SaintMaloCenter from '$lib/components/gsap/SaintMaloCenter.svelte';
 	import { buildCityFeature } from '$lib/anim/features/city';
+	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
 
 	let scrollTop: number = 0;
 
@@ -53,7 +54,7 @@
 	<div
 		class="flex min-h-[100svh] w-full flex-col items-center justify-center gap-4 overflow-x-hidden"
 	>
-		<div id="gridContainer" class="fixed top-0 h-full w-full">
+		<div id="gridContainer" class="pointer-events-none fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
 		<div
@@ -66,15 +67,24 @@
 			>
 				<PaperPlaneMotionPath />
 			</div>
-			<div id="planeContainer" class="z-50 w-16 -translate-x-full overflow-visible md:w-24 lg:w-36">
-				<div id="planeFloat" class="inline-block h-full w-full origin-center will-change-transform">
+			<div
+				id="planeContainer"
+				class="relative z-50 w-16 -translate-x-full overflow-visible md:w-24 lg:w-36"
+			>
+				<div
+					id="planeFloat"
+					class="relative inline-block h-full w-full origin-center will-change-transform"
+				>
 					<PaperPlane2 />
+					<div id="threeWind" class="invisible absolute right-full top-0 aspect-[146/25] h-[57%]">
+						<ThreeWind />
+					</div>
 				</div>
 			</div>
 		</div>
 		<div
 			id="welcomeFlaps"
-			class="z-40 flex min-h-[100svh] w-full max-w-[1280px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
+			class="z-40 flex min-h-[100svh] w-full max-w-[1024px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
 		></div>
 		<div
 			id="cityContainer"
