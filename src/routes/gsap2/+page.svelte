@@ -2,9 +2,7 @@
 	import { onMount } from 'svelte';
 	import { createMaster } from '$lib/anim/master';
 	import { RANGES } from '$lib/anim/ranges';
-	import { buildScrollDown } from '$lib/anim/features/intro';
 	import { buildIntroGrid } from '$lib/anim/features/introGrid';
-	import ScrollDown from '$lib/components/gsap/ScrollDown.svelte';
 	import Grid2 from '$lib/components/gsap/Grid2.svelte';
 	import { buildPlaneFeature } from '$lib/anim/features/plane';
 	import PaperPlaneMotionPath from '$lib/components/gsap/PaperPlaneMotionPath.svelte';
@@ -93,7 +91,7 @@
 			<div id="saintMaloLeft" class="aspect-[890/89] basis-[32.44%]">
 				<SaintMaloLeft />
 			</div>
-			<div class="aspect-[800 792] flex w-full basis-[1.46%] items-end">
+			<div id="saintMaloCenter" class="aspect-[800 792] flex w-full basis-[1.46%] items-end">
 				<SaintMaloCenter />
 			</div>
 			<div id="saintMaloRight" class="aspect-[1814/193] basis-[66.10%]">
