@@ -15,6 +15,7 @@
 	import { buildCityFeature } from '$lib/anim/features/city';
 	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
 	import { buildForestFeature } from '$lib/anim/features/forest';
+	import Sky from '$lib/components/gsap/Sky.svelte';
 
 	let scrollTop: number = 0;
 
@@ -31,7 +32,7 @@
 			}
 		);
 		buildCityFeature(ctx, RANGES.city, {});
-		buildForestFeature(ctx, RANGES.forest)
+		buildForestFeature(ctx, RANGES.forest);
 	};
 
 	onMount(async () => {
@@ -57,6 +58,9 @@
 		<div id="gridContainer" class="pointer-events-none fixed top-0 h-full w-full">
 			<Grid2 />
 		</div>
+
+		<Sky />
+		
 		<div
 			id="planeSceneContainer"
 			class="pointer-events-none absolute top-0 z-50 min-h-[100svh] w-screen"
