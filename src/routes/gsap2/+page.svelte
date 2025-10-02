@@ -16,6 +16,7 @@
 	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
 	import { buildForestFeature } from '$lib/anim/features/forest';
 	import Sky from '$lib/components/gsap/Sky.svelte';
+	import { buildSkyFeature } from '$lib/anim/features/sky';
 
 	let scrollTop: number = 0;
 
@@ -33,6 +34,7 @@
 		);
 		buildCityFeature(ctx, RANGES.city, {});
 		buildForestFeature(ctx, RANGES.forest);
+		buildSkyFeature(ctx, { start: 1800, end: 2700 });
 	};
 
 	onMount(async () => {
