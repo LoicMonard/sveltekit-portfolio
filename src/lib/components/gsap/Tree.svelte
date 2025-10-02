@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { onMount } from 'svelte';
 	import { loadGsapAll, type GsapType } from '$lib/gsap';
 
@@ -61,19 +61,19 @@
 			);
 		});
 	};
-</script>
+</script> -->
 
 <div
 	id="treeContainer"
 	class="absolute bottom-0 left-1/2 z-50 flex h-32 w-32 -translate-x-1/2 items-end"
 >
 	<svg id="treeSvg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 800 792">
-		<g class="Tree" vector-effect="non-scaling-stroke">
+		<g class="Tree" >
 			<g class="troncs">
 				<g class="tronc4">
 					<g class="feuille4-24">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -81,7 +81,7 @@
 							class="feuille4-1"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -91,7 +91,7 @@
 					</g>
 					<g class="feuille4-24">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -99,7 +99,7 @@
 							class="feuille4-1"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -109,7 +109,7 @@
 					</g>
 					<g class="feuille4-23">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -117,7 +117,7 @@
 							class="feuille4-1"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -127,7 +127,7 @@
 					</g>
 					<g class="feuille4-22">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -135,7 +135,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -145,7 +145,7 @@
 					</g>
 					<g class="feuille4-21">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -153,7 +153,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -163,7 +163,7 @@
 					</g>
 					<g class="feuille4-20">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -171,7 +171,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -181,7 +181,7 @@
 					</g>
 					<g class="feuille4-19">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -189,7 +189,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -199,7 +199,7 @@
 					</g>
 					<g class="feuille4-18">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -207,7 +207,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -217,7 +217,7 @@
 					</g>
 					<g class="feuille4-17">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -225,7 +225,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -235,7 +235,7 @@
 					</g>
 					<g class="feuille4-16">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -243,7 +243,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -253,7 +253,7 @@
 					</g>
 					<g class="feuille4-15">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -261,7 +261,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -271,7 +271,7 @@
 					</g>
 					<g class="feuille4-14">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -279,7 +279,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -289,7 +289,7 @@
 					</g>
 					<g class="feuille4-13">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -297,7 +297,7 @@
 							class="feuille4-1"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -307,7 +307,7 @@
 					</g>
 					<g class="feuille4-12">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -315,7 +315,7 @@
 							class="feuille4-1"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -325,7 +325,7 @@
 					</g>
 					<g class="feuille4-11">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -333,7 +333,7 @@
 							class="feuille4-1"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -343,7 +343,7 @@
 					</g>
 					<g class="feuille4-10">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -351,7 +351,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -361,7 +361,7 @@
 					</g>
 					<g class="feuille4-9">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -369,7 +369,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -379,7 +379,7 @@
 					</g>
 					<g class="feuille4-8">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -387,7 +387,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -397,7 +397,7 @@
 					</g>
 					<g class="feuille4-7">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -405,7 +405,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -415,7 +415,7 @@
 					</g>
 					<g class="feuille4-6">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -423,7 +423,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -433,7 +433,7 @@
 					</g>
 					<g class="feuille4-5">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -441,7 +441,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -451,7 +451,7 @@
 					</g>
 					<g class="feuille4-4">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -459,7 +459,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -469,7 +469,7 @@
 					</g>
 					<g class="feuille4-3">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -477,7 +477,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -487,7 +487,7 @@
 					</g>
 					<g class="feuille4-2">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -495,7 +495,7 @@
 							class="feuille4-2"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -505,7 +505,7 @@
 					</g>
 					<g class="feuille4-1">
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="2"
@@ -513,7 +513,7 @@
 							class="feuille4-1"
 						/>
 						<path
-							vector-effect="non-scaling-stroke"
+							
 							stroke="#000"
 							stroke-linecap="round"
 							stroke-width="1"
@@ -522,7 +522,7 @@
 						/>
 					</g>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -530,7 +530,7 @@
 						class="tronc4-8"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -538,7 +538,7 @@
 						class="tronc4-7"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -546,7 +546,7 @@
 						class="tronc4-6"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -554,7 +554,7 @@
 						class="tronc4-5"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -562,7 +562,7 @@
 						class="tronc4-4"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -570,7 +570,7 @@
 						class="tronc4-3"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -578,7 +578,7 @@
 						class="tronc4-2"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -588,7 +588,7 @@
 				</g>
 				<g class="tronc3">
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -596,7 +596,7 @@
 						class="tronc3-12"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -604,7 +604,7 @@
 						class="tronc3-11"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -612,7 +612,7 @@
 						class="tronc3-10"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -620,7 +620,7 @@
 						class="tronc3-9"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -628,7 +628,7 @@
 						class="tronc3-8"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -636,7 +636,7 @@
 						class="tronc3-7"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -644,7 +644,7 @@
 						class="tronc3-6"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -652,7 +652,7 @@
 						class="tronc3-5"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -660,7 +660,7 @@
 						class="tronc3-4"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -668,7 +668,7 @@
 						class="tronc3-3"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -676,7 +676,7 @@
 						class="tronc3-2"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -686,7 +686,7 @@
 				</g>
 				<g class="tronc2">
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -694,7 +694,7 @@
 						class="tronc2-12"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -702,7 +702,7 @@
 						class="tronc2-11"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -710,7 +710,7 @@
 						class="tronc2-10"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -718,7 +718,7 @@
 						class="tronc2-9"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -726,7 +726,7 @@
 						class="tronc2-8"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -734,7 +734,7 @@
 						class="tronc2-7"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -742,7 +742,7 @@
 						class="tronc2-6"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -750,7 +750,7 @@
 						class="tronc2-5"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -758,7 +758,7 @@
 						class="tronc2-4"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -766,7 +766,7 @@
 						class="tronc2-3"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -774,7 +774,7 @@
 						class="tronc2-2"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -784,7 +784,7 @@
 				</g>
 				<g class="tronc1">
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -792,7 +792,7 @@
 						class="tronc1-3"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"
@@ -800,7 +800,7 @@
 						class="tronc1-2"
 					/>
 					<path
-						vector-effect="non-scaling-stroke"
+						
 						stroke="#000"
 						stroke-linecap="round"
 						stroke-width="2"

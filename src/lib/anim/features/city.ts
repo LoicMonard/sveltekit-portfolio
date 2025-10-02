@@ -138,7 +138,7 @@ export const citySidesSequence = (ctx: FeatureCtx, range: Range, opts: CityOpts 
 			containerAnimation: tl,
 			trigger: center,
 			start: range.start + 820,
-			end: range.start + 1600,
+			end: range.start + 1120,
 			scrub: 1,
 			invalidateOnRefresh: true
 		}
@@ -147,8 +147,8 @@ export const citySidesSequence = (ctx: FeatureCtx, range: Range, opts: CityOpts 
 	seq.to(left, { x: () => -halfFree(), scale: 3, ease: 'none' }, 0);
 	seq.to(right, { x: () => +halfFree(), scale: 3, ease: 'none' }, 0);
 
-	seq.to(left, { x: 0, ease: 'none', scale: 1 }, '+=0.5');
-	seq.to(right, { x: 0, ease: 'none', scale: 1 }, '<');
+	// seq.to(left, { x: 0, ease: 'none', scale: 1 }, '+=0.5');
+	// seq.to(right, { x: 0, ease: 'none', scale: 1 }, '<');
 
 	return seq;
 };

@@ -14,6 +14,7 @@
 	import SaintMaloCenter from '$lib/components/gsap/SaintMaloCenter.svelte';
 	import { buildCityFeature } from '$lib/anim/features/city';
 	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
+	import { buildForestFeature } from '$lib/anim/features/forest';
 
 	let scrollTop: number = 0;
 
@@ -29,7 +30,8 @@
 				toText: 'WELCOME'
 			}
 		);
-		buildCityFeature(ctx, { start: 1800, end: 2100 }, {});
+		buildCityFeature(ctx, RANGES.city, {});
+		buildForestFeature(ctx, RANGES.forest)
 	};
 
 	onMount(async () => {

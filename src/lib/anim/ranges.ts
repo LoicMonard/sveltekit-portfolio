@@ -3,7 +3,7 @@ export const RANGES = {
 	intro: { start: 0, end: 1000 },
 	plane: { start: 500, end: 4200 },
 	sky: { start: 1000, end: 2200 },
-	city: { start: 2200, end: 3200 },
-	forest: { start: 3200, end: 4200 }
+	city: { start: 1800, end: 2100 },
+	forest: { start: 2600, end: 4200 }
 } as const;
 export type RangeKey = keyof typeof RANGES;
