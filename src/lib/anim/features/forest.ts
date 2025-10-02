@@ -16,7 +16,6 @@ const config = {
 } as const;
 
 export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDurations): void => {
-  console.log('ye')
 	const { gsap, tl } = ctx;
 	const start = range.start;
 
@@ -28,6 +27,13 @@ export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDuratio
 		duration: 1
 	});
 	resizeTl.totalDuration(durations.resize);
+
+	const strokeTl = gsap.timeline().to(config.root, {
+		strokeWidth: 3,
+		ease: 'none',
+		duration: 1
+	});
+	strokeTl.totalDuration(durations.resize);
 
 	const trunksTl = gsap
 		.timeline({ defaults: { ease: 'none', duration: 0.8 } })
@@ -52,7 +58,12 @@ export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDuratio
 	leavesTl.totalDuration(durations.leaves);
 
 	const parallelSpan = Math.max(durations.resize, durations.trunks);
-	const featureTl = gsap.timeline().add(resizeTl, 0).add(trunksTl, 0).add(leavesTl, parallelSpan);
+	const featureTl = gsap
+		.timeline()
+		.add(resizeTl, 0)
+		.add(strokeTl, 0)
+		.add(trunksTl, 0)
+		.add(leavesTl, parallelSpan);
 
 	tl.add(featureTl, start);
 };
