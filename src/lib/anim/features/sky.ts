@@ -22,7 +22,7 @@ export const createSky = (ctx: FeatureCtx, range: Range, durations: SkyDurations
 
 	const descendTl = gsap
 		.timeline()
-		.to(config.container, { yPercent: 100, ease: 'none', duration: 1 }, 0)
+		.to(config.container, { yPercent: 20, ease: 'none', duration: 1 }, 0)
 		.to(config.cloudsSelector, { xPercent: 0, ease: 'none', duration: 1 }, 0);
 
 	descendTl.totalDuration(durations.descend);
