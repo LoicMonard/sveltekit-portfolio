@@ -1,4 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="411" height="202" fill="none" viewBox="0 0 411 202">
+<script lang="ts">
+	export let id: string;
+	export let className: string = '';
+</script>
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	width="411"
+	height="202"
+	fill="none"
+	viewBox="0 0 411 202"
+	class={className}
+	{id}
+>
 	<path
 		fill="#fff"
 		stroke="#868686"

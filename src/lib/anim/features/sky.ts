@@ -17,8 +17,8 @@ export const createSky = (ctx: FeatureCtx, range: Range, durations: SkyDurations
 	const start = range.start;
 
 	gsap.set(config.container, { yPercent: -50 });
-	gsap.set(config.leftCloud, { xPercent: -20 });
-	gsap.set(config.rightCloud, { xPercent: 20 });
+	gsap.set(config.leftCloud, { xPercent: 0 });
+	gsap.set(config.rightCloud, { xPercent: 0 });
 
 	const descendTl = gsap
 		.timeline()
@@ -30,5 +30,5 @@ export const createSky = (ctx: FeatureCtx, range: Range, durations: SkyDurations
 };
 
 export const buildSkyFeature = (ctx: FeatureCtx, range: Range): void => {
-	createSky(ctx, range, { descend: 600 });
+	createSky(ctx, range, { descend: 300 });
 };
