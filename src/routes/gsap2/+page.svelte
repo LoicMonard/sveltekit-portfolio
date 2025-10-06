@@ -16,12 +16,10 @@
 	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
 	import { buildForestFeature } from '$lib/anim/features/forest';
 	import Sky from '$lib/components/gsap/Sky.svelte';
-	import { buildSkyFeature } from '$lib/anim/features/sky';
 
 	let scrollTop: number = 0;
 
 	const buildFeatures = (ctx: any) => {
-		// buildScrollDown(ctx, RANGES.intro, { fadeUnits: 100 });
 		buildIntroGrid(ctx, RANGES.intro, { debug: false });
 		buildPlaneFeature(ctx, RANGES.plane);
 		buildWelcomeText(
@@ -34,7 +32,6 @@
 		);
 		buildCityFeature(ctx, RANGES.city, {});
 		buildForestFeature(ctx, RANGES.forest);
-		buildSkyFeature(ctx, { start: 1800, end: 2700 });
 	};
 
 	onMount(async () => {
@@ -62,7 +59,7 @@
 		</div>
 
 		<Sky />
-		
+
 		<div
 			id="planeSceneContainer"
 			class="pointer-events-none absolute top-0 z-50 min-h-[100svh] w-screen"
