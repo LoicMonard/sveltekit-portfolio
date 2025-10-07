@@ -230,27 +230,32 @@ export class SkyFactory {
 
 export let skyFactoryInstance: SkyFactory | null = null;
 
-const animateSkyContainer = (ctx: FeatureCtx, range: Range): void => {
+const animateSkyContainer = (
+	ctx: FeatureCtx,
+	range: Range,
+	options: {
+		translateY: string;
+		scale: number;
+		duration: number;
+		offset: number;
+		ease?: string;
+	}
+): void => {
 	const { gsap, tl } = ctx;
 	const config = {
 		container: '#skyContainer',
-		translateY: '-10vh',
-		scale: 1.1,
-		duration: 300,
-		offset: 1800,
-		ease: 'power2.out'
+		ease: 'power2.out',
+		...options
 	};
 
 	gsap.set(config.container, { transformOrigin: 'bottom center' });
 
-	const skyTl = gsap
-		.timeline()
-		.to(config.container, {
-			y: config.translateY,
-			scale: config.scale,
-			ease: config.ease,
-			duration: 1
-		});
+	const skyTl = gsap.timeline().to(config.container, {
+		y: config.translateY,
+		scale: config.scale,
+		ease: config.ease,
+		duration: 1
+	});
 
 	skyTl.totalDuration(config.duration);
 
@@ -258,7 +263,19 @@ const animateSkyContainer = (ctx: FeatureCtx, range: Range): void => {
 };
 
 export const buildSkyFeature = (ctx: FeatureCtx, range: Range): void => {
-	animateSkyContainer(ctx, range);
+	animateSkyContainer(ctx, range, {
+		translateY: '-10vh',
+		scale: 1.1,
+		duration: 300,
+		offset: 1800
+	});
+
+	animateSkyContainer(ctx, range, {
+		translateY: '-30vh',
+		scale: 2,
+		duration: 600,
+		offset: 2600
+	});
 };
 
 export const registerSkyFactory = (factory: SkyFactory): void => {
