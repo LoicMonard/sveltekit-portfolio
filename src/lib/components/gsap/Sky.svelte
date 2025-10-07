@@ -4,7 +4,7 @@
 	import BigCloud2 from './BigCloud2.svelte';
 	import BigCloud3 from './BigCloud3.svelte';
 	import BigCloud4 from './BigCloud4.svelte';
-	import { SkyFactory } from '$lib/anim/features/sky';
+	import { SkyFactory, registerSkyFactory } from '$lib/anim/features/sky';
 
 	let skyFactory: SkyFactory | null = null;
 	let skyContainer: HTMLElement;
@@ -30,6 +30,8 @@
 		});
 
 		skyFactory.init();
+		
+		registerSkyFactory(skyFactory);
 
 		const handleVisibilityChange = () => {
 			if (document.hidden) {

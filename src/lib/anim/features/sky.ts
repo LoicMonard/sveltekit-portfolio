@@ -1,4 +1,6 @@
 import type { ComponentType, SvelteComponent } from 'svelte';
+import type { FeatureCtx } from '$lib/anim/master';
+import type { Range } from '$lib/anim/ranges';
 
 export interface CloudConfig {
 	minClouds: number;
@@ -225,3 +227,17 @@ export class SkyFactory {
 		this.config = { ...this.config, ...config };
 	}
 }
+
+export let skyFactoryInstance: SkyFactory | null = null;
+
+export const buildSkyFeature = (ctx: FeatureCtx, range?: Range): void => {
+	console.log('Sky feature initialized with GSAP context');
+};
+
+export const registerSkyFactory = (factory: SkyFactory): void => {
+	skyFactoryInstance = factory;
+};
+
+export const getSkyFactory = (): SkyFactory | null => {
+	return skyFactoryInstance;
+};
