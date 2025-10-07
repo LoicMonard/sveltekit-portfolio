@@ -230,8 +230,35 @@ export class SkyFactory {
 
 export let skyFactoryInstance: SkyFactory | null = null;
 
-export const buildSkyFeature = (ctx: FeatureCtx, range?: Range): void => {
-	console.log('Sky feature initialized with GSAP context');
+const animateSkyContainer = (ctx: FeatureCtx, range: Range): void => {
+	const { gsap, tl } = ctx;
+	const config = {
+		container: '#skyContainer',
+		translateY: '-10vh',
+		scale: 1.1,
+		duration: 300,
+		offset: 1800,
+		ease: 'power2.out'
+	};
+
+	gsap.set(config.container, { transformOrigin: 'bottom center' });
+
+	const skyTl = gsap
+		.timeline()
+		.to(config.container, {
+			y: config.translateY,
+			scale: config.scale,
+			ease: config.ease,
+			duration: 1
+		});
+
+	skyTl.totalDuration(config.duration);
+
+	tl.add(skyTl, range.start + config.offset);
+};
+
+export const buildSkyFeature = (ctx: FeatureCtx, range: Range): void => {
+	animateSkyContainer(ctx, range);
 };
 
 export const registerSkyFactory = (factory: SkyFactory): void => {
