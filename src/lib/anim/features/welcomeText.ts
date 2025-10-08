@@ -23,7 +23,7 @@ const DEFAULTS: Omit<Required<WelcomeFlapsOpts>, 'onJackpot'> & {
 	iterations: 18,
 	stagger: 0.06,
 	tileClass:
-		'relative grid place-items-center w-full h-full rounded-[10px] bg-slate-50 text-zinc-600 ' +
+		'relative grid place-items-center w-full h-full rounded-[10px] bg-white text-zinc-600 ' +
 		'font-mono [transform-style:preserve-3d] [backface-visibility:hidden] ' +
 		'ring-1 ring-slate-200 after:content-[""] after:absolute after:left-0 ' +
 		'after:right-0 after:top-1/2 after:h-px after:bg-slate-200',
