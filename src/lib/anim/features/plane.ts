@@ -101,6 +101,7 @@ export const drawWindPath = (ctx: FeatureCtx, range: Range, options?: PlaneOptio
 		immediateRender: false,
 		scrollTrigger: {
 			containerAnimation: tl,
+			trigger: windPathNode,
 			start,
 			end,
 			scrub: 1

@@ -37,6 +37,7 @@ export const buildIntroGrid = (ctx: FeatureCtx, range: Range, opts: IntroGridOpt
 		immediateRender: false,
 		scrollTrigger: {
 			containerAnimation: tl,
+			trigger: '#gridSvg',
 			start,
 			end,
 			scrub: 1,
@@ -51,6 +52,7 @@ export const buildIntroGrid = (ctx: FeatureCtx, range: Range, opts: IntroGridOpt
 		immediateRender: false,
 		scrollTrigger: {
 			containerAnimation: tl,
+			trigger: '#gridSvg',
 			start,
 			end,
 			scrub: 1,

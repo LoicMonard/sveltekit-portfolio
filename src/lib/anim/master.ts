@@ -1,14 +1,12 @@
-// src/lib/anim/master.ts
 import { loadGsapAll } from '$lib/gsap';
 import type { Range } from './ranges';
 
 export type FeatureCtx = {
 	gsap: Awaited<ReturnType<typeof loadGsapAll>>['gsap'];
 	tl: gsap.core.Timeline;
-	scrollScene: HTMLElement; // ton scroller custom
-	scope?: Element; // optionnel: root pour scoper
+	scrollScene: HTMLElement;
 	utils: {
-		at: (range: Range, t: number) => number; // helper timeline position
+		at: (range: Range, progress: number) => number;
 	};
 };
 
@@ -22,29 +20,25 @@ export const createMaster = async (
 	const tl = gsap.timeline({
 		paused: true,
 		scrollTrigger: {
-			trigger: '#gridScene',
-			start: 'top top',
-			end: () => `+=${total}`, // 👈 distance de scroll, pas absolu
+			scroller: '#portfolioScroller',
+			trigger: '#scrollContent',
+			start: 0,
+			end: total,
 			scrub: 1,
-			pin: true,
-			pinType: 'fixed',
-			pinSpacing: true, // laisse ST gérer l’espace
-			anticipatePin: 1,
 			invalidateOnRefresh: true
-			// markers: true
 		}
 	});
 
-	// Étire la TL pour matcher les ranges (1 unité = 1 ms "timeline")
 	tl.to({}, { duration: total }, 0);
 
 	const ctx: FeatureCtx = {
 		gsap,
 		tl,
-		scrollScene: document.documentElement,
+		scrollScene: document.querySelector('#portfolioScroller') as HTMLElement,
 		utils: { at: (r, p) => gsap.utils.mapRange(0, 1, r.start, r.end)(p) }
 	};
 
 	build(ctx);
+
 	return { gsap, tl, ScrollTrigger };
 };
