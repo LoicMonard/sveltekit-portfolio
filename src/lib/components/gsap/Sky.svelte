@@ -68,7 +68,7 @@
 <div
 	bind:this={skyContainer}
 	id="skyContainer"
-	class="sky-container pointer-events-none fixed left-0 top-0 z-10 h-screen w-full overflow-hidden"
+	class="sky-container pointer-events-none absolute left-0 top-0 z-10 h-full w-full overflow-hidden"
 ></div>
 
 <style>

@@ -264,14 +264,14 @@ const animateSkyContainer = (
 
 export const buildSkyFeature = (ctx: FeatureCtx, range: Range): void => {
 	animateSkyContainer(ctx, range, {
-		translateY: '-10vh',
+		translateY: '-10%',
 		scale: 1.1,
 		duration: 300,
 		offset: 1800
 	});
 
 	animateSkyContainer(ctx, range, {
-		translateY: '-30vh',
+		translateY: '-30%',
 		scale: 2,
 		duration: 600,
 		offset: 2600
