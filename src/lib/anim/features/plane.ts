@@ -1,7 +1,7 @@
 import type { FeatureCtx } from '$lib/anim/master';
 import type { Range } from '$lib/anim/ranges';
 
-export type PlaneOpts = {
+export interface PlaneOptions {
 	windPathEl?: string;
 	threeWindEl?: string;
 	planeEl?: string;
@@ -9,9 +9,17 @@ export type PlaneOpts = {
 	plane1El?: string;
 	plane2El?: string;
 	plane3El?: string;
-};
+}
 
-const DEFAULTS: Required<PlaneOpts> = {
+export interface MorphParameters {
+	from: number;
+	to: number;
+	startOffset?: number;
+	endOffset?: number;
+	triggerEl?: string;
+}
+
+const DEFAULT_OPTIONS: Required<PlaneOptions> = {
 	windPathEl: '#paperPlaneMotionPath path',
 	threeWindEl: '#threeWind',
 	planeEl: '#planeContainer',
@@ -21,28 +29,74 @@ const DEFAULTS: Required<PlaneOpts> = {
 	plane3El: '#plane3Svg'
 } as const;
 
-const drawWindPath = (ctx: FeatureCtx, range: Range, opts: PlaneOpts) => {
-	const { gsap, tl } = ctx;
-	const { windPathEl } = { ...DEFAULTS, ...opts };
-
-	const windPathNode = document.querySelector<SVGPathElement>(windPathEl);
-
-	const start = range.start;
-	const end = range.start + 800;
-
-	if (!windPathNode) {
-		console.warn('[plane] no path found under #paperPlaneMotionPath');
-		return;
-	}
-
-	gsap.set(windPathNode, { drawSVG: '100% 100%', opacity: 0 });
-
-	gsap.to(windPathNode, {
+const ANIMATION_TIMINGS = {
+	windPath: {
+		startOffset: 0,
+		duration: 800,
 		keyframes: [
 			{ drawSVG: '100% 90%', duration: 0.1, opacity: 1 },
 			{ drawSVG: '10% 0%', duration: 1.0 },
 			{ drawSVG: '0% 0%', opacity: 0, duration: 0.1 }
-		],
+		]
+	},
+	motionPath: {
+		startOffset: 200,
+		duration: 800
+	},
+	threeWind: {
+		startOffset: 1500,
+		stagger: 0.3,
+		keyframes: [
+			{ drawSVG: '100% 60%', opacity: 1, duration: 0.2 },
+			{ drawSVG: '40% 0%', opacity: 1, duration: 0.2 },
+			{ drawSVG: '0% 0%', opacity: 1, duration: 0.2 }
+		]
+	},
+	float: {
+		startOffset: 1000,
+		yOffset: 12,
+		rotation: 2,
+		duration: 1.6
+	},
+	morph: {
+		defaultStartOffset: 800,
+		defaultEndOffset: 1200
+	}
+} as const;
+
+const queryElement = <T extends Element>(
+	selector: string | undefined,
+	elementName: string
+): T | null => {
+	if (!selector) return null;
+
+	const element = document.querySelector<T>(selector);
+	if (!element) {
+		console.warn(`[plane] ${elementName} not found for selector: ${selector}`);
+	}
+	return element;
+};
+
+const mergeOptions = (userOptions?: Partial<PlaneOptions>): Required<PlaneOptions> => ({
+	...DEFAULT_OPTIONS,
+	...userOptions
+});
+
+export const drawWindPath = (ctx: FeatureCtx, range: Range, options?: PlaneOptions): void => {
+	const { gsap, tl } = ctx;
+	const { windPathEl } = mergeOptions(options);
+
+	const windPathNode = queryElement<SVGPathElement>(windPathEl, 'wind path');
+	if (!windPathNode) return;
+
+	const { startOffset, duration, keyframes } = ANIMATION_TIMINGS.windPath;
+	const start = range.start + startOffset;
+	const end = start + duration;
+
+	gsap.set(windPathNode, { drawSVG: '100% 100%', opacity: 0 });
+
+	gsap.to(windPathNode, {
+		keyframes,
 		ease: 'none',
 		immediateRender: false,
 		scrollTrigger: {
@@ -54,67 +108,81 @@ const drawWindPath = (ctx: FeatureCtx, range: Range, opts: PlaneOpts) => {
 	});
 };
 
-export const drawThreeWindPath = (ctx: FeatureCtx, range: Range, opts: PlaneOpts) => {
+export const drawThreeWindPath = (
+	ctx: FeatureCtx,
+	range: Range,
+	options?: PlaneOptions
+): gsap.core.Tween | void => {
 	const { gsap, tl } = ctx;
-	const { threeWindEl } = { ...DEFAULTS, ...opts };
+	const { threeWindEl } = mergeOptions(options);
 
-	const threeWindPathNodes = gsap.utils.toArray<SVGPathElement>(`${threeWindEl} path`);
+	const windPaths = gsap.utils.toArray<SVGPathElement>(`${threeWindEl} path`);
+	if (!windPaths.length) {
+		console.warn('[plane] No paths found for three wind animation');
+		return;
+	}
 
-	gsap.set(threeWindPathNodes, { drawSVG: '100% 100%', visibility: 'visible', opacity: 0 });
-
-	const start = range.start + 1500;
+	const { startOffset, stagger, keyframes } = ANIMATION_TIMINGS.threeWind;
+	const start = range.start + startOffset;
 	const end = range.end;
 
-	let t: gsap.core.Tween;
+	gsap.set(windPaths, {
+		drawSVG: '100% 100%',
+		visibility: 'visible',
+		opacity: 0
+	});
 
-	t = gsap.to(threeWindPathNodes, {
-		keyframes: [
-			{ drawSVG: '100% 60%', opacity: 1, duration: 0.2 },
-			{ drawSVG: '40% 0%', opacity: 1, duration: 0.2 },
-			{ drawSVG: '0% 0%', opacity: 1, duration: 0.2 }
-		],
+	let animation: gsap.core.Tween;
+
+	animation = gsap.to(windPaths, {
+		keyframes,
 		ease: 'none',
-		stagger: 0.3,
+		stagger,
 		repeat: -1,
 		immediateRender: false,
 		scrollTrigger: {
 			containerAnimation: tl,
 			start,
 			end,
-			onEnter: () => t.play(),
-			onEnterBack: () => t.play(),
-			onLeave: () => t.pause(),
+			onEnter: () => animation.play(),
+			onEnterBack: () => animation.play(),
+			onLeave: () => animation.pause(),
 			onLeaveBack: () => {
-				t.pause();
-				t.progress(0);
+				animation.pause();
+				animation.progress(0);
 			},
 			invalidateOnRefresh: true
 		}
 	});
+
+	return animation;
 };
 
-export const makePlaneFloat = (ctx: FeatureCtx, range: Range) => {
+export const makePlaneFloat = (
+	ctx: FeatureCtx,
+	range: Range,
+	options?: PlaneOptions
+): gsap.core.Tween | void => {
 	const { gsap, tl } = ctx;
-	const { planeFloatEl } = { ...DEFAULTS };
+	const { planeFloatEl } = mergeOptions(options);
 
-	const planeFloatNode = document.querySelector<HTMLElement | SVGElement>(planeFloatEl);
-	if (!planeFloatNode) {
-		console.warn('[plane] no element found for', planeFloatEl);
-		return;
-	}
+	const planeNode = queryElement<HTMLElement | SVGElement>(planeFloatEl, 'plane float element');
+	if (!planeNode) return;
 
-	const start = range.start + 1000;
+	const { startOffset, yOffset, rotation, duration } = ANIMATION_TIMINGS.float;
+	const start = range.start + startOffset;
 	const end = range.end;
 
-	if (planeFloatNode instanceof SVGElement) {
-		gsap.set(planeFloatNode, { transformBox: 'fill-box' });
+	if (planeNode instanceof SVGElement) {
+		gsap.set(planeNode, { transformBox: 'fill-box' });
 	}
 
-	let t: gsap.core.Tween;
-	t = gsap.to(planeFloatNode, {
-		y: '+=12',
-		rotate: '+=2',
-		duration: 1.6,
+	let animation: gsap.core.Tween;
+
+	animation = gsap.to(planeNode, {
+		y: `+=${yOffset}`,
+		rotate: `+=${rotation}`,
+		duration,
 		ease: 'sine.inOut',
 		yoyo: true,
 		repeat: -1,
@@ -124,38 +192,40 @@ export const makePlaneFloat = (ctx: FeatureCtx, range: Range) => {
 			containerAnimation: tl,
 			start,
 			end,
-			onEnter: () => t.play(),
-			onEnterBack: () => t.play(),
-			onLeave: () => t.pause(),
-			onLeaveBack: () => t.pause(),
+			onEnter: () => animation.play(),
+			onEnterBack: () => animation.play(),
+			onLeave: () => animation.pause(),
+			onLeaveBack: () => animation.pause(),
 			invalidateOnRefresh: true
 		}
 	});
 
-	return t;
+	return animation;
 };
 
-const makePlaneFollowPath = (ctx: FeatureCtx, range: Range) => {
+export const makePlaneFollowPath = (
+	ctx: FeatureCtx,
+	range: Range,
+	options?: PlaneOptions
+): void => {
 	const { gsap, tl } = ctx;
-	const { planeEl, windPathEl } = { ...DEFAULTS };
+	const { planeEl, windPathEl } = mergeOptions(options);
 
-	const planeNode = document.querySelector<SVGElement>(planeEl);
-	const windPathNode = document.querySelector<SVGPathElement>(windPathEl);
+	const planeNode = queryElement<SVGElement>(planeEl, 'plane container');
+	const pathNode = queryElement<SVGPathElement>(windPathEl, 'motion path');
 
-	const start = range.start + 200;
-	const end = range.start + 1000;
+	if (!planeNode || !pathNode) return;
 
-	if (!planeNode || !windPathNode) {
-		console.warn('[plane] no element found with id #paperPlane');
-		return;
-	}
+	const { startOffset, duration } = ANIMATION_TIMINGS.motionPath;
+	const start = range.start + startOffset;
+	const end = start + duration;
 
 	gsap.set(planeNode, { transformOrigin: '50% 50%' });
 
 	gsap.to(planeNode, {
 		motionPath: {
-			path: windPathNode,
-			align: windPathNode,
+			path: pathNode,
+			align: pathNode,
 			autoRotate: true,
 			alignOrigin: [0.5, 0.5],
 			start: 1,
@@ -172,78 +242,106 @@ const makePlaneFollowPath = (ctx: FeatureCtx, range: Range) => {
 	});
 };
 
-type MorphParams = {
-	from: number;
-	to: number;
-	startOffset?: number;
-	endOffset?: number;
-	triggerEl?: string;
-};
-
-export const morphPlaneBetween = (ctx: FeatureCtx, range: Range, params: MorphParams) => {
+export const morphPlaneBetween = (
+	ctx: FeatureCtx,
+	range: Range,
+	params: MorphParameters,
+	options?: PlaneOptions
+): gsap.core.Timeline | void => {
 	const { gsap, tl } = ctx;
-	const { planeEl } = { ...DEFAULTS };
+	const { planeEl } = mergeOptions(options);
 
-	const { from, to, startOffset = 800, endOffset = 1200, triggerEl = planeEl } = params;
+	const {
+		from,
+		to,
+		startOffset = ANIMATION_TIMINGS.morph.defaultStartOffset,
+		endOffset = ANIMATION_TIMINGS.morph.defaultEndOffset,
+		triggerEl = planeEl
+	} = params;
 
-	const triggerNode = document.querySelector<SVGElement>(triggerEl);
-	if (!triggerNode) {
-		console.warn('[plane] trigger not found for selector:', triggerEl);
-		return;
-	}
+	// Validate trigger element
+	const triggerNode = queryElement<SVGElement>(triggerEl, 'morph trigger');
+	if (!triggerNode) return;
 
-	const start = range.start + startOffset;
-	const end = range.start + endOffset;
+	// Get source and target paths
+	const fromSelector = `#plane${from}Svg path`;
+	const toSelector = `#plane${to}Svg path`;
 
-	const fromSel = `#plane${from}Svg path`;
-	const toSel = `#plane${to}Svg path`;
+	const fromPaths = gsap.utils.toArray<SVGPathElement>(fromSelector);
+	const toPaths = gsap.utils.toArray<SVGPathElement>(toSelector);
 
-	const fromPaths = gsap.utils.toArray<SVGPathElement>(fromSel);
-	const toPaths = gsap.utils.toArray<SVGPathElement>(toSel);
-
+	// Validate paths
 	if (!fromPaths.length || !toPaths.length) {
-		console.warn('[plane] missing paths', {
-			fromSel,
-			fromLen: fromPaths.length,
-			toSel,
-			toLen: toPaths.length
+		console.warn('[plane] Missing paths for morphing', {
+			from: fromSelector,
+			to: toSelector,
+			foundFrom: fromPaths.length,
+			foundTo: toPaths.length
 		});
 		return;
 	}
 
-	const len = Math.min(fromPaths.length, toPaths.length);
+	// Handle path count mismatch
+	const pathCount = Math.min(fromPaths.length, toPaths.length);
 	if (fromPaths.length !== toPaths.length) {
-		console.warn('[plane] path count mismatch, using min length', {
+		console.warn('[plane] Path count mismatch, using minimum', {
 			from: fromPaths.length,
 			to: toPaths.length,
-			used: len
+			using: pathCount
 		});
 	}
 
-	const tlMorph = gsap.timeline({
+	// Create morph timeline
+	const morphTimeline = gsap.timeline({
 		defaults: { ease: 'power1.inOut' },
 		scrollTrigger: {
 			containerAnimation: tl,
 			trigger: triggerNode,
-			start,
-			end,
+			start: range.start + startOffset,
+			end: range.start + endOffset,
 			scrub: 0,
 			invalidateOnRefresh: true
 		}
 	});
 
-	for (let i = 0; i < len; i++) {
-		tlMorph.to(fromPaths[i], { morphSVG: toPaths[i] }, 0);
+	// Add morph animations for each path pair
+	for (let i = 0; i < pathCount; i++) {
+		morphTimeline.to(fromPaths[i], { morphSVG: toPaths[i] }, 0);
 	}
 
-	return tlMorph;
+	return morphTimeline;
 };
 
-export const buildPlaneFeature = (ctx: FeatureCtx, range: Range) => {
-	drawWindPath(ctx, range, DEFAULTS);
-	makePlaneFollowPath(ctx, range);
-	morphPlaneBetween(ctx, range, { from: 2, to: 1, startOffset: 700, endOffset: 1100 });
-	morphPlaneBetween(ctx, range, { from: 2, to: 2, startOffset: 1300, endOffset: 1600 });
-	makePlaneFloat(ctx, range);
-	drawThreeWindPath(ctx, range, DEFAULTS);
+export const buildPlaneFeature = (ctx: FeatureCtx, range: Range, options?: PlaneOptions): void => {
+	const mergedOptions = mergeOptions(options);
+
+	drawWindPath(ctx, range, mergedOptions);
+	makePlaneFollowPath(ctx, range, mergedOptions);
+
+	morphPlaneBetween(
+		ctx,
+		range,
+		{
+			from: 2,
+			to: 1,
+			startOffset: 700,
+			endOffset: 1100
+		},
+		mergedOptions
+	);
+
+	morphPlaneBetween(
+		ctx,
+		range,
+		{
+			from: 2,
+			to: 2,
+			startOffset: 1300,
+			endOffset: 1600
+		},
+		mergedOptions
+	);
+
+	makePlaneFloat(ctx, range, mergedOptions);
+	drawThreeWindPath(ctx, range, mergedOptions);
 };
