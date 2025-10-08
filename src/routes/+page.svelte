@@ -1,62 +1,118 @@
 <script lang="ts">
-	import BentoGrid from '$lib/components/BentoGrid.svelte';
-	import RollingCube from '$lib/components/RollingCube.svelte';
+	import { onMount } from 'svelte';
+	import { createMaster } from '$lib/anim/master';
+	import { RANGES } from '$lib/anim/ranges';
+	import { buildIntroGrid } from '$lib/anim/features/introGrid';
+	import Grid2 from '$lib/components/gsap/Grid2.svelte';
+	import { buildPlaneFeature } from '$lib/anim/features/plane';
+	import PaperPlaneMotionPath from '$lib/components/gsap/PaperPlaneMotionPath.svelte';
+	import PaperPlane2 from '$lib/components/gsap/PaperPlane2.svelte';
+	import PaperPlane from '$lib/components/gsap/PaperPlane.svelte';
+	import { buildWelcomeText } from '$lib/anim/features/welcomeText';
+	import SaintMaloLeft from '$lib/components/gsap/SaintMaloLeft.svelte';
+	import SaintMaloRight from '$lib/components/gsap/SaintMaloRight.svelte';
+	import SaintMaloCenter from '$lib/components/gsap/SaintMaloCenter.svelte';
+	import { buildCityFeature } from '$lib/anim/features/city';
+	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
+	import { buildForestFeature } from '$lib/anim/features/forest';
+	import { buildSkyFeature } from '$lib/anim/features/sky';
+	import Sky from '$lib/components/gsap/Sky.svelte';
 
-	let title = 'loïc monard';
-	let sceneRef: RollingCube;
-	let isSceneActive = false;
+	let scrollTop: number = 0;
 
-	const toggleScene = () => {
-		isSceneActive = !isSceneActive;
-		if (isSceneActive) {
-			sceneRef.start();
-		} else {
-			// sceneRef.stop();
-		}
+	const buildFeatures = (ctx: any) => {
+		buildIntroGrid(ctx, RANGES.intro, { debug: false });
+		buildPlaneFeature(ctx, RANGES.plane);
+		buildWelcomeText(
+			ctx,
+			{ start: 0, end: 500 },
+			{
+				fromText: 'SCROLL⬇️',
+				toText: 'WELCOME'
+			}
+		);
+		buildCityFeature(ctx, RANGES.city, {});
+		buildForestFeature(ctx, RANGES.forest);
+		buildSkyFeature(ctx, RANGES.sky);
 	};
+
+	onMount(async () => {
+		await createMaster(RANGES, buildFeatures);
+
+		window.addEventListener('scroll', () => {
+			scrollTop = window.scrollY;
+		});
+	});
 </script>
 
-<main class="h-full w-full">
-	<section
-		class={`${isSceneActive ? 'h-[100vh]' : 'h-[800px]'} flex w-full justify-center border-b-2 border-border-light bg-background-light pt-32 text-text-light transition-all duration-500 dark:border-border-dark dark:bg-background-dark dark:text-text-dark`}
-	>
-		<div class="container mb-20 flex flex-row items-center gap-2 px-4">
-			<div
-				class={`${isSceneActive ? '-translate-y-[250%]' : '-translate-y-[0px]'} z-20 flex flex-col items-start gap-2 transition-transform duration-500`}
-			>
-				<div class="flex flex-col items-start">
-					<h1 class="text-7xl font-bold">{title}</h1>
-					<h1 class="text-7xl font-semibold">web developper</h1>
-				</div>
-				<p class="text-wrap text-xl">
-					front-end specialized web developer. Svelte, Vue.js, Javascript, HTML, CSS.
-				</p>
-				<button
-					on:click={toggleScene}
-					class="text-md mt-4 rounded-lg border-2 border-border-dark bg-background-light px-4 py-2 font-semibold text-text-light dark:border-border-light dark:bg-background-dark dark:text-text-dark"
-				>
-					See my work
-				</button>
-			</div>
-			<div class="z-10 h-fit min-w-[50%]">
-				<div
-					class={`${isSceneActive ? 'max-h-[100vh]' : 'max-h-[800px]'} absolute right-0 top-0 z-0 h-full w-full overflow-hidden rounded-lg border-gray-300 transition-all duration-500`}
-				>
-					<RollingCube bind:this={sceneRef} />
-				</div>
-			</div>
+<!-- Helpers -->
+<div class="pointer-events-none fixed top-0 min-h-[100svh] w-full bg-slate-50">
+	<div id="bluebox" class="border-radius flex flex-row absolute left-[20px] text-lg italic">
+		<div class="min-w-[5ch]">
+			{scrollTop}
 		</div>
-	</section>
+		⚠️ Website under construction ⚠️
+	</div>
+	<div class="">
+	</div>
+</div>
 
-	<section
-		class="relative flex h-screen w-full justify-center bg-light-pattern text-black dark:bg-background-dark dark:bg-none"
+<div id="gridScene" class="flex h-[100svh] w-screen items-center justify-center">
+	<div
+		class="flex min-h-[100svh] w-full flex-col items-center justify-center gap-4 overflow-x-hidden"
 	>
+		<div id="gridContainer" class="pointer-events-none fixed top-0 h-full w-full">
+			<Grid2 />
+		</div>
+
+		<Sky />
+
 		<div
-			class={`container absolute z-20 w-full -translate-y-[70px] px-4 transition-transform duration-500`}
+			id="planeSceneContainer"
+			class="pointer-events-none absolute top-0 z-50 min-h-[100svh] w-screen"
 		>
-			<div class="">
-				<BentoGrid />
+			<div
+				id="paperPlaneMotionPathContainer"
+				class="invisible absolute bottom-1/2 left-[-5vw] w-[55vw]"
+			>
+				<PaperPlaneMotionPath />
+			</div>
+			<div
+				id="planeContainer"
+				class="relative z-50 w-16 -translate-x-full overflow-visible md:w-24 lg:w-36"
+			>
+				<div
+					id="planeFloat"
+					class="relative inline-block h-full w-full origin-center will-change-transform"
+				>
+					<PaperPlane2 />
+					<div id="threeWind" class="invisible absolute right-full top-0 aspect-[146/25] h-[57%]">
+						<ThreeWind />
+					</div>
+				</div>
 			</div>
 		</div>
-	</section>
-</main>
+		<div
+			id="welcomeFlaps"
+			class="z-40 flex min-h-[100svh] w-full max-w-[1024px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
+		></div>
+		<div
+			id="cityContainer"
+			class="fixed bottom-[5vh] left-0 z-40 flex aspect-[2779/194] h-[40vh] origin-bottom-left scale-75 transform-gpu flex-row items-end will-change-transform"
+		>
+			<div id="saintMaloLeft" class="aspect-[890/89] basis-[32.44%]">
+				<SaintMaloLeft />
+			</div>
+			<div id="saintMaloCenter" class="aspect-[800 792] flex w-full basis-[1.46%] items-end">
+				<SaintMaloCenter />
+			</div>
+			<div id="saintMaloRight" class="aspect-[1814/193] basis-[66.10%]">
+				<SaintMaloRight />
+			</div>
+		</div>
+	</div>
+
+	<div id="hiddenElements" class="hidden">
+		<PaperPlane />
+	</div>
+</div>
