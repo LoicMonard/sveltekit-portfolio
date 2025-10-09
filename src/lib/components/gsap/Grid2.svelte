@@ -16,13 +16,10 @@
 	let ro: ResizeObserver | null = null;
 
 	const measure = (): void => {
-		const el = scroller ?? document.getElementById('portfolioScroller');
+		const el = scroller;
 		if (el) {
 			w = el.clientWidth;
 			h = el.clientHeight;
-		} else {
-			w = window.innerWidth;
-			h = window.innerHeight;
 		}
 		gap = w / cols;
 		rows = Math.ceil(h / Math.max(gap, 1));
