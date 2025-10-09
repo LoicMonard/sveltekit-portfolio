@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { createMaster } from '$lib/anim/master';
 	import { RANGES } from '$lib/anim/ranges';
 	import { buildIntroGrid } from '$lib/anim/features/introGrid';
@@ -17,10 +17,13 @@
 	import { buildForestFeature } from '$lib/anim/features/forest';
 	import { buildSkyFeature } from '$lib/anim/features/sky';
 	import Sky from '$lib/components/gsap/Sky.svelte';
+	import { writable, type Writable } from 'svelte/store';
+
 
 	let scrollTop: number = 0;
 	let totalRangeHeight = 0;
-	let isExpanded = true;
+  const isExpanded = writable<boolean>(true);
+	setContext<Writable<boolean>>('isExpanded', isExpanded);
 
 	const buildFeatures = (ctx: any) => {
 		buildIntroGrid(ctx, RANGES.intro, { debug: false });
@@ -39,8 +42,10 @@
 	};
 
 	const toggleHeight = () => {
-		isExpanded = !isExpanded;
+    isExpanded.update(v => !v);
 	};
+
+	setContext('isExpanded', isExpanded);
 
 	onMount(async () => {
 		totalRangeHeight = Object.values(RANGES).at(-1)!.end;
@@ -66,20 +71,22 @@
 
 <button
 	on:click={toggleHeight}
-	class="hidden pointer-events-auto fixed right-5 top-5 z-[101] rounded-lg bg-blue-500 px-4 py-2 text-white font-semibold shadow-lg hover:bg-blue-600 transition-colors"
+	class="pointer-events-auto fixed right-5 top-5 z-[101] rounded-lg bg-blue-500 px-4 py-2 text-white font-semibold shadow-lg hover:bg-blue-600 transition-colors"
 >
-	{isExpanded ? '50vh' : '100vh'}
+	{$isExpanded ? '50vh' : '100vh'}
 </button>
+
+<div class="flex h-full w-full flex-col">
 
 <div
 	id="portfolioScroller"
 	class="relative w-screen overflow-x-hidden overflow-y-scroll border bg-slate-50 transition-all duration-500"
-	style="height: {isExpanded ? '100vh' : '50vh'}"
+	style="height: {$isExpanded ? '100vh' : '50vh'}"
 >
 	<div class="sticky left-0 top-0 h-full w-full">
 		<div id="gridScene" class="flex h-full w-full items-center justify-center">
 			<div class="flex h-full w-full flex-col items-center justify-center gap-4 overflow-x-hidden">
-				<div id="gridContainer" class="pointer-events-none fixed top-0 h-full w-full">
+				<div id="gridContainer" class="pointer-events-none absolute top-0 h-full overflow-hidden w-full">
 					<Grid2 />
 				</div>
 
@@ -140,4 +147,7 @@
 	</div>
 
 	<div id="scrollContent" class="pointer-events-none" style="height: {totalRangeHeight}px"></div>
+</div>
+
+<div class="h-screen z-50 bg-slate-50">hey</div>
 </div>

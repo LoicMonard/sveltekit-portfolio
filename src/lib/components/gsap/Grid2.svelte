@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
+
+	const isExpanded = getContext<Writable<boolean>>('isExpanded');
 
 	export let cols = 10;
 
@@ -8,27 +12,53 @@
 	let gap = 0;
 	let rows = 0;
 
-	const update = (): void => {
-		w = window.innerWidth;
-		h = window.innerHeight;
+	let scroller: HTMLElement | null = null;
+	let ro: ResizeObserver | null = null;
+
+	const measure = (): void => {
+		const el = scroller ?? document.getElementById('portfolioScroller');
+		if (el) {
+			w = el.clientWidth;
+			h = el.clientHeight;
+		} else {
+			w = window.innerWidth;
+			h = window.innerHeight;
+		}
 		gap = w / cols;
-		rows = Math.ceil(h / gap);
+		rows = Math.ceil(h / Math.max(gap, 1));
 	};
 
-	const onResize = (): void => update();
+	const setupResizeObserver = (): void => {
+		if (!scroller) return;
+		ro = new ResizeObserver(() => measure());
+		ro.observe(scroller);
+	};
+
+	const onExpandedChange = async (): Promise<void> => {
+		await tick();
+		measure();
+	};
 
 	onMount(() => {
-		update();
-		window.addEventListener('resize', onResize, { passive: true });
-		return () => window.removeEventListener('resize', onResize);
+		scroller = document.getElementById('portfolioScroller');
+		setupResizeObserver();
+		tick().then(() => {
+			measure();
+		});
+		window.addEventListener('resize', measure, { passive: true });
+		return () => {
+			ro?.disconnect();
+			window.removeEventListener('resize', measure);
+		};
 	});
+
+	$: ($isExpanded, onExpandedChange());
+	$: (cols, measure());
 </script>
 
 <svg
 	id="gridSvg"
-	class="h-[100svh] w-screen"
-	{w}
-	{h}
+	class="h-full w-screen"
 	viewBox={`0 0 ${w} ${h}`}
 	preserveAspectRatio="none"
 	style="shape-rendering: crispEdges;"
@@ -41,9 +71,7 @@
 
 	<g id="rows">
 		{#each Array(rows) as _, j}
-			{#if j + 1 <= rows}
-				<path d={`M 0 ${(j + 1) * gap} H ${w}`} stroke="#CCD5E1" stroke-width="0.5" fill="none" />
-			{/if}
+			<path d={`M 0 ${(j + 1) * gap} H ${w}`} stroke="#CCD5E1" stroke-width="0.5" fill="none" />
 		{/each}
 	</g>
 </svg>
