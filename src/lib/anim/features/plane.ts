@@ -61,6 +61,10 @@ const ANIMATION_TIMINGS = {
 	morph: {
 		defaultStartOffset: 800,
 		defaultEndOffset: 1200
+	},
+	yTranslate: {
+		startOffset: 2100,
+		duration: 600
 	}
 } as const;
 
@@ -260,18 +264,15 @@ export const morphPlaneBetween = (
 		triggerEl = planeEl
 	} = params;
 
-	// Validate trigger element
 	const triggerNode = queryElement<SVGElement>(triggerEl, 'morph trigger');
 	if (!triggerNode) return;
 
-	// Get source and target paths
 	const fromSelector = `#plane${from}Svg path`;
 	const toSelector = `#plane${to}Svg path`;
 
 	const fromPaths = gsap.utils.toArray<SVGPathElement>(fromSelector);
 	const toPaths = gsap.utils.toArray<SVGPathElement>(toSelector);
 
-	// Validate paths
 	if (!fromPaths.length || !toPaths.length) {
 		console.warn('[plane] Missing paths for morphing', {
 			from: fromSelector,
@@ -282,7 +283,6 @@ export const morphPlaneBetween = (
 		return;
 	}
 
-	// Handle path count mismatch
 	const pathCount = Math.min(fromPaths.length, toPaths.length);
 	if (fromPaths.length !== toPaths.length) {
 		console.warn('[plane] Path count mismatch, using minimum', {
@@ -292,7 +292,6 @@ export const morphPlaneBetween = (
 		});
 	}
 
-	// Create morph timeline
 	const morphTimeline = gsap.timeline({
 		defaults: { ease: 'power1.inOut' },
 		scrollTrigger: {
@@ -305,12 +304,66 @@ export const morphPlaneBetween = (
 		}
 	});
 
-	// Add morph animations for each path pair
 	for (let i = 0; i < pathCount; i++) {
 		morphTimeline.to(fromPaths[i], { morphSVG: toPaths[i] }, 0);
 	}
 
 	return morphTimeline;
+};
+
+interface PlaneTranslateOptions {
+	yOffset?: string | number;
+	xOffset?: string | number;
+	scale?: number;
+	rotation?: number;
+	startOffset?: number;
+	duration?: number;
+	ease?: string;
+}
+
+export const movePlaneAlongYAxis = (
+	ctx: FeatureCtx,
+	range: Range,
+	translateOptions: PlaneTranslateOptions,
+	options?: PlaneOptions
+): void => {
+	const { gsap, tl } = ctx;
+	const { planeEl } = mergeOptions(options);
+
+	const {
+		yOffset,
+		xOffset,
+		scale,
+		rotation,
+		startOffset = ANIMATION_TIMINGS.yTranslate.startOffset,
+		duration = ANIMATION_TIMINGS.yTranslate.duration,
+		ease = 'power2.out'
+	} = translateOptions;
+
+	const planeNode = queryElement<HTMLElement | SVGElement>(planeEl, 'plane element');
+	if (!planeNode) return;
+
+	const start = range.start + startOffset;
+	const end = start + duration;
+
+	const animProps: gsap.TweenVars = {
+		ease,
+		immediateRender: false,
+		scrollTrigger: {
+			containerAnimation: tl,
+			start,
+			end,
+			scrub: 1,
+			invalidateOnRefresh: true
+		}
+	};
+
+	if (yOffset !== undefined) animProps.y = `+=${yOffset}`;
+	if (xOffset !== undefined) animProps.x = `+=${xOffset}`;
+	if (scale !== undefined) animProps.scale = scale;
+	if (rotation !== undefined) animProps.rotate = `+=${rotation}`;
+
+	gsap.to(planeNode, animProps);
 };
 
 export const buildPlaneFeature = (ctx: FeatureCtx, range: Range, options?: PlaneOptions): void => {
@@ -345,4 +398,14 @@ export const buildPlaneFeature = (ctx: FeatureCtx, range: Range, options?: Plane
 
 	makePlaneFloat(ctx, range, mergedOptions);
 	drawThreeWindPath(ctx, range, mergedOptions);
+
+	movePlaneAlongYAxis(
+		ctx,
+		range,
+		{
+			yOffset: -800,
+			scale: 3
+		},
+		mergedOptions
+	);
 };
