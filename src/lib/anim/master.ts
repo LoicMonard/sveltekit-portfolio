@@ -3,6 +3,7 @@ import type { Range } from './ranges';
 
 export type FeatureCtx = {
 	gsap: Awaited<ReturnType<typeof loadGsapAll>>['gsap'];
+	SplitText: Awaited<ReturnType<typeof loadGsapAll>>['SplitText']
 	tl: gsap.core.Timeline;
 	scrollScene: HTMLElement;
 	utils: {
@@ -14,7 +15,7 @@ export const createMaster = async (
 	ranges: Record<string, Range>,
 	build: (ctx: FeatureCtx) => void
 ) => {
-	const { gsap, ScrollTrigger } = await loadGsapAll();
+	const { gsap, SplitText } = await loadGsapAll();
 	const total = Object.values(ranges).at(-1)!.end;
 
 	const tl = gsap.timeline({
@@ -33,6 +34,7 @@ export const createMaster = async (
 
 	const ctx: FeatureCtx = {
 		gsap,
+		SplitText,
 		tl,
 		scrollScene: document.querySelector('#portfolioScroller') as HTMLElement,
 		utils: { at: (r, p) => gsap.utils.mapRange(0, 1, r.start, r.end)(p) }
@@ -40,5 +42,5 @@ export const createMaster = async (
 
 	build(ctx);
 
-	return { gsap, tl, ScrollTrigger };
+	return { gsap, tl };
 };

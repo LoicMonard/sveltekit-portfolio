@@ -7,10 +7,19 @@ type TreeDurations = {
 	leaves: number;
 };
 
+type KeywordsOpts = {
+	offset?: number;
+	each?: number;
+	stretch?: number;
+	wordStagger?: number;
+};
+
 const config = {
 	root: '#treeSvg',
 	container: '#treeContainer',
-	targetWidth: '40vw',
+	keywordsSel: '#forestKeywords',
+	targetWidth: '90vw',
+	targetHeight: '80vh',
 	leafDur: 0.6,
 	overlap: 0.5
 } as const;
@@ -21,11 +30,29 @@ export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDuratio
 
 	gsap.set(`${config.root} path`, { drawSVG: 0 });
 
-	const resizeTl = gsap.timeline().to(config.container, {
-		width: config.targetWidth,
-		ease: 'none',
-		duration: 1
-	});
+	const getTarget = (): number => {
+		const el = document.getElementById('portfolioScroller');
+		const h = el?.getBoundingClientRect().height ?? 0;
+		return h * 0.8;
+	};
+
+	const makeResizeTween = (): GSAPTween =>
+		gsap
+			.to(config.container, {
+				height: () => getTarget(),
+				width: () => getTarget(),
+				ease: 'none',
+				duration: 1,
+				immediateRender: false,
+				overwrite: 'auto'
+			})
+			.eventCallback('onStart', function (this: GSAPTween) {
+				this.invalidate();
+			});
+
+	const resizeTl = gsap.timeline().add(makeResizeTween(), 0);
+	resizeTl.totalDuration(durations.resize);
+
 	resizeTl.totalDuration(durations.resize);
 
 	const strokeTl = gsap.timeline().to(config.root, {
@@ -68,10 +95,47 @@ export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDuratio
 	tl.add(featureTl, start);
 };
 
-export const buildForestFeature = (ctx: FeatureCtx, range: Range): void => {
-	createTree(ctx, range, {
-		resize: 300,
-		trunks: 500,
-		leaves: 700
+const createKeywords = (ctx: FeatureCtx, range: Range, opts: KeywordsOpts = {}): void => {
+	const { gsap, tl, SplitText } = ctx;
+	const offset = opts.offset ?? 0;
+	const each = opts.each ?? 0.05;
+	const stretch = opts.stretch ?? 300;
+	const wordStagger = 200;
+
+	const items = gsap.utils.toArray<HTMLElement>(`${config.keywordsSel} .keyword`);
+	if (!items.length) return;
+
+	const keywordsTl = gsap.timeline();
+
+	items.forEach((el, i) => {
+		const split = new SplitText(el, { type: 'chars' });
+
+		gsap.set(split.chars, { autoAlpha: 0, x: '200%', willChange: 'transform' });
+
+		const textTl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+		textTl.set(el, { visibility: 'visible' }, 0);
+
+		textTl.fromTo(
+			split.chars,
+			{ autoAlpha: 0, x: '200%' },
+			{ autoAlpha: 1, x: '0%', duration: 0.6, stagger: each, immediateRender: false },
+			0
+		);
+
+		textTl.totalDuration(stretch);
+
+		keywordsTl.add(textTl, i * wordStagger);
 	});
+
+	tl.add(keywordsTl, range.start + offset);
+};
+
+export const buildForestFeature = (ctx: FeatureCtx, range: Range): void => {
+	const d = { resize: 300, trunks: 500, leaves: 700 } as const;
+
+	createTree(ctx, range, d);
+
+	const afterTree = Math.max(d.resize, d.trunks);
+	createKeywords(ctx, range, { offset: afterTree, each: 0.06, stretch: 400 });
 };
