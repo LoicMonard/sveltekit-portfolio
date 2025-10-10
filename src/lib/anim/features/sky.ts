@@ -97,7 +97,7 @@ export class SkyFactory {
 
 		const element = document.createElement('div');
 		element.id = id;
-		element.className = 'cloud absolute';
+		element.className = 'cloud absolute w-[30%] md:w-[15%]';
 		element.style.cssText = `
       position: absolute;
       left: ${cloud.x}px;

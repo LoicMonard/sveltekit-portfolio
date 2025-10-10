@@ -61,7 +61,7 @@
 </script>
 
 <!-- Helpers -->
-<div class="pointer-events-none fixed top-0 z-[100] min-h-[100svh] w-full">
+<div class="pointer-events-none fixed top-0 z-[100] min-h-[100dvh] w-full">
 	<div id="bluebox" class="absolute left-[20px] flex flex-row text-lg italic">
 		<div class="min-w-[5ch]">
 			{scrollTop}
@@ -140,7 +140,10 @@
 						<div id="saintMaloLeft" class="aspect-[890/89] basis-[32.44%]">
 							<SaintMaloLeft />
 						</div>
-						<div id="saintMaloCenter" class="aspect-[800 792] h-[80vh] flex w-full basis-[1.46%] items-end">
+						<div
+							id="saintMaloCenter"
+							class="aspect-[800 792] flex h-[80vh] w-full basis-[1.46%] items-end"
+						>
 							<SaintMaloCenter />
 						</div>
 						<div id="saintMaloRight" class="aspect-[1814/193] basis-[66.10%]">
@@ -148,10 +151,9 @@
 						</div>
 					</div>
 
-					<div class="w-full h-full absolute top-0 left-0">
+					<div class="pointer-events-none absolute left-0 top-0 h-full w-full">
 						<ForestTexts />
 					</div>
-
 				</div>
 
 				<div id="hiddenElements" class="hidden">
@@ -164,7 +166,6 @@
 	</div>
 
 	{#if dev}
-		<div class="z-50 h-screen container bg-slate-50">
-		</div>
+		<div class="container z-50 h-screen bg-slate-50"></div>
 	{/if}
 </div>
