@@ -133,22 +133,33 @@ export const citySidesSequence = (ctx: FeatureCtx, range: Range, opts: CityOpts 
 
 	const halfFree = () => (window.innerWidth - center.getBoundingClientRect().width) / 2;
 
-	const seq = gsap.timeline({
+	const splitSequence = gsap.timeline({
 		scrollTrigger: {
 			containerAnimation: tl,
 			trigger: center,
-			start: range.start + 700,
-			end: range.start + 1120,
+			start: range.start + 800,
+			end: range.start + 1100,
 			scrub: 1,
 			invalidateOnRefresh: true
 		}
 	});
 
-	seq.to(left, { x: () => -halfFree(), scale: 3, ease: 'none' }, 0);
-	seq.to(right, { x: () => +halfFree(), scale: 3, ease: 'none' }, 0);
+	splitSequence.to(left, { x: () => -halfFree(), scale: 3, ease: 'power2.inOut' }, 0);
+	splitSequence.to(right, { x: () => +halfFree(), scale: 3, ease: 'power2.inOut' }, 0);
 
-	// seq.to(left, { x: 0, ease: 'none', scale: 1 }, '+=0.5');
-	// seq.to(right, { x: 0, ease: 'none', scale: 1 }, '<');
+	const unsplitSequence = gsap.timeline({
+		scrollTrigger: {
+			containerAnimation: tl,
+			trigger: center,
+			start: range.start + 2500,
+			end: range.start + 2800,
+			scrub: 1,
+			invalidateOnRefresh: true
+		}
+	});
 
-	return seq;
+	unsplitSequence.to(left, { x: 0, scale: 1, ease: 'power2.inOut' }, 0);
+	unsplitSequence.to(right, { x: 0, scale: 1, ease: 'power2.inOut' }, 0);
+
+	return { splitSequence, unsplitSequence };
 };
