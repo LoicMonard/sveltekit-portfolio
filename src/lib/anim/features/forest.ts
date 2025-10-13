@@ -31,6 +31,15 @@ export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDuratio
 
 	gsap.set(`${config.root} path`, { drawSVG: 0 });
 
+	// Capturer la taille initiale du container
+	const container = document.querySelector<HTMLElement>(config.container);
+	const rootSvg = document.querySelector<SVGElement>(config.root);
+	const initialSize = {
+		width: container?.offsetWidth ?? 0,
+		height: container?.offsetHeight ?? 0
+	};
+	const initialStrokeWidth = rootSvg ? Number(gsap.getProperty(rootSvg, 'strokeWidth')) || 1 : 1;
+
 	const getTarget = (): number => {
 		const el = document.getElementById('portfolioScroller');
 		const h = el?.getBoundingClientRect().height ?? 0;
@@ -42,7 +51,7 @@ export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDuratio
 			.to(config.container, {
 				height: () => getTarget(),
 				width: () => getTarget(),
-				ease: 'none',
+				ease: 'power2.inOut',
 				duration: 1,
 				immediateRender: false,
 				overwrite: 'auto'
@@ -94,6 +103,37 @@ export const createTree = (ctx: FeatureCtx, range: Range, durations: TreeDuratio
 		.add(leavesTl, parallelSpan);
 
 	tl.add(featureTl, start);
+
+	const shrinkDuration = 300;
+	const shrinkOffset = 400;
+
+	const shrinkTl = gsap.timeline();
+
+	shrinkTl.to(
+		config.container,
+		{
+			width: initialSize.width,
+			height: initialSize.height,
+			ease: 'power2.inOut',
+			duration: 1
+		},
+		0
+	);
+
+	shrinkTl.to(
+		config.root,
+		{
+			strokeWidth: initialStrokeWidth,
+			ease: 'power2.inOut',
+			duration: 1
+		},
+		0
+	);
+
+	shrinkTl.totalDuration(shrinkDuration);
+
+	const exitStart = start + parallelSpan + durations.leaves + shrinkOffset;
+	tl.add(shrinkTl, exitStart);
 };
 
 const createKeywords = (ctx: FeatureCtx, range: Range, opts: KeywordsOpts = {}): void => {
