@@ -150,7 +150,7 @@ export const makePetalsEngine = (opts: {
 		ctx.restore();
 	};
 
-	let spawnPerSec = 2;
+	let spawnPerSec = 6;
 	let spawnAcc = 0;
 
 	const trySpawnOverTime = (dt: number): void => {
