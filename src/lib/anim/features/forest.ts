@@ -124,6 +124,13 @@ const createKeywords = (ctx: FeatureCtx, range: Range, opts: KeywordsOpts = {}):
 			0
 		);
 
+		const exitDelay = 2;
+		textTl.to(
+			split.chars,
+			{ autoAlpha: 0, x: '-200%', duration: 0.6, stagger: each },
+			`+=${exitDelay}`
+		);
+
 		textTl.totalDuration(stretch);
 
 		keywordsTl.add(textTl, i * wordStagger);
