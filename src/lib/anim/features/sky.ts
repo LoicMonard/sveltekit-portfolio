@@ -273,9 +273,17 @@ export const buildSkyFeature = (ctx: FeatureCtx, range: Range): void => {
 	animateSkyContainer(ctx, range, {
 		translateY: '-30%',
 		scale: 2,
-		duration: 600,
-		offset: 2600
+		duration: 300,
+		offset: 2650
 	});
+	
+	animateSkyContainer(ctx, range, {
+		translateY: '-10%',
+		scale: 1.1,
+		duration: 300,
+		offset: 4400
+	});
+	
 };
 
 export const registerSkyFactory = (factory: SkyFactory): void => {
