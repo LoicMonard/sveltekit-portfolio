@@ -137,7 +137,7 @@ export const citySidesSequence = (ctx: FeatureCtx, range: Range, opts: CityOpts 
 		scrollTrigger: {
 			containerAnimation: tl,
 			trigger: center,
-			start: range.start + 820,
+			start: range.start + 700,
 			end: range.start + 1120,
 			scrub: 1,
 			invalidateOnRefresh: true
