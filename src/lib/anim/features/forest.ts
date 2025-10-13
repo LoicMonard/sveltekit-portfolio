@@ -1,5 +1,6 @@
 import type { FeatureCtx } from '$lib/anim/master';
 import type { Range } from '$lib/anim/ranges';
+import { makePetalsEngine } from './petalsFactory';
 
 type TreeDurations = {
 	resize: number;
@@ -131,11 +132,55 @@ const createKeywords = (ctx: FeatureCtx, range: Range, opts: KeywordsOpts = {}):
 	tl.add(keywordsTl, range.start + offset);
 };
 
+const createPetalScene = (ctx: FeatureCtx, range: Range, d: TreeDurations) => {
+	const { gsap, tl, ScrollTrigger } = ctx;
+	const approxEnd = range.start + Math.max(d.resize, d.trunks) + d.leaves + 400;
+	const forestEnd = (range as any).end ?? approxEnd;
+
+	const petals = makePetalsEngine({
+		containerSel: '#petalsWrapper',
+		count: 24,
+		size: 20,
+		speed: 90,
+		driftVw: 10
+	});
+
+	if (ScrollTrigger) {
+		ScrollTrigger.create({
+			scroller: '#portfolioScroller',
+			trigger: config.container,
+			start: range.start,
+			end: forestEnd,
+			onEnter: () => {
+				if (!petals.isAlive()) petals.start();
+				petals.enableSpawning(true);
+			},
+			onEnterBack: () => {
+				petals.enableSpawning(true);
+			},
+			onLeave: () => {
+				petals.enableSpawning(false);
+			},
+			onLeaveBack: () => {
+				petals.enableSpawning(false);
+			}
+		});
+	} else {
+		petals.start();
+		petals.enableSpawning(true);
+	}
+
+	const parallelSpan = Math.max(d.resize, d.trunks);
+	const featureTl = gsap.timeline().add(gsap.timeline().to({}, { duration: parallelSpan }), 0);
+	tl.add(featureTl, range.start);
+};
+
 export const buildForestFeature = (ctx: FeatureCtx, range: Range): void => {
 	const d = { resize: 300, trunks: 500, leaves: 700 } as const;
-
 	createTree(ctx, range, d);
 
 	const afterTree = Math.max(d.resize, d.trunks);
 	createKeywords(ctx, range, { offset: afterTree, each: 0.06, stretch: 400 });
+
+	createPetalScene(ctx, range, d);
 };

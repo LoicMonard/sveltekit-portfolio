@@ -83,7 +83,7 @@
 	<div
 		id="portfolioScroller"
 		class="relative w-screen overflow-x-hidden overflow-y-scroll bg-slate-50 transition-all duration-500"
-		style="height: {$isExpanded ? '100vh' : '35vh'}"
+		style="height: {$isExpanded ? '100vh' : '50vh'}"
 	>
 		<div class="sticky left-0 top-0 h-full w-full">
 			<div id="gridScene" class="flex h-full w-full items-center justify-center">
@@ -160,6 +160,10 @@
 					<PaperPlane />
 				</div>
 			</div>
+		</div>
+
+		<div id="petalsContainer" class="pointer-events-none fixed top-0 h-full w-full">
+			<div id="petalsWrapper" class="h-full w-full"></div>
 		</div>
 
 		<div id="scrollContent" class="pointer-events-none" style="height: {totalRangeHeight}px"></div>
