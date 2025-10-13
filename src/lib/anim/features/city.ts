@@ -44,6 +44,7 @@ export const buildCityFeature = (ctx: FeatureCtx, range: Range, opts: CityOpts) 
 
 	setTreeAtCenter(ctx, range, opts);
 	citySidesSequence(ctx, range, opts);
+	scrollCityToEnd(ctx, range, opts);
 };
 
 const scaleCity = (gsap: GSAP, node: Element, opts: { to: number }) => {
@@ -162,4 +163,53 @@ export const citySidesSequence = (ctx: FeatureCtx, range: Range, opts: CityOpts 
 	unsplitSequence.to(right, { x: 0, scale: 1, ease: 'power2.inOut' }, 0);
 
 	return { splitSequence, unsplitSequence };
+};
+
+const scrollCityToEnd = (ctx: FeatureCtx, range: Range, opts: CityOpts = {}) => {
+	const { gsap, tl } = ctx;
+	const { cityEl } = { ...DEFAULTS, ...opts };
+
+	const cityNode = document.querySelector<HTMLElement>(cityEl);
+	if (!cityNode) return;
+
+	let finalOffsetX = 0;
+
+	const computeFinalOffset = (): void => {
+		const currentScale = Number(gsap.getProperty(cityNode, 'scale')) || 1;
+		const cityWidth = cityNode.scrollWidth * currentScale;
+		const viewportWidth = window.innerWidth;
+		finalOffsetX = -(cityWidth - viewportWidth);
+	};
+
+	gsap.to(
+		{},
+		{
+			scrollTrigger: {
+				containerAnimation: tl,
+				trigger: cityNode,
+				start: range.start + 2799,
+				end: range.start + 2800,
+				onEnter: computeFinalOffset,
+				onRefresh: computeFinalOffset
+			}
+		}
+	);
+
+	const scrollTl = gsap.to(cityNode, {
+		x: () => finalOffsetX,
+		ease: 'none',
+		snap: { x: 1 },
+		immediateRender: false,
+		scrollTrigger: {
+			containerAnimation: tl,
+			trigger: cityNode,
+			start: range.start + 2800,
+			end: range.start + 4000,
+			scrub: 1,
+			invalidateOnRefresh: true,
+			onRefresh: computeFinalOffset
+		}
+	});
+
+	return scrollTl;
 };

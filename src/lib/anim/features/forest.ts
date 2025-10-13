@@ -181,8 +181,6 @@ const createKeywords = (ctx: FeatureCtx, range: Range, opts: KeywordsOpts = {}):
 
 const createPetalScene = (ctx: FeatureCtx, range: Range, d: TreeDurations) => {
 	const { gsap, tl, ScrollTrigger } = ctx;
-	const approxEnd = range.start + Math.max(d.resize, d.trunks) + d.leaves + 400;
-	const forestEnd = (range as any).end ?? approxEnd;
 
 	const petals = makePetalsEngine({
 		containerSel: '#petalsWrapper',
@@ -197,7 +195,7 @@ const createPetalScene = (ctx: FeatureCtx, range: Range, d: TreeDurations) => {
 			scroller: '#portfolioScroller',
 			trigger: config.container,
 			start: range.start,
-			end: forestEnd,
+			end: range.end,
 			onEnter: () => {
 				if (!petals.isAlive()) petals.start();
 				petals.enableSpawning(true);
@@ -229,5 +227,5 @@ export const buildForestFeature = (ctx: FeatureCtx, range: Range): void => {
 	const afterTree = Math.max(d.resize, d.trunks);
 	createKeywords(ctx, range, { offset: afterTree, each: 0.06, stretch: 400 });
 
-	createPetalScene(ctx, range, d);
+	createPetalScene(ctx, { start: 3000, end: 4100 }, d);
 };

@@ -4,6 +4,6 @@ export const RANGES = {
 	plane: { start: 500, end: 4200 },
 	sky: { start: 0, end: 4200 },
 	city: { start: 1800, end: 2100 },
-	forest: { start: 2700, end: 5000 }
+	forest: { start: 2700, end: 6000 }
 } as const;
 export type RangeKey = keyof typeof RANGES;
