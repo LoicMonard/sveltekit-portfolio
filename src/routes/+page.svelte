@@ -91,7 +91,7 @@
 	<div
 		id="portfolioScroller"
 		class="relative w-screen overflow-x-hidden overflow-y-scroll text-slate-700 dark:text-slate-300 bg-slate-50 transition-all duration-500 dark:bg-surface-dark"
-		style="height: {$isExpanded ? '100vh' : '50vh'}"
+		style="height: {$isExpanded ? '100vh' : '70vh'}"
 	>
 		<div class="sticky left-0 top-0 h-full w-full">
 			<div id="gridScene" class="flex h-full w-full items-center justify-center">
@@ -138,7 +138,7 @@
 
 					<div
 						id="welcomeFlaps"
-						class="z-40 flex min-h-full w-full max-w-[1024px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
+						class="z-50 flex min-h-full w-full max-w-[1024px] items-center justify-center gap-1 px-2 text-3xl sm:gap-2 lg:text-7xl"
 					></div>
 
 					<div
@@ -201,7 +201,6 @@
 	</div>
 
 	{#if dev}
-		<Projects />
 		<Projects />
 	{/if}
 </div>
