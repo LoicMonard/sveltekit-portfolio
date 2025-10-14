@@ -2,22 +2,23 @@
 	import { getContext } from 'svelte';
 	import { Maximize, Minimize } from 'lucide-svelte';
 	import { activeCard } from '$lib/stores';
+	import type { Experience } from '$lib/types/experience';
 
-	export let experience;
+	export let experience: Experience;
 	export let hasActionButton = true;
 	export let isInFullPageMode = false;
 
 	$: isExpanded = $activeCard === 'experiences';
 
-	const onCardExpand = getContext('onCardExpand');
-	const onCardReduce = getContext('onCardReduce');
+	const onCardExpand: Function = getContext('onCardExpand');
+	const onCardReduce: Function = getContext('onCardReduce');
 
 	const handleMaximize = () => {
-		onCardExpand();
+		onCardExpand(experience);
 	};
 
 	const handleMinimize = () => {
-		onCardReduce();
+		onCardReduce(experience);
 	};
 
 	const computeTimePassed = (startDate: string, endDate: string): string => {
