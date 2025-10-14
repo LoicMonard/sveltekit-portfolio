@@ -39,7 +39,23 @@
 			duration: 0.5,
 			ease: 'power2.inOut'
 		});
+
+		gsap.fromTo(
+			'#exploreMoreButton',
+			{ boxShadow: '-4px 8px black' },
+			{
+				boxShadow: '-4px -8px black',
+				scrollTrigger: {
+					trigger: '#exploreMoreButton',
+					start: 'bottom bottom',
+					scrub: 1
+				}
+			}
+		);
 	});
+
+	// TODO :
+	// Ajouter une flèche après les projets qui se dessine avec DRAWSVG ? Ou bouton "Explore more" en brutalism avec dégradé qui bouge (ombre noire brue qui se décale)
 </script>
 
 <section
@@ -89,6 +105,13 @@
 			>
 				/
 			</div>
+		</div>
+		<div class="flex items-center justify-center">
+			<button
+				id="exploreMoreButton"
+				class="border-2 border-double border-black bg-yellow-300 px-4 py-2 font-mono uppercase shadow-[-4px_4px_black]"
+				type="button">Explore more</button
+			>
 		</div>
 		<div id="expandedProjectContainer" class="absolute"></div>
 	</div>
