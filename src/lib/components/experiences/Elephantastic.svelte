@@ -41,7 +41,7 @@
 			id="lottieContainer"
 			class="relative flex h-full items-center justify-center overflow-hidden"
 		>
-			<DotLottieSvelte
+			<!-- <DotLottieSvelte
 				src="/lottie_assets/squares_animation.lottie"
 				style="height: 100%; aspect-ratio: 2 / 1"
 				loop
@@ -49,7 +49,7 @@
 				renderConfig={{
 					autoResize: true
 				}}
-			/>
+			/> -->
 		</div>
 	</div>
 </ExperienceCard>

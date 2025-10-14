@@ -90,7 +90,7 @@
 <div class="flex h-full w-full flex-col items-center">
 	<div
 		id="portfolioScroller"
-		class="relative w-screen overflow-x-hidden overflow-y-scroll bg-slate-50 transition-all duration-500"
+		class="relative w-screen overflow-x-hidden overflow-y-scroll text-slate-700 dark:text-slate-300 bg-slate-50 transition-all duration-500 dark:bg-surface-dark"
 		style="height: {$isExpanded ? '100vh' : '50vh'}"
 	>
 		<div class="sticky left-0 top-0 h-full w-full">
@@ -100,7 +100,7 @@
 				>
 					<div
 						id="gridContainer"
-						class="pointer-events-none absolute top-0 h-full w-full overflow-hidden"
+						class="pointer-events-none absolute top-0 h-full w-full overflow-hidden text-slate-300 dark:text-border-dark"
 					>
 						<Grid2 />
 					</div>
@@ -143,7 +143,7 @@
 
 					<div
 						id="cityContainer"
-						class="absolute bottom-[5%] left-0 z-40 flex aspect-[2779/194] h-[40vh] origin-bottom-left scale-75 transform-gpu flex-row items-end will-change-transform"
+						class="absolute bottom-[5%] left-0 z-40 flex aspect-[2779/194] h-[40vh] origin-bottom-left scale-75 transform-gpu flex-row items-end text-text-light will-change-transform dark:text-text-dark"
 					>
 						<div id="saintMaloLeft" class="aspect-[890/89] basis-[32.44%]">
 							<SaintMaloLeft />
@@ -201,6 +201,7 @@
 	</div>
 
 	{#if dev}
+		<Projects />
 		<Projects />
 	{/if}
 </div>

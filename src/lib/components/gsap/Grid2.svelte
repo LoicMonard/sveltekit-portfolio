@@ -62,13 +62,13 @@
 >
 	<g id="cols">
 		{#each Array(cols + 1) as _, i}
-			<path d={`M ${i * gap} 0 V ${h}`} stroke="#CCD5E1" stroke-width="0.5" fill="none" />
+			<path d={`M ${i * gap} 0 V ${h}`} stroke="currentColor" stroke-width="0.5" fill="none" />
 		{/each}
 	</g>
 
 	<g id="rows">
 		{#each Array(rows) as _, j}
-			<path d={`M 0 ${(j + 1) * gap} H ${w}`} stroke="#CCD5E1" stroke-width="0.5" fill="none" />
+			<path d={`M 0 ${(j + 1) * gap} H ${w}`} stroke="currentColor" stroke-width="0.5" fill="none" />
 		{/each}
 	</g>
 </svg>
