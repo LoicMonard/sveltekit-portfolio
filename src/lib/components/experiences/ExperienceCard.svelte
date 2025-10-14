@@ -21,7 +21,7 @@
 		onCardReduce(experience);
 	};
 
-	const computeTimePassed = (startDate: string, endDate: string): string => {
+	const computeTimePassed = (startDate: Date, endDate: Date): string => {
 		const start = new Date(startDate);
 		const end = new Date(endDate);
 
@@ -91,7 +91,7 @@
 
 		<slot name="main">
 			<p class="line-clamp-2 text-sm font-light text-text-lightgray dark:text-text-darkgray">
-				{experience?.shortDescription}
+				{experience?.description}
 			</p>
 		</slot>
 	</main>

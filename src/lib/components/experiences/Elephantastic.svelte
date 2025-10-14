@@ -12,7 +12,7 @@
 
 <ExperienceCard experience={data} {hasActionButton} {isInFullPageMode}>
 	<p
-		class="overflow-scroll text-sm font-light text-text-lightgray dark:text-text-darkgray"
+		class="text-sm font-light text-text-lightgray dark:text-text-darkgray"
 		slot="main"
 		class:line-clamp-3={!isExpanded && !isInFullPageMode}
 	>
