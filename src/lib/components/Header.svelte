@@ -33,8 +33,11 @@
 	}
 </script>
 
-<header class="absolute left-0 top-0 z-20 h-fit w-full">
+<header class="fixed left-0 top-0 z-20 h-fit w-full">
 	<div class="container relative z-20 mx-auto flex items-center justify-between px-4 py-6">
+		<div class="w-12">
+			LM
+		</div>
 		<br />
 		<button
 			type="button"
