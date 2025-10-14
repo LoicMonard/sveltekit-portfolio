@@ -200,7 +200,7 @@
 		<div id="scrollContent" class="pointer-events-none" style="height: {totalRangeHeight}px"></div>
 	</div>
 
-	{#if dev}
+	<!-- {#if dev} -->
 		<Projects />
-	{/if}
+	<!-- {/if} -->
 </div>
