@@ -14,10 +14,12 @@
 	const onCardReduce: Function = getContext('onCardReduce');
 
 	const handleMaximize = () => {
+		console.log('maximize')
 		onCardExpand(experience);
 	};
 
 	const handleMinimize = () => {
+		console.log('minimize')
 		onCardReduce(experience);
 	};
 

@@ -1,20 +1,72 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import { loadGsapAll } from '$lib/gsap';
+	import type { GsapType } from '$lib/gsap';
 	import { experienceArray } from '$lib/stores/experiences.store';
 	import type { Experience } from '$lib/types/experience';
 
-	const handleClick = async (experience: Experience) => {
-		console.log(experience);
+	let isProjectExpanded = false;
+
+	const handleCardMaximize = async (experience: Experience) => {
+		console.log('cardExpand');
+		const { Flip } = await loadGsapAll();
+
+		const projectsContainer = document.querySelector('#projectList') as HTMLElement | null;
+		const expandedProjectContainer = document.querySelector(
+			'#expandedProjectContainer'
+		) as HTMLElement | null;
+		const selectedProject = document.querySelector(
+			`#${experience.companyName?.toLowerCase()}`
+		) as HTMLElement | null;
+
+		if (!projectsContainer || !expandedProjectContainer) {
+			console.warn('Containers not found');
+			return;
+		}
+		if (!selectedProject) {
+			console.warn('No element found for the flip project animation');
+			return;
+		}
+
+		const flipState = Flip.getState(selectedProject);
+
+		const isInProjectList = !!projectsContainer.contains(selectedProject);
+		console.log('isInProjectList:', isInProjectList);
+
+		if (isInProjectList) {
+			expandedProjectContainer.appendChild(selectedProject);
+			isProjectExpanded = true;
+		} else {
+			const selectedProjectParent =
+				(document.getElementById(
+					`${experience.companyName.toLowerCase()}Container`
+				) as HTMLElement | null) ?? projectsContainer;
+			selectedProjectParent.appendChild(selectedProject);
+			isProjectExpanded = false;
+		}
+
+		Flip.from(flipState, {
+			duration: 0.5,
+			ease: 'power1.inOut',
+			absolute: true,
+			fade: true
+		});
 	};
 
-	setContext('onCardExpand', handleClick);
+	const handleCardMinimize = async (experience) => {
+		console.log('red');
+	};
+
+	setContext('onCardExpand', handleCardMaximize);
+	setContext('onCardReduce', handleCardMinimize);
 
 	onMount(async () => {
-		const { gsap, SplitText } = await loadGsapAll();
+		const { gsap, SplitText, Flip } = await loadGsapAll();
+		animateCharacters(gsap, SplitText);
+	});
 
+	const animateCharacters = (gsap: GsapType, SplitText) => {
 		const split = SplitText.create('#projectTitle', { type: 'chars' });
-
 		gsap.to(split.chars, {
 			keyframes: [
 				{ y: -10, duration: 0.2, ease: 'power1.out' },
@@ -52,7 +104,7 @@
 				}
 			}
 		);
-	});
+	};
 
 	// TODO :
 	// Ajouter une flèche après les projets qui se dessine avec DRAWSVG ? Ou bouton "Explore more" en brutalism avec dégradé qui bouge (ombre noire brue qui se décale)
@@ -81,30 +133,38 @@
 				Here's a list of some of my projects
 			</p>
 		</div>
-		<div
-			id="projectList"
-			class="md:-grid-rows-2 my-4 grid grid-cols-1 grid-rows-2 flex-col gap-4 md:grid-cols-2 lg:my-8 lg:grid-cols-4 lg:grid-rows-1"
-		>
-			{#each $experienceArray as experience}
+		<div class="relative my-4 lg:my-8">
+			<div
+				id="projectList"
+				class="md:-grid-rows-2 z-10 grid grid-cols-1 grid-rows-2 flex-col gap-4 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-1"
+			>
+				{#each $experienceArray as experience}
+					<div
+						id={`${experience.companyName.toLowerCase()}Container`}
+						class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					>
+						<div id={experience.companyName.toLowerCase()}>
+							<svelte:component this={experience.component} data={experience}></svelte:component>
+						</div>
+					</div>
+				{/each}
 				<div
 					id="project2"
 					class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
-					<svelte:component this={experience.component} data={experience}></svelte:component>
+					/
 				</div>
-			{/each}
-			<div
-				id="project2"
-				class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
-			>
-				/
+				<div
+					id="project3"
+					class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+				>
+					/
+				</div>
 			</div>
 			<div
-				id="project3"
-				class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
-			>
-				/
-			</div>
+				id="expandedProjectContainer"
+				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute p-4 top-0 flex h-[200%] w-full`}
+			></div>
 		</div>
 		<div class="flex items-center justify-center">
 			<button
@@ -113,6 +173,5 @@
 				type="button">Explore more</button
 			>
 		</div>
-		<div id="expandedProjectContainer" class="absolute"></div>
 	</div>
 </section>
