@@ -140,7 +140,7 @@
 		<div class="relative my-4 lg:my-8">
 			<div
 				id="projectList"
-				class="md:-grid-rows-2 z-10 grid grid-cols-1 grid-rows-2 flex-col gap-4 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-1"
+				class={`${isProjectExpanded ? 'max-h-[95vh] min-h-[32lh]' : 'min-h-[10vh]'} md:-grid-rows-2 z-10 grid grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-1`}
 			>
 				{#each $experienceArray as experience}
 					<div
@@ -154,20 +154,20 @@
 				{/each}
 				<div
 					id="project2"
-					class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					class="h-full min-h-[10lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
 					/
 				</div>
 				<div
 					id="project3"
-					class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					class="h-full min-h-[10lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
 					/
 				</div>
 			</div>
 			<div
 				id="expandedProjectContainer"
-				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-[200%] w-full p-4`}
+				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-full min-h-[32lh] w-full p-4`}
 			></div>
 		</div>
 		<div class="flex items-center justify-center">

@@ -14,12 +14,12 @@
 	const onCardReduce: Function = getContext('onCardReduce');
 
 	const handleMaximize = () => {
-		console.log('maximize')
+		console.log('maximize');
 		onCardExpand(experience);
 	};
 
 	const handleMinimize = () => {
-		console.log('minimize')
+		console.log('minimize');
 		onCardReduce(experience);
 	};
 
@@ -42,7 +42,7 @@
 </script>
 
 <article
-	class="flex h-fit flex-col rounded-xl border border-border-light bg-white text-text-light outline outline-8 outline-offset-0 outline-white dark:border-border-dark dark:bg-background-dark dark:text-text-dark dark:outline-surface-dark"
+	class="flex h-full flex-col rounded-xl border border-border-light bg-white text-text-light outline outline-8 outline-offset-0 outline-white dark:border-border-dark dark:bg-background-dark dark:text-text-dark dark:outline-surface-dark"
 >
 	<header
 		class="relative rounded-xl rounded-b-none bg-slate-100 dark:bg-surface-darkhover"
