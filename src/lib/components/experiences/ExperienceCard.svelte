@@ -45,7 +45,7 @@
 	class="flex h-full flex-col rounded-xl border border-border-light bg-white text-text-light outline outline-8 outline-offset-0 outline-white dark:border-border-dark dark:bg-background-dark dark:text-text-dark dark:outline-surface-dark"
 >
 	<header
-		class="relative rounded-xl rounded-b-none bg-slate-100 dark:bg-surface-darkhover"
+		class="relative shrink-0 rounded-xl rounded-b-none bg-slate-100 dark:bg-surface-darkhover"
 		style={`height: ${isExpanded ? '200px' : '150px'};`}
 	>
 		<slot name="header" />
@@ -72,10 +72,10 @@
 		{/if}
 	</header>
 	<main
-		class="relative flex flex-1 flex-col border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
+		class="relative z-20 flex min-h-0 flex-1 flex-col border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
 	>
 		<div
-			class={`absolute left-0 top-0 h-12 w-12 -translate-y-1/2 translate-x-4 rounded-lg border-2 border-white p-2  dark:border-surface-dark`}
+			class={`absolute left-0 top-0 z-50 h-12 w-12 -translate-y-1/2 translate-x-4 rounded-lg border-2 border-white p-2  dark:border-surface-dark`}
 			style={`background-color: ${experience?.iconBgColor};`}
 		>
 			<img src={experience?.icon} alt="Company Logo" class="h-full w-full" />
@@ -91,15 +91,11 @@
 			</p>
 		</div>
 
-		<slot name="main">
-			<p class="line-clamp-2 text-sm font-light text-text-lightgray dark:text-text-darkgray">
-				{experience?.description}
-			</p>
-		</slot>
+		<slot name="main"></slot>
 	</main>
 	{#if !isInFullPageMode}
 		<footer
-			class="flex items-center justify-between rounded-xl rounded-t-none border-t border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
+			class="flex shrink-0 items-center justify-between rounded-xl rounded-t-none border-t border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
 		>
 			{#if isExpanded}
 				<button

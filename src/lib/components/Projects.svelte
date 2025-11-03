@@ -3,6 +3,7 @@
 	import { loadGsapAll } from '$lib/gsap';
 	import type { GsapType } from '$lib/gsap';
 	import { experienceArray } from '$lib/stores/experiences.store';
+	import { activeCard } from '$lib/stores';
 	import type { Experience } from '$lib/types/experience';
 
 	let isProjectExpanded = false;
@@ -37,6 +38,7 @@
 
 		if (isInProjectList) {
 			expandedProjectContainer.appendChild(selectedProject);
+			activeCard.set(experience.companyName);
 			isProjectExpanded = true;
 		} else {
 			const selectedProjectParent =
@@ -55,6 +57,7 @@
 			onComplete: () => {
 				if (!isProjectExpanded) {
 					selectedProject.classList.remove('z-50');
+					activeCard.set(null);
 				}
 			}
 		});
@@ -137,40 +140,46 @@
 				Here's a list of some of my projects
 			</p>
 		</div>
-		<div class="relative my-4 lg:my-8">
+
+		<div
+			class={`${isProjectExpanded ? 'h-[68lh] md:h-[34lh] lg:h-[34lh]' : 'h-[68lh] md:h-[34lh] lg:h-[17lh]'} relative my-4 transition-all lg:my-8`}
+		>
 			<div
 				id="projectList"
-				class={`${isProjectExpanded ? 'max-h-[95vh] min-h-[32lh]' : 'min-h-[10vh]'} md:-grid-rows-2 z-10 grid grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-1`}
+				class={`${isProjectExpanded ? 'max-h-[68lh] md:max-h-[17lh]' : 'max-h-[107lh]'} md:-grid-rows-2 z-10 grid  grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-1`}
 			>
 				{#each $experienceArray as experience}
 					<div
 						id={`${experience.companyName.toLowerCase()}Container`}
-						class="h-full min-h-[6lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+						class="h-full min-h-[16lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 					>
-						<div id={experience.companyName.toLowerCase()}>
+						<div id={experience.companyName.toLowerCase()} class="h-full">
 							<svelte:component this={experience.component} data={experience}></svelte:component>
 						</div>
 					</div>
 				{/each}
 				<div
 					id="project2"
-					class="h-full min-h-[10lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					class="h-full min-h-[16lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
 					/
 				</div>
 				<div
 					id="project3"
-					class="h-full min-h-[10lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					class="h-full min-h-[16lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
 					/
 				</div>
 			</div>
 			<div
 				id="expandedProjectContainer"
-				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-full min-h-[32lh] w-full p-4`}
+				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-full max-h-[95vh] min-h-[34lh] w-full p-4`}
 			></div>
 		</div>
-		<div class="flex items-center justify-center">
+
+		<div
+			class={`${isProjectExpanded ? '' : 'mt-0'} flex items-center justify-center transition-all duration-500`}
+		>
 			<button
 				id="exploreMoreButton"
 				class="border-2 border-double border-black bg-yellow-300 px-4 py-2 font-mono uppercase shadow-[-4px_4px_black]"
