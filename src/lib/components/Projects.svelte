@@ -33,6 +33,8 @@
 		const isInProjectList = !!projectsContainer.contains(selectedProject);
 		console.log('isInProjectList:', isInProjectList);
 
+		selectedProject.classList.add('z-50');
+
 		if (isInProjectList) {
 			expandedProjectContainer.appendChild(selectedProject);
 			isProjectExpanded = true;
@@ -49,7 +51,12 @@
 			duration: 0.5,
 			ease: 'power1.inOut',
 			absolute: true,
-			fade: true
+			fade: true,
+			onComplete: () => {
+				if (!isProjectExpanded) {
+					selectedProject.classList.remove('z-50');
+				}
+			}
 		});
 	};
 
@@ -105,9 +112,6 @@
 			}
 		);
 	};
-
-	// TODO :
-	// Ajouter une flèche après les projets qui se dessine avec DRAWSVG ? Ou bouton "Explore more" en brutalism avec dégradé qui bouge (ombre noire brue qui se décale)
 </script>
 
 <section
@@ -163,7 +167,7 @@
 			</div>
 			<div
 				id="expandedProjectContainer"
-				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute p-4 top-0 flex h-[200%] w-full`}
+				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-[200%] w-full p-4`}
 			></div>
 		</div>
 		<div class="flex items-center justify-center">
