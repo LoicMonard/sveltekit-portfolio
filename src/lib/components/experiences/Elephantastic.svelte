@@ -17,47 +17,184 @@
 				Pendant près de deux ans, j'ai accompagné Elephantastic en tant que développeur front-end
 				freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de
 				l'intégration : j'ai conçu, développé et maintenu l'ensemble des interfaces, avec une grande
-				liberté technique, tout en validant régulièrement mes choix avec le client. J'ai travaillé
-				en étroite collaboration avec l'équipe backend, ce qui m'a permis de construire une
-				interface parfaitement adaptée aux flux de données complexes du projet, orienté OSINT. Les
-				enjeux étaient forts en termes de lisibilité, de performance et d'accessibilité, notamment
-				pour afficher un grand volume d'informations de manière claire et dynamique. Aucun framework
-				UI n'a été utilisé : j'ai développé tous les composants sur-mesure, avec une attention
-				particulière portée à l'expérience utilisateur, au responsive design et à l'accessibilité.
-				J'ai aussi pris en main l'aspect design en tant que développeur front avec une forte
-				sensibilité UI/UX, afin de garantir cohérence et ergonomie. Techniquement, le projet
-				s'appuyait sur Vue.js, pour lequel j'ai géré la migration de Vue 2 vers Vue 3, tout en
-				amorçant une transition vers TypeScript. Côté styling, j'ai supprimé les éléments obsolètes
-				pour introduire TailwindCSS de manière homogène et efficace. J'ai également manipulé
-				ElasticSearch en rédigeant directement les queries, et mis en place Socket.io pour offrir
-				une expérience fluide et en temps réel. Les tests E2E ont été réalisés avec Playwright, et
-				j'ai maintenu une qualité de code rigoureuse avec ESLint, Prettier et GitLab. Enfin, lors de
-				mon départ, j'ai formé un nouveau développeur pour assurer la continuité du projet, en
-				partageant les bonnes pratiques et en documentant l'existant.
+				liberté technique, tout en validant régulièrement mes choix avec le client.
 			</p>
 		{:else}
-			<p class="text-sm font-light text-text-lightgray dark:text-text-darkgray">
-				Pendant près de deux ans, j'ai accompagné Elephantastic en tant que développeur front-end
-				freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de
-				l'intégration : j'ai conçu, développé et maintenu l'ensemble des interfaces, avec une grande
-				liberté technique, tout en validant régulièrement mes choix avec le client. J'ai travaillé
-				en étroite collaboration avec l'équipe backend, ce qui m'a permis de construire une
-				interface parfaitement adaptée aux flux de données complexes du projet, orienté OSINT. Les
-				enjeux étaient forts en termes de lisibilité, de performance et d'accessibilité, notamment
-				pour afficher un grand volume d'informations de manière claire et dynamique. Aucun framework
-				UI n'a été utilisé : j'ai développé tous les composants sur-mesure, avec une attention
-				particulière portée à l'expérience utilisateur, au responsive design et à l'accessibilité.
-				J'ai aussi pris en main l'aspect design en tant que développeur front avec une forte
-				sensibilité UI/UX, afin de garantir cohérence et ergonomie. Techniquement, le projet
-				s'appuyait sur Vue.js, pour lequel j'ai géré la migration de Vue 2 vers Vue 3, tout en
-				amorçant une transition vers TypeScript. Côté styling, j'ai supprimé les éléments obsolètes
-				pour introduire TailwindCSS de manière homogène et efficace. J'ai également manipulé
-				ElasticSearch en rédigeant directement les queries, et mis en place Socket.io pour offrir
-				une expérience fluide et en temps réel. Les tests E2E ont été réalisés avec Playwright, et
-				j'ai maintenu une qualité de code rigoureuse avec ESLint, Prettier et GitLab. Enfin, lors de
-				mon départ, j'ai formé un nouveau développeur pour assurer la continuité du projet, en
-				partageant les bonnes pratiques et en documentant l'existant.
-			</p>
+			<article
+				lang="fr"
+				class="font-readex rounded-lg py-14 text-neutral-900 selection:bg-yellow-200/70 dark:bg-neutral-900 dark:text-neutral-100"
+			>
+				<!-- Header -->
+				<header class="mb-12">
+					<div
+						class="inline-flex items-center gap-2 rounded-full border border-neutral-200/80 bg-white/70 px-3 py-1 text-xs tracking-wide backdrop-blur dark:border-neutral-700/60 dark:bg-neutral-800/50"
+					>
+						<span class="h-2 w-2 rounded-full bg-yellow-400"></span>
+						<span>Mission • 1 an 8 mois • Freelance</span>
+					</div>
+
+					<h1 class="mt-5 text-4xl font-semibold leading-tight">
+						Mission chez Elephantastic <span class="opacity-60">(freelance)</span>
+					</h1>
+
+					<p class="mt-4 text-[1.05rem] leading-7 text-neutral-700 dark:text-neutral-300">
+						Pendant près de deux ans, j'ai accompagné Elephantastic en tant que développeur
+						front-end freelance, avec une responsabilité quasi complète sur le front.
+					</p>
+				</header>
+
+				<!-- Grid contenu -->
+				<div class="grid grid-cols-12 gap-10">
+					<!-- Rôle & périmètre -->
+					<!-- Rôle & périmètre -->
+					<section class="col-span-12 flex flex-col justify-between lg:col-span-6">
+						<div>
+							<div class="mb-4 flex items-center gap-3">
+								<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
+								<h2 class="text-xl font-semibold">Rôle et périmètre</h2>
+							</div>
+							<p class="leading-7 text-neutral-700 dark:text-neutral-300">
+								Mon rôle dépassait largement la simple intégration : j'ai conçu, développé et
+								maintenu l'ensemble des interfaces, avec une grande liberté technique tout en
+								validant régulièrement mes choix avec le client.
+							</p>
+						</div>
+
+						<!-- Image -->
+						<figure
+							class="flex flex-col justify-end overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/70 dark:bg-neutral-800 dark:ring-neutral-700/50"
+						>
+							<img
+								src="elephantastic/elephantastic-fingerprints.png"
+								alt="Aperçu général de l'interface Elephantastic"
+								class="h-auto w-full"
+							/>
+							<figcaption class="px-4 py-3 text-sm text-neutral-500 dark:text-neutral-400">
+								Aperçu d'une interface principale réalisée sur mesure (Vue 3 + TailwindCSS).
+							</figcaption>
+						</figure>
+					</section>
+
+					<!-- Contexte & enjeux -->
+					<section class="col-span-12 flex flex-col justify-between lg:col-span-6">
+						<div>
+							<div class="mb-4 flex items-center gap-3">
+								<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
+								<h2 class="text-xl font-semibold">Contexte et enjeux</h2>
+							</div>
+							<p class="leading-7 text-neutral-700 dark:text-neutral-300">
+								Projet orienté OSINT avec des flux de données complexes. Collaboration étroite avec
+								l'équipe backend pour bâtir une interface performante, claire et adaptée aux besoins
+								métiers, capable d'afficher un grand volume d'informations de manière fluide et
+								lisible.
+							</p>
+						</div>
+
+						<!-- Image -->
+						<figure
+							class="mt-5 flex flex-1 flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/70 dark:bg-neutral-800 dark:ring-neutral-700/50"
+						>
+							<img
+								src="elephantastic/elephantastic-data.png"
+								alt="Visualisation et agrégations de données"
+								class="h-auto w-full"
+							/>
+							<figcaption class="px-4 py-3 text-sm text-neutral-500 dark:text-neutral-400">
+								Agrégations et visualisations de résultats en temps réel.
+							</figcaption>
+						</figure>
+					</section>
+
+					<!-- UI/UX -->
+					<section class="col-span-12">
+						<div class="mb-4 flex items-center gap-3">
+							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
+							<h2 class="text-xl font-semibold">Conception UI/UX</h2>
+						</div>
+						<div
+							class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/70 dark:bg-neutral-800 dark:ring-neutral-700/50"
+						>
+							<p class="leading-7 text-neutral-700 dark:text-neutral-300">
+								Aucun framework UI n'a été utilisé : composants sur mesure, attention portée à
+								l'expérience, au responsive et à l'accessibilité. J'ai également assuré la cohérence
+								visuelle et l'ergonomie globale.
+							</p>
+							<figure class="mt-5 overflow-hidden rounded-xl">
+								<img
+									src="elephantastic/elephantastic-component.png"
+									alt="Composants UI sur mesure"
+									class="h-auto w-full"
+								/>
+							</figure>
+						</div>
+					</section>
+
+					<!-- Stack & contributions -->
+					<section class="col-span-12 lg:col-span-7">
+						<div class="mb-4 flex items-center gap-3">
+							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
+							<h2 class="text-xl font-semibold">Stack et contributions techniques</h2>
+						</div>
+						<ul class="grid gap-2 sm:grid-cols-2">
+							<li
+								class="rounded-full bg-yellow-50 px-3 py-1.5 text-sm text-yellow-900 ring-1 ring-yellow-200/60 dark:bg-yellow-300/10 dark:text-yellow-200 dark:ring-yellow-300/20"
+							>
+								Migration Vue 2 → Vue 3
+							</li>
+							<li
+								class="rounded-full bg-yellow-50 px-3 py-1.5 text-sm text-yellow-900 ring-1 ring-yellow-200/60 dark:bg-yellow-300/10 dark:text-yellow-200 dark:ring-yellow-300/20"
+							>
+								Transition vers TypeScript
+							</li>
+							<li
+								class="rounded-full bg-yellow-50 px-3 py-1.5 text-sm text-yellow-900 ring-1 ring-yellow-200/60 dark:bg-yellow-300/10 dark:text-yellow-200 dark:ring-yellow-300/20"
+							>
+								TailwindCSS homogénéisé
+							</li>
+							<li
+								class="rounded-full bg-yellow-50 px-3 py-1.5 text-sm text-yellow-900 ring-1 ring-yellow-200/60 dark:bg-yellow-300/10 dark:text-yellow-200 dark:ring-yellow-300/20"
+							>
+								Requêtes ElasticSearch
+							</li>
+							<li
+								class="rounded-full bg-yellow-50 px-3 py-1.5 text-sm text-yellow-900 ring-1 ring-yellow-200/60 dark:bg-yellow-300/10 dark:text-yellow-200 dark:ring-yellow-300/20"
+							>
+								Socket.io temps réel
+							</li>
+						</ul>
+					</section>
+
+					<!-- Qualité -->
+					<section class="col-span-12 lg:col-span-5">
+						<div class="mb-4 flex items-center gap-3">
+							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
+							<h2 class="text-xl font-semibold">Qualité et outillage</h2>
+						</div>
+						<div
+							class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200/70 dark:bg-neutral-800 dark:ring-neutral-700/50"
+						>
+							<ul class="list-disc space-y-1.5 pl-5 text-neutral-700 dark:text-neutral-300">
+								<li>Tests E2E avec Playwright</li>
+								<li>Linting via ESLint & Prettier</li>
+								<li>CI GitLab</li>
+							</ul>
+						</div>
+					</section>
+
+					<!-- Transmission -->
+					<section class="col-span-12">
+						<div class="mb-4 flex items-center gap-3">
+							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
+							<h2 class="text-xl font-semibold">Transmission et continuité</h2>
+						</div>
+
+						<p>
+							Lors de mon départ, j'ai formé un nouveau développeur pour assurer la continuité du
+							projet, en partageant les bonnes pratiques et en documentant l'existant.
+						</p>
+					</section>
+				</div>
+			</article>
 		{/if}
 	</div>
 	<div class="h-full w-full" slot="header">
