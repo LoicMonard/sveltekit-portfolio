@@ -173,7 +173,7 @@
 			</div>
 			<div
 				id="expandedProjectContainer"
-				class={`${isProjectExpanded ? 'flex' : 'flex pointer-events-none'} absolute border border-red-500 top-0 flex h-full max-h-[95vh] min-h-[32lh] w-full p-4`}
+				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-full max-h-[95vh] min-h-[32lh] w-full p-4`}
 			></div>
 		</div>
 
