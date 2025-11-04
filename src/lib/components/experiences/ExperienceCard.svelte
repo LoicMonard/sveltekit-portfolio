@@ -80,15 +80,22 @@
 		>
 			<img src={experience?.icon} alt="Company Logo" class="h-full w-full" />
 		</div>
-		<div class="mt-4 flex items-center gap-2">
+		<div class="mt-4 flex items-center gap-1">
 			<h1 class="font-normal dark:text-text-dark">
 				{experience?.companyName}
 			</h1>
-			<p
-				class="bg-surface-lightgray px-2 text-xs font-light dark:bg-surface-darkgray dark:text-text-darkaccent"
+			<div
+				class="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200/80 bg-white/70 px-3 py-1 text-xs tracking-wide backdrop-blur dark:border-neutral-700/60 dark:bg-neutral-800/50"
 			>
-				{computeTimePassed(experience?.dateStart, experience?.dateEnd)}
-			</p>
+				<span class="h-2 w-2 rounded-full bg-yellow-400"></span>
+				<span>{computeTimePassed(experience?.dateStart, experience?.dateEnd)} 
+					{#if experience?.isFreelance}
+						• Freelance
+					{:else}
+						• Employee
+					{/if}
+				</span>
+			</div>
 		</div>
 
 		<slot name="main"></slot>

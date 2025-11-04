@@ -5,6 +5,7 @@ export type Experience = {
 	description?: string;
 	icon?: string;
 	iconBgColor?: string;
+	isFreelance?: boolean;
 	skills?: string[];
 	component?: any; // Svelte component for rendering the experience
 };
