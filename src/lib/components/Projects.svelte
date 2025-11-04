@@ -142,38 +142,38 @@
 		</div>
 
 		<div
-			class={`${isProjectExpanded ? 'h-[68lh] md:h-[34lh] lg:h-[34lh]' : 'h-[68lh] md:h-[34lh] lg:h-[17lh]'} relative my-4 transition-all lg:my-8`}
+			class={`${isProjectExpanded ? 'h-[68lh] md:h-[32lh] lg:h-[32lh]' : 'h-[68lh] md:h-[34lh] lg:h-[32lh] 2xl:h-[16lh]'} relative my-4 transition-all lg:my-8`}
 		>
 			<div
 				id="projectList"
-				class={`${isProjectExpanded ? 'max-h-[68lh] md:max-h-[17lh]' : 'max-h-[107lh]'} md:-grid-rows-2 z-10 grid  grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-1`}
+				class={`${isProjectExpanded ? 'max-h-[68lh] md:max-h-[17lh]' : 'max-h-[107lh]'} md:-grid-rows-2 z-10 grid  grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 lg:grid-rows-1`}
 			>
 				{#each $experienceArray as experience}
 					<div
 						id={`${experience.companyName.toLowerCase()}Container`}
-						class="h-full min-h-[16lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+						class="h-full min-h-[15lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 					>
-						<div id={experience.companyName.toLowerCase()} class="h-full">
+						<div id={experience.companyName.toLowerCase()} class="h-full w-full">
 							<svelte:component this={experience.component} data={experience}></svelte:component>
 						</div>
 					</div>
 				{/each}
 				<div
 					id="project2"
-					class="h-full min-h-[16lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					class="h-full min-h-[15lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
 					/
 				</div>
 				<div
 					id="project3"
-					class="h-full min-h-[16lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					class="h-full min-h-[15lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
 					/
 				</div>
 			</div>
 			<div
 				id="expandedProjectContainer"
-				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-full max-h-[95vh] min-h-[34lh] w-full p-4`}
+				class={`${isProjectExpanded ? 'flex' : 'flex pointer-events-none'} absolute border border-red-500 top-0 flex h-full max-h-[95vh] min-h-[32lh] w-full p-4`}
 			></div>
 		</div>
 
