@@ -35,7 +35,7 @@
 					</p>
 				</header>
 
-				<div class="grid grid-cols-12 gap-10">
+				<div class="grid grid-cols-12 md:gap-8 gap-y-6 ">
 					<section class="col-span-12 flex flex-col justify-between lg:col-span-6">
 						<div>
 							<div class="mb-4 flex items-center gap-3">
