@@ -146,7 +146,7 @@
 		>
 			<div
 				id="projectList"
-				class={`${isProjectExpanded ? 'max-h-[68lh] md:max-h-[17lh]' : 'max-h-[107lh]'} md:-grid-rows-2 z-10 grid  grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 lg:grid-rows-1`}
+				class={`${isProjectExpanded ? 'max-h-[68lh] md:max-h-[17lh]' : 'max-h-[107lh]'} md:-grid-rows-2 z-10 grid  grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-2 lg:grid-rows-1 xl:grid-cols-2 2xl:grid-cols-4`}
 			>
 				{#each $experienceArray as experience}
 					<div

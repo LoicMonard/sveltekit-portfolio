@@ -22,17 +22,9 @@
 		{:else}
 			<article
 				lang="fr"
-				class="font-readex rounded-lg py-14 text-neutral-900 selection:bg-yellow-200/70 dark:bg-neutral-900 dark:text-neutral-100"
+				class="flex flex-col gap-8 rounded-lg py-4 font-readex text-neutral-900 selection:bg-yellow-200/70  dark:text-neutral-100"
 			>
-				<!-- Header -->
-				<header class="mb-12">
-					<div
-						class="inline-flex items-center gap-2 rounded-full border border-neutral-200/80 bg-white/70 px-3 py-1 text-xs tracking-wide backdrop-blur dark:border-neutral-700/60 dark:bg-neutral-800/50"
-					>
-						<span class="h-2 w-2 rounded-full bg-yellow-400"></span>
-						<span>Mission • 1 an 8 mois • Freelance</span>
-					</div>
-
+				<header>
 					<h1 class="mt-5 text-4xl font-semibold leading-tight">
 						Mission chez Elephantastic <span class="opacity-60">(freelance)</span>
 					</h1>
@@ -43,10 +35,7 @@
 					</p>
 				</header>
 
-				<!-- Grid contenu -->
 				<div class="grid grid-cols-12 gap-10">
-					<!-- Rôle & périmètre -->
-					<!-- Rôle & périmètre -->
 					<section class="col-span-12 flex flex-col justify-between lg:col-span-6">
 						<div>
 							<div class="mb-4 flex items-center gap-3">
@@ -60,7 +49,6 @@
 							</p>
 						</div>
 
-						<!-- Image -->
 						<figure
 							class="flex flex-col justify-end overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/70 dark:bg-neutral-800 dark:ring-neutral-700/50"
 						>
@@ -75,7 +63,6 @@
 						</figure>
 					</section>
 
-					<!-- Contexte & enjeux -->
 					<section class="col-span-12 flex flex-col justify-between lg:col-span-6">
 						<div>
 							<div class="mb-4 flex items-center gap-3">
@@ -90,7 +77,6 @@
 							</p>
 						</div>
 
-						<!-- Image -->
 						<figure
 							class="mt-5 flex flex-1 flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/70 dark:bg-neutral-800 dark:ring-neutral-700/50"
 						>
@@ -105,7 +91,6 @@
 						</figure>
 					</section>
 
-					<!-- UI/UX -->
 					<section class="col-span-12">
 						<div class="mb-4 flex items-center gap-3">
 							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
@@ -129,7 +114,6 @@
 						</div>
 					</section>
 
-					<!-- Stack & contributions -->
 					<section class="col-span-12 lg:col-span-7">
 						<div class="mb-4 flex items-center gap-3">
 							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
@@ -164,7 +148,6 @@
 						</ul>
 					</section>
 
-					<!-- Qualité -->
 					<section class="col-span-12 lg:col-span-5">
 						<div class="mb-4 flex items-center gap-3">
 							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
@@ -181,7 +164,6 @@
 						</div>
 					</section>
 
-					<!-- Transmission -->
 					<section class="col-span-12">
 						<div class="mb-4 flex items-center gap-3">
 							<span class="h-5 w-1.5 rounded-full bg-yellow-400"></span>
