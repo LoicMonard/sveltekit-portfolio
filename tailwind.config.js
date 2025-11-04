@@ -56,7 +56,10 @@ export default {
 			backgroundImage: {
 				'light-pattern':
 					'repeating-linear-gradient(90deg,#f9f9f6 0px,#f9f9f6 20px,#fcfcfa 20px,#fcfcfa 40px)'
-			}
+			},
+      fontFamily: {
+        readex: ['"Readex Pro"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
 		}
 	},
 	plugins: []
