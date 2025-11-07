@@ -45,6 +45,7 @@ export const buildCityFeature = (ctx: FeatureCtx, range: Range, opts: CityOpts) 
 	setTreeAtCenter(ctx, range, opts);
 	citySidesSequence(ctx, range, opts);
 	scrollCityToEnd(ctx, range, opts);
+	rotateGrandeRoue(ctx, range, opts);
 };
 
 const scaleCity = (gsap: GSAP, node: Element, opts: { to: number }) => {
@@ -212,4 +213,22 @@ const scrollCityToEnd = (ctx: FeatureCtx, range: Range, opts: CityOpts = {}) => 
 	});
 
 	return scrollTl;
+};
+
+const rotateGrandeRoue = (ctx: FeatureCtx, range: Range, opts: CityOpts = {}) => {
+	const { gsap } = ctx;
+	const { grandeRoueEl } = { ...DEFAULTS, ...opts };
+
+	const roueNode = document.querySelector<HTMLElement>(grandeRoueEl);
+	if (!roueNode) return;
+
+	gsap.set(roueNode, { transformOrigin: '50% 50%' });
+
+	gsap.to(roueNode, {
+		rotation: 360,
+		ease: 'none',
+		immediateRender: false,
+		duration: 60,
+		repeat: -1
+	});
 };
