@@ -20,7 +20,9 @@
 				liberté technique, tout en validant régulièrement mes choix avec le client.
 			</p>
 		{:else}
-			<article class="relative flex flex-col gap-8 overflow-hidden font-readex text-neutral-800">
+			<article
+				class="relative flex flex-col gap-8 overflow-hidden font-readex text-neutral-700 dark:text-neutral-300"
+			>
 				<section class="flex flex-col gap-3 py-8">
 					<h2 class="inline-flex items-baseline gap-2 text-lg font-semibold leading-relaxed">
 						<span class="text-sky-400" aria-hidden="true">#</span>
@@ -58,27 +60,27 @@
 					</p>
 				</section>
 
-				<hr class="my-6 border-t border-slate-200" aria-hidden="true" />
+				<hr class="my-6 border-t border-border-light dark:border-border-dark" aria-hidden="true" />
 
 				<section class="flex flex-col gap-12 p-4 md:flex-row">
 					<div class="flex flex-col justify-around gap-6 py-2 md:w-1/3">
 						<div class="flex flex-col gap-2">
 							<h3 class="text-xs font-medium tracking-[0.28em] text-sky-400">COMPONENTS</h3>
-							<p class="text-sm leading-7 text-neutral-500">
+							<p class="text-sm leading-7">
 								Travaillant sans bibliothèque graphique ni UI kit, l'application reposait sur des
 								composants Vue.js conçus sur mesure pour répondre aux besoins spécifiques du projet.
 							</p>
 						</div>
 						<div class="flex flex-col gap-2">
 							<h3 class="text-xs font-medium tracking-[0.28em] text-sky-400">TEMPLATES</h3>
-							<p class="text-sm leading-7 text-neutral-500">
+							<p class="text-sm leading-7">
 								Pour chaque scénario de résultat, des templates personnalisables ont été imaginés et
 								implémentés, avec des règles dédiées pour chacun d'entre eux.
 							</p>
 						</div>
 						<div class="flex flex-col gap-2">
 							<h3 class="text-xs font-medium tracking-[0.28em] text-sky-400">MODULES</h3>
-							<p class="text-sm leading-7 text-neutral-500">
+							<p class="text-sm leading-7">
 								Grâce au système avancé de filtres à facettes et à des logiques spécifiques, la
 								création de modules custom a été nécessaire tout au long du projet.
 							</p>
@@ -86,21 +88,21 @@
 					</div>
 
 					<figure
-						class="flex flex-1 flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white"
+						class="flex flex-1 flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-background-dark dark:bg-background-dark dark:text-text-dark"
 					>
 						<img
 							src="elephantastic/elephantastic-fingerprints.png"
 							alt="Interface d'agrégation de mots-clés anonymisés dans l'application Elephantastic"
 							class="aspect-[1.54] w-full object-cover"
 						/>
-						<figcaption class="px-3 py-2 text-[11px] leading-6 text-neutral-500">
+						<figcaption class="px-3 py-2 text-[11px] leading-6">
 							Aperçu d'une interface d'agrégation de mots-clés (anonymisés) issue d'un composant Vue
 							personnalisé.
 						</figcaption>
 					</figure>
 				</section>
 
-				<hr class="my-6 border-t border-slate-200" aria-hidden="true" />
+				<hr class="my-6 border-t border-border-light dark:border-border-dark" aria-hidden="true" />
 
 				<section class="flex flex-col gap-3 px-3">
 					<h2 class="inline-flex items-baseline gap-2 text-lg font-semibold leading-relaxed">
@@ -120,12 +122,10 @@
 					</p>
 				</section>
 
-				<hr class="my-6 border-t border-slate-200" aria-hidden="true" />
+				<hr class="my-6 border-t border-border-light dark:border-border-dark" aria-hidden="true" />
 
 				<section class="flex flex-col gap-3 px-3 pb-4">
-					<h2
-						class="flex items-center gap-2 text-sm font-semibold leading-relaxed text-neutral-900"
-					>
+					<h2 class="flex items-center gap-2 text-lg font-semibold leading-relaxed">
 						<span class="text-sky-400" aria-hidden="true">###</span>
 						<span>Stack technique</span>
 						<span class="text-sky-400" aria-hidden="true">###</span>
