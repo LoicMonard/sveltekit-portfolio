@@ -24,10 +24,15 @@
 				class="relative flex flex-col gap-8 overflow-hidden font-readex text-neutral-700 dark:text-neutral-300"
 			>
 				<section class="flex flex-col gap-3 py-8">
-					<h2 class="inline-flex items-baseline gap-2 text-lg font-semibold leading-relaxed">
-						<span class="text-sky-400" aria-hidden="true">#</span>
-						<span>Contexte de la mission</span>
-					</h2>
+					<header class="flex flex-col gap-2">
+						<p class="text-xs font-medium uppercase tracking-[0.22em] text-sky-400">
+							# Elephantastic
+						</p>
+						<h2 class="text-base font-semibold leading-relaxed">Contexte de la mission</h2>
+						<p class="text-[11px] leading-5 text-neutral-500 dark:text-neutral-400">
+							Éditeur d'une solution SaaS d'OSINT pour les enquêtes numériques
+						</p>
+					</header>
 					<p class="text-sm leading-7">
 						J'ai rejoint l'équipe d'Elephantastic en octobre 2022, au poste de développeur
 						front-end. Tout juste freelance, c'était pour moi un nouveau défi : faire valoir mes
@@ -126,9 +131,9 @@
 
 				<section class="flex flex-col gap-3 px-3 pb-4">
 					<h2 class="flex items-center gap-2 text-lg font-semibold leading-relaxed">
-						<span class="text-sky-400" aria-hidden="true">###</span>
-						<span>Stack technique</span>
-						<span class="text-sky-400" aria-hidden="true">###</span>
+						<p class="text-xs font-medium uppercase tracking-[0.22em] text-sky-400">
+							# Stack technique
+						</p>
 					</h2>
 					<dl class="mt-1 space-y-1 text-sm leading-7">
 						<div class="flex flex-wrap items-baseline gap-1">
