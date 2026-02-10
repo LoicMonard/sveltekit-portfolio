@@ -2,8 +2,21 @@ import { readable, derived } from 'svelte/store';
 import type { Experience } from '$lib/types/experience';
 import Elephantastic from '$lib/components/experiences/Elephantastic.svelte';
 import Simco from '$lib/components/experiences/Simco.svelte';
+import Mantaradar from '$lib/components/experiences/Mantaradar.svelte';
 
 const experienceList: Experience[] = [
+	{
+		companyName: 'Mantaradar',
+		dateStart: new Date(2024, 9, 1),
+		skills: ['Next.js', 'React', 'TypeScript', 'Capacitor', 'Supabase', 'Tailwind CSS'],
+		icon: '/mantaradar_logo.png',
+		iconBgColor: '#E0F2F1',
+		isFreelance: true,
+		isOngoing: true,
+		description:
+			"Application mobile iOS/Android et web pour les sports nautiques. Prévisions météo intelligentes avec scoring par activité, carte interactive des spots, alertes personnalisées et communauté.",
+		component: Mantaradar
+	},
 	{
 		companyName: 'Elephantastic',
 		dateStart: new Date(2022, 9, 17),
@@ -13,7 +26,7 @@ const experienceList: Experience[] = [
 		iconBgColor: '#DFEAFC',
 		isFreelance: true,
 		description:
-			'Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.',
+			"Pendant près de deux ans, j'ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l'intégration : j'ai conçu, développé et maintenu l'ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.",
 		component: Elephantastic
 	},
 	{
@@ -25,7 +38,7 @@ const experienceList: Experience[] = [
 		iconBgColor: '#FFF',
 		isFreelance: false,
 		description:
-			'Pendant près de deux ans, j’ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l’intégration : j’ai conçu, développé et maintenu l’ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.',
+			"Pendant près de deux ans, j'ai accompagné Elephantastic en tant que développeur front-end freelance, avec la responsabilité quasi complète du front. Mon rôle allait bien au-delà de l'intégration : j'ai conçu, développé et maintenu l'ensemble des interfaces, avec une grande liberté technique, tout en validant régulièrement mes choix avec le client.",
 		component: Simco
 	}
 ];

@@ -23,9 +23,9 @@
 		onCardReduce(experience);
 	};
 
-	const computeTimePassed = (startDate: Date, endDate: Date): string => {
+	const computeTimePassed = (startDate: Date, endDate?: Date): string => {
 		const start = new Date(startDate);
-		const end = new Date(endDate);
+		const end = endDate ? new Date(endDate) : new Date();
 
 		const diffTime = Math.abs(end.getTime() - start.getTime());
 		const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365));
@@ -87,8 +87,13 @@
 			<div
 				class="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200/80 bg-white/70 px-3 py-1 text-xs tracking-wide backdrop-blur dark:border-neutral-700/60 dark:bg-neutral-800/50"
 			>
-				<span class="h-2 w-2 rounded-full bg-yellow-400"></span>
-				<span>{computeTimePassed(experience?.dateStart, experience?.dateEnd)} 
+				<span class="h-2 w-2 rounded-full {experience?.isOngoing ? 'bg-emerald-400' : 'bg-yellow-400'}"></span>
+				<span>
+					{#if experience?.isOngoing}
+						Now
+					{:else}
+						{computeTimePassed(experience?.dateStart, experience?.dateEnd)}
+					{/if}
 					{#if experience?.isFreelance}
 						• Freelance
 					{:else}
