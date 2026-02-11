@@ -1,77 +1,91 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { onMount, setContext, tick } from 'svelte';
 	import { loadGsapAll } from '$lib/gsap';
 	import type { GsapType } from '$lib/gsap';
 	import { experienceArray } from '$lib/stores/experiences.store';
 	import { activeCard } from '$lib/stores';
 	import type { Experience } from '$lib/types/experience';
+	import ExperienceModal from './experiences/ExperienceModal.svelte';
 
-	let isProjectExpanded = false;
+	let isModalOpen = false;
+	let currentExperience: Experience | null = null;
+	let modalComponent: ExperienceModal;
+	let projectListEl: HTMLElement;
 
-	const handleCardMaximize = async (experience: Experience) => {
-		console.log('cardExpand');
+	const handleCardExpand = async (experience: Experience) => {
 		const { Flip } = await loadGsapAll();
 
-		const projectsContainer = document.querySelector('#projectList') as HTMLElement | null;
-		const expandedProjectContainer = document.querySelector(
-			'#expandedProjectContainer'
-		) as HTMLElement | null;
-		const selectedProject = document.querySelector(
-			`#${experience.companyName?.toLowerCase()}`
-		) as HTMLElement | null;
+		activeCard.set(experience.companyName);
 
-		if (!projectsContainer || !expandedProjectContainer) {
-			console.warn('Containers not found');
-			return;
-		}
-		if (!selectedProject) {
-			console.warn('No element found for the flip project animation');
-			return;
-		}
+		const cardId = experience.companyName?.toLowerCase();
+		const selectedProject = document.getElementById(cardId);
+
+		if (!projectListEl || !modalComponent || !selectedProject) return;
 
 		const flipState = Flip.getState(selectedProject);
 
-		const isInProjectList = !!projectsContainer.contains(selectedProject);
-		console.log('isInProjectList:', isInProjectList);
+		const modalContainer = modalComponent.getContainer();
+		const innerContainer = modalContainer?.querySelector(':scope > div');
+		if (!innerContainer) return;
 
-		selectedProject.classList.add('z-50');
+		innerContainer.appendChild(selectedProject);
 
-		if (isInProjectList) {
-			expandedProjectContainer.appendChild(selectedProject);
-			activeCard.set(experience.companyName);
-			isProjectExpanded = true;
-		} else {
-			const selectedProjectParent =
-				(document.getElementById(
-					`${experience.companyName.toLowerCase()}Container`
-				) as HTMLElement | null) ?? projectsContainer;
-			selectedProjectParent.appendChild(selectedProject);
-			isProjectExpanded = false;
-		}
+		isModalOpen = true;
+		currentExperience = experience;
 
 		Flip.from(flipState, {
 			duration: 0.5,
-			ease: 'power1.inOut',
+			ease: 'power2.inOut',
 			absolute: true,
-			fade: true,
 			onComplete: () => {
-				if (!isProjectExpanded) {
-					selectedProject.classList.remove('z-50');
-					activeCard.set(null);
-				}
+				// activeCard.set(experience.companyName);
 			}
 		});
 	};
 
-	const handleCardMinimize = async (experience) => {
-		console.log('red');
+	const handleCardReduce = async (experience: Experience) => {
+		const { Flip } = await loadGsapAll();
+
+		const cardId = experience.companyName?.toLowerCase();
+		const selectedProject = document.getElementById(cardId);
+
+		if (!selectedProject) return;
+
+		activeCard.set(null);
+		isModalOpen = false;
+
+		await tick();
+
+		const flipState = Flip.getState(selectedProject);
+
+
+		const originalContainer = document.getElementById(`${cardId}Container`);
+		if (originalContainer) {
+			originalContainer.appendChild(selectedProject);
+		}
+
+		Flip.from(flipState, {
+			duration: .5,
+			ease: 'power2.inOut',
+			absolute: true,
+			zIndex: 1000,
+			onComplete: () => {
+				currentExperience = null;
+			}
+		});
 	};
 
-	setContext('onCardExpand', handleCardMaximize);
-	setContext('onCardReduce', handleCardMinimize);
+	const handleModalClose = () => {
+		if (currentExperience) {
+			handleCardReduce(currentExperience);
+		}
+	};
+
+	setContext('onCardExpand', handleCardExpand);
+	setContext('onCardReduce', handleCardReduce);
 
 	onMount(async () => {
-		const { gsap, SplitText, Flip } = await loadGsapAll();
+		const { gsap, SplitText } = await loadGsapAll();
 		animateCharacters(gsap, SplitText);
 	});
 
@@ -141,17 +155,16 @@
 			</p>
 		</div>
 
-		<div
-			class={`${isProjectExpanded ? 'h-[68lh] md:h-[32lh] lg:h-[32lh]' : 'h-[68lh] md:h-[34lh] lg:h-[32lh] 2xl:h-[16lh]'} relative my-4 transition-all lg:my-8`}
-		>
+		<div class="my-4 lg:my-8">
 			<div
+				bind:this={projectListEl}
 				id="projectList"
-				class={`${isProjectExpanded ? 'max-h-[68lh] md:max-h-[17lh]' : 'max-h-[107lh]'} md:-grid-rows-2 z-10 grid  grid-cols-1 grid-rows-2 flex-col gap-4 transition-all duration-500 ease-in md:grid-cols-2 lg:grid-cols-2 lg:grid-rows-1 xl:grid-cols-2 2xl:grid-cols-4`}
+				class="grid grid-cols-1 gap-4 md:grid-cols-2 md:grid-rows-2 2xl:grid-cols-4 2xl:grid-rows-1"
 			>
 				{#each $experienceArray as experience}
 					<div
 						id={`${experience.companyName.toLowerCase()}Container`}
-						class="h-full min-h-[15lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+						class="min-h-[350px] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 transition-opacity duration-300 dark:border-border-dark"
 					>
 						<div id={experience.companyName.toLowerCase()} class="h-full w-full">
 							<svelte:component this={experience.component} data={experience}></svelte:component>
@@ -159,27 +172,14 @@
 					</div>
 				{/each}
 				<div
-					id="project2"
-					class="h-full min-h-[15lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
-				>
-					/
-				</div>
-				<div
-					id="project3"
-					class="h-full min-h-[15lh] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
+					class="min-h-[350px] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark"
 				>
 					/
 				</div>
 			</div>
-			<div
-				id="expandedProjectContainer"
-				class={`${isProjectExpanded ? 'flex' : 'invisible'} absolute top-0 flex h-full max-h-[95vh] min-h-[32lh] w-full p-4`}
-			></div>
 		</div>
 
-		<div
-			class={`${isProjectExpanded ? '' : 'mt-0'} flex items-center justify-center transition-all duration-500`}
-		>
+		<div class="flex items-center justify-center">
 			<button
 				id="exploreMoreButton"
 				class="border-2 border-double border-black bg-yellow-300 px-4 py-2 font-mono uppercase shadow-[-4px_4px_black]"
@@ -188,3 +188,5 @@
 		</div>
 	</div>
 </section>
+
+<ExperienceModal bind:this={modalComponent} isOpen={isModalOpen} on:close={handleModalClose} />
