@@ -23,23 +23,32 @@
 	let previousBodyOverflow = '';
 	let previousScrollerOverflow = '';
 
+	let previousHtmlOverflow = '';
+	let previousScrollerOverflow2 = '';
+
 	function lockScroll() {
 		if (typeof document === 'undefined') return;
 		previousBodyOverflow = document.body.style.overflow;
+		previousHtmlOverflow = document.documentElement.style.overflow;
 		document.body.style.overflow = 'hidden';
+		document.documentElement.style.overflow = 'hidden';
 		const scroller = document.getElementById('portfolioScroller');
 		if (scroller) {
 			previousScrollerOverflow = scroller.style.overflow;
+			previousScrollerOverflow2 = scroller.style.overflowY;
 			scroller.style.overflow = 'hidden';
+			scroller.style.overflowY = 'hidden';
 		}
 	}
 
 	function unlockScroll() {
 		if (typeof document === 'undefined') return;
 		document.body.style.overflow = previousBodyOverflow;
+		document.documentElement.style.overflow = previousHtmlOverflow;
 		const scroller = document.getElementById('portfolioScroller');
 		if (scroller) {
 			scroller.style.overflow = previousScrollerOverflow;
+			scroller.style.overflowY = previousScrollerOverflow2;
 		}
 	}
 
@@ -73,7 +82,7 @@
 	aria-modal="true"
 	class:invisible={!isOpen}
 >
-	<div class="pointer-events-auto w-full max-w-4xl max-h-[90vh] h-full">
+	<div class="pointer-events-auto w-full max-w-4xl max-h-[90vh] h-full overscroll-contain">
 		<!-- Card element will be moved here by GSAP Flip -->
 	</div>
 </div>
