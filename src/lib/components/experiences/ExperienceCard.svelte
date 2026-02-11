@@ -10,18 +10,16 @@
 	export let onMouseEnter: (() => void) | undefined = undefined;
 	export let onMouseLeave: (() => void) | undefined = undefined;
 
-	$: isExpanded = $activeCard === 'experiences';
+	$: isExpanded = $activeCard === experience?.companyName;
 
 	const onCardExpand: Function = getContext('onCardExpand');
 	const onCardReduce: Function = getContext('onCardReduce');
 
 	const handleMaximize = () => {
-		console.log('maximize');
 		onCardExpand(experience);
 	};
 
 	const handleMinimize = () => {
-		console.log('minimize');
 		onCardReduce(experience);
 	};
 
@@ -50,8 +48,8 @@
 	on:mouseleave={onMouseLeave}
 >
 	<header
-		class="relative shrink-0 rounded-xl rounded-b-none bg-slate-100 dark:bg-surface-darkhover"
-		style={`height: ${isExpanded ? '200px' : '150px'};`}
+		class="relative shrink-0 rounded-xl rounded-b-none bg-slate-100 dark:bg-surface-darkhover transition-all duration-150"
+		style={`height: ${isExpanded ? '150px' : '150px'};`}
 	>
 		<slot name="header" />
 		{#if hasActionButton}
