@@ -194,8 +194,7 @@
 							class="aspect-[1.54] w-full object-cover"
 						/>
 						<figcaption class="px-3 py-2 text-[11px] leading-6">
-							Aperçu d'une interface d'agrégation de mots-clés (anonymisés) issue d'un composant Vue
-							personnalisé.
+							Aperçu de l'interface principale de Mantaradar, avec les données météo et le scoring par activité.
 						</figcaption>
 					</figure>
 				</section>
