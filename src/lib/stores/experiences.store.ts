@@ -8,13 +8,13 @@ const experienceList: Experience[] = [
 	{
 		companyName: 'Mantaradar',
 		dateStart: new Date(2024, 9, 1),
-		skills: ['Next.js', 'React', 'TypeScript', 'Capacitor', 'Supabase', 'Tailwind CSS'],
-		icon: '/mantaradar_logo.png',
-		iconBgColor: '#E0F2F1',
+		skills: ['React', 'TypeScript', 'Capacitor', 'Supabase', 'Tailwind CSS'],
+		icon: '/mantaradar/mantaradar_logo.svg',
+		iconBgColor: '#161C2A',
 		isFreelance: true,
 		isOngoing: true,
 		description:
-			"Application mobile iOS/Android et web pour les sports nautiques. Prévisions météo intelligentes avec scoring par activité, carte interactive des spots, alertes personnalisées et communauté.",
+			'Application mobile iOS/Android et web pour les sports nautiques. Prévisions météo intelligentes avec scoring par activité, carte interactive des spots, alertes personnalisées et communauté.',
 		component: Mantaradar
 	},
 	{

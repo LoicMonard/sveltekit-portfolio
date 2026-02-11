@@ -7,6 +7,8 @@
 	export let experience: Experience;
 	export let hasActionButton = true;
 	export let isInFullPageMode = false;
+	export let onMouseEnter: (() => void) | undefined = undefined;
+	export let onMouseLeave: (() => void) | undefined = undefined;
 
 	$: isExpanded = $activeCard === 'experiences';
 
@@ -41,8 +43,11 @@
 	};
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <article
 	class="flex h-full flex-col rounded-xl border border-border-light bg-white text-text-light outline outline-8 outline-offset-0 outline-white dark:border-border-dark dark:bg-background-dark dark:text-text-dark dark:outline-surface-dark"
+	on:mouseenter={onMouseEnter}
+	on:mouseleave={onMouseLeave}
 >
 	<header
 		class="relative shrink-0 rounded-xl rounded-b-none bg-slate-100 dark:bg-surface-darkhover"
@@ -87,7 +92,9 @@
 			<div
 				class="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200/80 bg-white/70 px-3 py-1 text-xs tracking-wide backdrop-blur dark:border-neutral-700/60 dark:bg-neutral-800/50"
 			>
-				<span class="h-2 w-2 rounded-full {experience?.isOngoing ? 'bg-emerald-400' : 'bg-yellow-400'}"></span>
+				<span
+					class="h-2 w-2 rounded-full {experience?.isOngoing ? 'bg-emerald-400' : 'bg-yellow-400'}"
+				></span>
 				<span>
 					{#if experience?.isOngoing}
 						Now
@@ -107,7 +114,7 @@
 	</main>
 	{#if !isInFullPageMode}
 		<footer
-			class="flex shrink-0 items-center justify-between rounded-xl rounded-t-none border-t border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
+			class="flex shrink-0 items-center justify-between gap-2 overflow-hidden rounded-xl rounded-t-none border-t border-border-light bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark"
 		>
 			{#if isExpanded}
 				<button
@@ -118,13 +125,21 @@
 				</button>
 			{:else}
 				<button
-					class="rounded-lg border border-border-light bg-surface-light px-4 py-2 text-sm outline-4 outline-offset-0 outline-black hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
+					class="whitespace-nowrap rounded-lg border border-border-light bg-surface-light px-4 py-2 text-sm outline-4 outline-offset-0 outline-black hover:bg-surface-lighthover dark:border-border-dark dark:bg-surface-dark dark:hover:bg-surface-darkhover"
 					on:click={handleMaximize}
 				>
 					View Details
 				</button>
 			{/if}
-			<span class="text-sm">Vue.js, TailwindCSS</span>
+			<div class="gap flex min-w-0 items-center overflow-x-auto overflow-y-hidden">
+				{#each experience?.skills as skill}
+					<div
+						class="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200/80 bg-white/70 px-3 py-1 text-xs tracking-wide backdrop-blur dark:border-neutral-700/60 dark:bg-neutral-800/50"
+					>
+						{skill}
+					</div>
+				{/each}
+			</div>
 		</footer>
 	{/if}
 </article>
