@@ -129,7 +129,7 @@
 					View Details
 				</button>
 			{/if}
-			<div class="gap flex min-w-0 items-center overflow-x-auto overflow-y-hidden">
+			<div class="gap flex min-w-0 items-center overflow-x-auto overflow-y-hidden scrollbar-hide">
 				{#each experience?.skills as skill}
 					<div
 						class="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-neutral-200/80 bg-white/70 px-3 py-1 text-xs tracking-wide backdrop-blur dark:border-neutral-700/60 dark:bg-neutral-800/50"

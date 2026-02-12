@@ -6,6 +6,16 @@ body {
 	font-family: 'Gabarito', sans-serif;
 }
 
-html, body {
-  height: 100%;
+html,
+body {
+	height: 100%;
+}
+
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
 }
