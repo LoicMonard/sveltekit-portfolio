@@ -53,7 +53,7 @@
 {#if isOpen}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
-		class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+		class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm touch-none"
 		transition:fade={{ duration: 200 }}
 		on:click={handleClose}
 		on:keydown={() => {}}
