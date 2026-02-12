@@ -186,7 +186,7 @@
 					</div>
 
 					<figure
-						class="flex flex-1 flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-background-dark dark:bg-background-dark dark:text-text-dark"
+						class="flex flex-1 h-fit flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-background-dark dark:bg-background-dark dark:text-text-dark"
 					>
 						<img
 							src="mantaradar/MantaradarMockup.png"
