@@ -19,6 +19,8 @@
 	import Sky from '$lib/components/gsap/Sky.svelte';
 	import ThreeWind from '$lib/components/gsap/ThreeWind.svelte';
 	import Projects from '$lib/components/Projects.svelte';
+	import AboutMe from '$lib/components/AboutMe.svelte';
+	import GarageScene from '$lib/components/GarageScene.svelte';
 	import { onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 
@@ -203,4 +205,6 @@
 	<!-- {#if dev} -->
 		<Projects />
 	<!-- {/if} -->
+	<AboutMe />
+	<GarageScene />
 </div>
