@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import * as THREE from 'three';
+	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import { theme } from '$lib/stores/theme';
 
 	export let progress: number = 0;
@@ -13,6 +15,7 @@
 	let renderer: THREE.WebGLRenderer;
 	let scene: THREE.Scene;
 	let camera: THREE.PerspectiveCamera;
+	let controls: OrbitControls;
 	let animationId: number;
 	let isRunning = false;
 
@@ -54,6 +57,7 @@
 	function animate() {
 		if (!isRunning) return;
 		animationId = requestAnimationFrame(animate);
+		controls.update();
 		renderer.render(scene, camera);
 	}
 
@@ -131,157 +135,43 @@
 	let CAM_DIST = (ROOM_H / 2) / TAN_HALF_FOV;
 	let ROOM_W = ROOM_H * (16 / 9);
 
-	function createParquetTexture(): THREE.CanvasTexture {
-		const canvas = document.createElement('canvas');
-		const size = 512;
-		canvas.width = size;
-		canvas.height = size;
-		const ctx = canvas.getContext('2d')!;
-
-		// Base wood color
-		ctx.fillStyle = '#d4b896';
-		ctx.fillRect(0, 0, size, size);
-
-		const plankW = size / 4;
-		const plankH = size / 8;
-		const woodColors = ['#c9a87c', '#d4b896', '#b89a72', '#cbb08a', '#dcc4a0', '#c0946a'];
-
-		for (let row = 0; row < Math.ceil(size / plankH); row++) {
-			const offset = (row % 2) * (plankW / 2);
-			for (let col = -1; col < Math.ceil(size / plankW) + 1; col++) {
-				const x = col * plankW + offset;
-				const y = row * plankH;
-
-				// Plank fill
-				ctx.fillStyle = woodColors[Math.floor(Math.random() * woodColors.length)];
-				ctx.fillRect(x + 1, y + 1, plankW - 2, plankH - 2);
-
-				// Subtle grain lines
-				ctx.strokeStyle = 'rgba(0,0,0,0.04)';
-				ctx.lineWidth = 0.5;
-				for (let g = 0; g < 3; g++) {
-					const gy = y + 2 + Math.random() * (plankH - 4);
-					ctx.beginPath();
-					ctx.moveTo(x + 2, gy);
-					ctx.lineTo(x + plankW - 2, gy + (Math.random() - 0.5) * 2);
-					ctx.stroke();
-				}
-
-				// Gap between planks
-				ctx.strokeStyle = 'rgba(0,0,0,0.12)';
-				ctx.lineWidth = 1;
-				ctx.strokeRect(x, y, plankW, plankH);
-			}
-		}
-
-		const tex = new THREE.CanvasTexture(canvas);
-		tex.wrapS = THREE.RepeatWrapping;
-		tex.wrapT = THREE.RepeatWrapping;
-		tex.repeat.set(3, 2);
-		return tex;
-	}
-
 	function createRoom() {
-		// Back wall
-		const backWall = new THREE.Mesh(
-			new THREE.PlaneGeometry(ROOM_W, ROOM_H),
-			mat(CLAY_LIGHT)
-		);
-		backWall.position.set(0, ROOM_H / 2, -DEPTH);
-		backWall.receiveShadow = true;
-		scene.add(backWall);
+		const loader = new GLTFLoader();
+		loader.load('/models/3D Room.glb', (gltf) => {
+			const model = gltf.scene;
 
-		// Floor — parquet
-		const parquetTex = createParquetTexture();
-		const floorMat = new THREE.MeshStandardMaterial({
-			map: parquetTex,
-			roughness: 0.75,
-			metalness: 0
+			// Rotate 180° on Y axis (face the camera)
+			model.rotation.y = Math.PI;
+
+			// Scale to match room dimensions
+			const box = new THREE.Box3().setFromObject(model);
+			const size = box.getSize(new THREE.Vector3());
+			const scaleX = ROOM_W / size.x;
+			const scaleY = ROOM_H / size.y;
+			const scaleZ = DEPTH / size.z;
+			model.scale.set(scaleX, scaleY, scaleZ);
+
+			// Recompute bounding box after scaling
+			box.setFromObject(model);
+			const center = box.getCenter(new THREE.Vector3());
+
+			// Position: centered horizontally, bottom at y=0, back wall at z=-DEPTH
+			model.position.set(
+				-center.x,
+				-box.min.y,
+				-DEPTH - box.min.z
+			);
+
+			// Enable shadows on all meshes
+			model.traverse((child) => {
+				if (child instanceof THREE.Mesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+
+			scene.add(model);
 		});
-		const floor = new THREE.Mesh(
-			new THREE.PlaneGeometry(ROOM_W, DEPTH),
-			floorMat
-		);
-		floor.rotation.x = -Math.PI / 2;
-		floor.position.set(0, 0, -DEPTH / 2);
-		floor.receiveShadow = true;
-		scene.add(floor);
-
-		// Ceiling
-		const ceiling = new THREE.Mesh(
-			new THREE.PlaneGeometry(ROOM_W, DEPTH),
-			mat(CLAY_LIGHT)
-		);
-		ceiling.rotation.x = Math.PI / 2;
-		ceiling.position.set(0, ROOM_H, -DEPTH / 2);
-		scene.add(ceiling);
-
-		// Left wall
-		const leftWall = new THREE.Mesh(
-			new THREE.PlaneGeometry(DEPTH, ROOM_H),
-			mat(CLAY)
-		);
-		leftWall.rotation.y = Math.PI / 2;
-		leftWall.position.set(-ROOM_W / 2, ROOM_H / 2, -DEPTH / 2);
-		leftWall.receiveShadow = true;
-		scene.add(leftWall);
-
-		// Right wall
-		const rightWall = new THREE.Mesh(
-			new THREE.PlaneGeometry(DEPTH, ROOM_H),
-			mat(CLAY)
-		);
-		rightWall.rotation.y = -Math.PI / 2;
-		rightWall.position.set(ROOM_W / 2, ROOM_H / 2, -DEPTH / 2);
-		rightWall.receiveShadow = true;
-		scene.add(rightWall);
-
-		// Baseboard — subtle darker line
-		const baseboardMat = mat(CLAY_DARK, 0.9);
-		const bbBack = new THREE.Mesh(createRoundedBoxGeometry(ROOM_W, 0.1, 0.04, 0.015), baseboardMat);
-		bbBack.position.set(0, 0.05, -DEPTH + 0.02);
-		scene.add(bbBack);
-		const bbLeft = new THREE.Mesh(createRoundedBoxGeometry(0.04, 0.1, DEPTH, 0.015), baseboardMat);
-		bbLeft.position.set(-ROOM_W / 2 + 0.02, 0.05, -DEPTH / 2);
-		scene.add(bbLeft);
-		const bbRight = new THREE.Mesh(createRoundedBoxGeometry(0.04, 0.1, DEPTH, 0.015), baseboardMat);
-		bbRight.position.set(ROOM_W / 2 - 0.02, 0.05, -DEPTH / 2);
-		scene.add(bbRight);
-
-		// Crown molding (corniche) — at ceiling junction
-		const crownMat = mat(CLAY_LIGHT, 0.8);
-		const crownH = 0.06;
-		const crownD = 0.05;
-		// Back
-		const crownBack = new THREE.Mesh(createRoundedBoxGeometry(ROOM_W, crownH, crownD, 0.015), crownMat);
-		crownBack.position.set(0, ROOM_H - crownH / 2, -DEPTH + crownD / 2);
-		scene.add(crownBack);
-		// Left
-		const crownLeft = new THREE.Mesh(createRoundedBoxGeometry(crownD, crownH, DEPTH, 0.015), crownMat);
-		crownLeft.position.set(-ROOM_W / 2 + crownD / 2, ROOM_H - crownH / 2, -DEPTH / 2);
-		scene.add(crownLeft);
-		// Right
-		const crownRight = new THREE.Mesh(createRoundedBoxGeometry(crownD, crownH, DEPTH, 0.015), crownMat);
-		crownRight.position.set(ROOM_W / 2 - crownD / 2, ROOM_H - crownH / 2, -DEPTH / 2);
-		scene.add(crownRight);
-
-		// Chair rail (cimaise) — at ~1/3 height
-		const railMat = mat(CLAY_DARK, 0.8);
-		const railY = ROOM_H * 0.35;
-		const railH = 0.03;
-		const railD = 0.025;
-		// Back
-		const railBack = new THREE.Mesh(createRoundedBoxGeometry(ROOM_W, railH, railD, 0.008), railMat);
-		railBack.position.set(0, railY, -DEPTH + railD / 2);
-		scene.add(railBack);
-		// Left
-		const railLeft = new THREE.Mesh(createRoundedBoxGeometry(railD, railH, DEPTH, 0.008), railMat);
-		railLeft.position.set(-ROOM_W / 2 + railD / 2, railY, -DEPTH / 2);
-		scene.add(railLeft);
-		// Right
-		const railRight = new THREE.Mesh(createRoundedBoxGeometry(railD, railH, DEPTH, 0.008), railMat);
-		railRight.position.set(ROOM_W / 2 - railD / 2, railY, -DEPTH / 2);
-		scene.add(railRight);
 	}
 
 	function createWorkbench() {
@@ -594,9 +484,6 @@
 
 		torusWallLight = new THREE.PointLight(0xff8833, 0, 6);
 		torusWallLight.position.set(1.5, 2.2, backZ + 0.4);
-		torusWallLight.castShadow = true;
-		torusWallLight.shadow.mapSize.width = 512;
-		torusWallLight.shadow.mapSize.height = 512;
 		scene.add(torusWallLight);
 	}
 
@@ -625,6 +512,11 @@
 		renderer.outputColorSpace = THREE.SRGBColorSpace;
 		container.appendChild(renderer.domElement);
 
+		controls = new OrbitControls(camera, renderer.domElement);
+		controls.target.set(0, ROOM_H / 2, -DEPTH / 2);
+		controls.enableDamping = true;
+		controls.dampingFactor = 0.08;
+
 		createRoom();
 		createWorkbench();
 		createPegboard();
@@ -644,6 +536,7 @@
 		unsubTheme();
 		stopRenderLoop();
 		window.removeEventListener('resize', handleResize);
+		if (controls) controls.dispose();
 		if (renderer) {
 			renderer.dispose();
 			scene?.traverse((obj) => {
