@@ -39,34 +39,34 @@
 	});
 </script>
 
-<section class="flex w-screen  items-center justify-center bg-slate-50 py-24 dark:bg-surface-dark">
-		<div
-			bind:this={garageScroller}
-			id="garageScroller"
-			class="min-h-[350px] w-full rounded-lg border-2 border-dashed border-slate-200 p-4 dark:border-border-dark scrollbar-hide container relative aspect-[21/9] w-full overflow-y-scroll overflow-x-hidden rounded-xl border border-border-light  dark:border-border-dark"
-		>
-			<!-- Sticky viewport -->
-			<div class="sticky top-0 h-full w-full">
-				<div id="garageViewport" class="relative h-full w-full overflow-hidden ">
-					<!-- Layer 1: Three.js 3D scene -->
-					<div class="absolute inset-0 z-0">
-						<GarageInterior progress={shutterProgress} {isVisible} />
-					</div>
-
-					<!-- Layer 3: Roller shutter -->
-					<div class="pointer-events-none absolute inset-0 z-20">
-						<RollerShutter progress={shutterProgress} />
-					</div>
-
-					<!-- Layer 4: Garage frame -->
-					<div
-						class="pointer-events-none absolute inset-0 z-30 rounded-xl"
-						style="box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);"
-					/>
+<section class="flex w-screen items-center justify-center bg-slate-50 py-24 dark:bg-surface-dark">
+	<div
+		bind:this={garageScroller}
+		id="garageScroller"
+		class="scrollbar-hide container relative aspect-[16/9] min-h-[350px] w-full overflow-x-hidden overflow-y-scroll rounded-lg border-2 border-dashed border-border-light p-4 dark:border-border-dark"
+	>
+		<!-- Sticky viewport -->
+		<div class="sticky top-0 h-full w-full rounded-lg overflow-hidden">
+			<div id="garageViewport" class="relative h-full w-full overflow-hidden">
+				<!-- Layer 1: Three.js 3D scene -->
+				<div class="absolute inset-0 z-0">
+					<GarageInterior progress={shutterProgress} {isVisible} />
 				</div>
-			</div>
 
-			<!-- Scroll content (invisible, just provides scroll height) -->
-			<div id="garageScrollContent" class="pointer-events-none h-[300vh]"></div>
+				<!-- Layer 3: Roller shutter -->
+				<div class="pointer-events-none absolute inset-0 z-20">
+					<RollerShutter progress={shutterProgress} />
+				</div>
+
+				<!-- Layer 4: Garage frame -->
+				<div
+					class="pointer-events-none absolute inset-0 z-30 rounded-xl"
+					style="box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);"
+				/>
+			</div>
 		</div>
+
+		<!-- Scroll content (invisible, just provides scroll height) -->
+		<div id="garageScrollContent" class="pointer-events-none h-[300vh]"></div>
+	</div>
 </section>
